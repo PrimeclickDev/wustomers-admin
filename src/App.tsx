@@ -1,4 +1,5 @@
 import { Layout } from 'components/Layout'
+import { Campaign } from 'pages/Campaign'
 import { Dashboard } from 'pages/Dashboard'
 import { Home } from 'pages/Home'
 import { User } from 'pages/User'
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
 			{
 				path: 'user',
 				element: <User />,
+			},
+			{
+				path: 'campaign',
+				element: <Campaign />,
 			},
 		],
 	},
