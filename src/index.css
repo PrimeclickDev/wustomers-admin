@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	@font-face {
+		font-family: 'Aeonik';
+		src: url('/fonts/Aeonik-Regular.otf') format('opentype');
+		font-display: block;
+	}
+	@font-face {
+		font-family: 'Aeonik';
+		src: url('/fonts/Aeonik-Medium.otf') format('opentype');
+		font-weight: 500;
+		font-display: block;
+	}
+	@font-face {
+		font-family: 'Aeonik';
+		src: url('/fonts/Aeonik-Bold.otf') format('opentype');
+		font-weight: 700;
+		font-display: block;
+	}
+	@font-face {
+		font-family: 'Aeonik';
+		src: url('/fonts/Aeonik-Black.otf') format('opentype');
+		font-weight: 900;
+		font-display: block;
+	}
+}
+
+body {
+	font-family: 'Aeonik', sans-serif;
+	color: #2f2f2f;
+}
+
+:focus {
+	@apply focus:outline-wustomers-blue;
+}
+
+button {
+	@apply focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wustomers-blue;
+}
