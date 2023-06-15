@@ -5,7 +5,7 @@ export const Preview = () => {
 		<div className='font-figtree'>
 			<header className='w-full'>
 				<div
-					className='relative h-[630px] bg-black bg-cover bg-center py-4 after:absolute after:top-0 after:left-0 after:z-10 after:h-full after:w-full after:bg-black/60'
+					className='relative z-20 h-[630px] bg-black bg-cover bg-center py-4 after:absolute after:top-0 after:left-0 after:z-10 after:h-full after:w-full after:bg-black/60'
 					style={{
 						backgroundImage: `url("https://images.pexels.com/photos/16783095/pexels-photo-16783095/free-photo-of-light-city-street-dark.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")`,
 					}}>

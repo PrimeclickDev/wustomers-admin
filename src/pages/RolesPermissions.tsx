@@ -3,6 +3,7 @@ import { Modal } from 'components/Modal'
 import Plus from 'components/Plus'
 import { RolesPermissionsTable } from 'components/RolesPermissionsTable'
 import { TextInput } from 'components/TextInput'
+import { usePageTitle } from 'hooks/usePageTitle'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -18,6 +19,7 @@ const schema = z.object({
 type NewRoleValues = z.infer<typeof schema>
 
 export const RolesPermissions = () => {
+	usePageTitle('Roles & Permissions')
 	const [open, setOpen] = React.useState(false)
 	const { register, handleSubmit, control } = useForm<NewRoleValues>({
 		defaultValues: {
@@ -32,8 +34,8 @@ export const RolesPermissions = () => {
 
 	return (
 		<>
-			<div className='max-w-7xl mx-auto py-5'>
-				<header className='flex items-center gap-6 pt-4'>
+			<div className='max-w-7xl mx-auto py-5 px-3'>
+				<header className='flex flex-wrap items-center gap-3 md:gap-6 pt-4'>
 					<h2 className='font-black text-3xl'>Roles/Permissions</h2>
 					<Link
 						to='/admin-access'
@@ -45,7 +47,7 @@ export const RolesPermissions = () => {
 				<button
 					type='button'
 					onClick={() => setOpen(true)}
-					className='bg-wustomers-blue hover:bg-opacity-80 transition-all duration-300 text-white py-2 px-4 flex items-center gap-1 rounded-lg ml-auto mt-5'>
+					className='bg-wustomers-blue hover:bg-opacity-80 transition-all duration-300 text-white py-2 px-4 flex items-center gap-1 rounded-lg ml-auto mt-8'>
 					<Plus />
 					<span>Add new role</span>
 				</button>

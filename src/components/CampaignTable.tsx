@@ -52,11 +52,11 @@ const data = [
 
 export const CampaignTable = () => {
 	return (
-		<div className='mt-10 bg-wustomers-primary py-4 px-6 rounded-md'>
-			<header className='flex items-center justify-between gap-2'>
+		<div className='mt-10 bg-wustomers-primary rounded-md py-2'>
+			<header className='flex flex-wrap items-center justify-between gap-2 px-4 py-2 lg:px-6'>
 				<h3 className='font-medium text-lg'>Campaign list</h3>
 
-				<div className='flex items-center gap-4 text-sm text-wustomers-gray'>
+				<div className='flex flex-wrap items-center gap-4 text-sm text-wustomers-gray'>
 					<div className='flex items-center gap-2'>
 						<p>All (50)</p>
 						<p>Live (20)</p>

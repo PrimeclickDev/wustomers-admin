@@ -62,7 +62,7 @@ export const FinanceTable = () => {
 				</div>
 			</header>
 
-			<div className='overflow-hidden'>
+			<div className='overflow-auto'>
 				<table className='table w-full whitespace-nowrap rounded text-sm text-left mt-3'>
 					<thead>
 						<tr className='table-row border-b border-b-gray-200'>

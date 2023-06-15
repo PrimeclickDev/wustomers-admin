@@ -3,14 +3,16 @@ import Plus from 'components/Plus'
 import { UsersMetrics } from 'components/UsersMetric'
 import { UsersTable } from 'components/UsersTable'
 import { NewClientModal } from 'components/modals/NewClientModal'
+import { usePageTitle } from 'hooks/usePageTitle'
 import React from 'react'
 
 export const Users = () => {
+	usePageTitle('Users')
 	const [open, setOpen] = React.useState(false)
 
 	return (
 		<>
-			<div className='max-w-7xl mx-auto py-5'>
+			<div className='max-w-7xl mx-auto py-5 px-3'>
 				<header className='flex items-center gap-6 pt-4'>
 					<h3 className='font-black text-3xl'>Users</h3>
 					<button

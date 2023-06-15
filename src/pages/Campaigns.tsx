@@ -4,9 +4,11 @@ import { CampaignTable } from 'components/CampaignTable'
 import { Modal } from 'components/Modal'
 import Plus from 'components/Plus'
 import { NewClientModal } from 'components/modals/NewClientModal'
+import { usePageTitle } from 'hooks/usePageTitle'
 import React from 'react'
 
 export const Campaigns = () => {
+	usePageTitle('Campaigns')
 	const [open, setOpen] = React.useState(false)
 
 	return (
@@ -17,8 +19,8 @@ export const Campaigns = () => {
 				</h2>
 
 				<section>
-					<header className='flex items-center gap-6 pt-4'>
-						<h3 className='font-black text-3xl'>
+					<header className='flex flex-wrap items-center gap-3 md:gap-6'>
+						<h3 className='font-black text-2xl lg:text-3xl'>
 							Account Management
 						</h3>
 						<button
@@ -30,7 +32,7 @@ export const Campaigns = () => {
 						</button>
 					</header>
 
-					<div className='grid grid-cols-6 gap-5 pt-5'>
+					<div className='lg:grid lg:grid-cols-6 flex flex-col gap-5 pt-5'>
 						<CampaignMetric />
 						<CampaignChart />
 					</div>

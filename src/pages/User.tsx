@@ -1,6 +1,7 @@
 import Warning from 'assets/icons/Warning'
 import { BackBtn } from 'components/BackBtn'
 import { Modal } from 'components/Modal'
+import { usePageTitle } from 'hooks/usePageTitle'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { formatCurrency } from 'utils/formatCurrency'
@@ -29,29 +30,30 @@ const statusStyle = {
 }
 
 export const User = () => {
+	usePageTitle('User')
 	const [open, setOpen] = React.useState(false)
 
 	return (
 		<>
-			<div className='max-w-7xl mx-auto py-12'>
+			<div className='max-w-7xl mx-auto py-12 px-3'>
 				<BackBtn />
 
-				<section className='mt-12 grid grid-cols-2 gap-8'>
+				<section className='mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8'>
 					<div className='space-y-8'>
-						<div className='bg-wustomers-primary py-4 px-6 border border-[#17A1FA] rounded-md shadow-[0px_0px_8px_2px_rgba(130,130,130,0.15)] flex items-center gap-6'>
+						<div className='bg-wustomers-primary p-4 md:px-6 border border-[#17A1FA] rounded-md shadow-[0px_0px_8px_2px_rgba(130,130,130,0.15)] flex flex-col lg:flex-row items-center gap-4 md:gap-6'>
 							<img
 								src='https://images.pexels.com/photos/5384445/pexels-photo-5384445.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
 								alt='user profile'
 								className='w-40 h-48 object-center object-cover rounded-2xl'
 							/>
 							<div className='space-y-1'>
-								<h4 className='text-4xl font-medium'>
+								<h4 className='text-2xl lg:text-4xl font-medium'>
 									Abudul Olatunbosun
 								</h4>
 								<p>abuduolatunbosun@gmail.com</p>
 								<p>Bosun’s Company</p>
 								<p>12/January/2022</p>
-								<div className='flex items-center gap-2 pt-2'>
+								<div className='flex flex-col lg:flex-row items-center gap-2 pt-2'>
 									<button
 										type='button'
 										className='text-[#F2C94C] hover:bg-[#F2C94C] hover:text-inherit transition-colors border border-[#F2C94C] py-1 px-4 rounded-full'>
@@ -68,11 +70,11 @@ export const User = () => {
 						</div>
 
 						<div className='bg-wustomers-primary overflow-hidden border border-[#17A1FA] rounded-md shadow-[0px_0px_8px_2px_rgba(130,130,130,0.15)]'>
-							<h3 className='font-medium text-xl bg-[#E6EAF9] py-2 px-6'>
+							<h3 className='font-medium text-xl bg-[#E6EAF9] py-2 px-3 md:px-6'>
 								Recent transactions
 							</h3>
 
-							<div className='py-2 px-6'>
+							<div className='p-2 md:px-6 text-sm overflow-auto'>
 								<table className='table w-full whitespace-nowrap rounded text-left'>
 									<thead>
 										<tr className='table-row'>
@@ -118,12 +120,12 @@ export const User = () => {
 						</div>
 					</div>
 
-					<div className='bg-wustomers-primary py-4 px-6 border border-[#17A1FA] rounded-md shadow-[0px_0px_8px_2px_rgba(130,130,130,0.15)]'>
+					<div className='bg-wustomers-primary p-4 md:px-6 border border-[#17A1FA] rounded-md shadow-[0px_0px_8px_2px_rgba(130,130,130,0.15)]'>
 						<h3 className='font-medium text-xl'>
 							Recent landing pages
 						</h3>
 
-						<ul className='grid grid-cols-2 gap-x-5 gap-y-8 my-5'>
+						<ul className='grid grid-cols-1 lg:grid-cols-2 gap-x-5 gap-y-8 my-5'>
 							<li>
 								<img
 									src='https://s3-alpha-sig.figma.com/img/0975/cf2f/73e0640342f91acda240619c7ef469ed?Expires=1687737600&Signature=fRXYwIhSxTNqnPMxPxsQ38Oj894tVtg0b1GDtYr0UcGSzxq7iYDlhPY-ArdsTIBy2e-s8tZgy534Ru6cZfzc54PqgkTJWKLTxxaufkIGziw~qeFir6fXz2rTRSAIggyBmvWPbLBn2tPe677YNkJER8Wtjvd86CHWSX3VQUBlwaBSqfiLdn8GWvzqd0rlww1mrYzPLvkUO2yyultes2EqFhN3SndMVmLUEx0NutGDuQhOKDREw6R0dPP5fUuK52OLb2tljwckDk2gVGzkbtdNzKi~pbS9Ez8zuPC1iLnRkMJrnn~bmDRae0GHU5nHUb6mPKDgk~chy-00DhX-eWQJfw__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4'

@@ -7,7 +7,7 @@ const CloseCircle = (props: SVGProps<SVGSVGElement>) => (
 		fill='none'
 		{...props}>
 		<path
-			stroke='#585858'
+			stroke='currentColor'
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			strokeWidth={1.5}

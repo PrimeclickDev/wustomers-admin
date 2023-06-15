@@ -55,44 +55,46 @@ export const UsersTable = () => {
 				</div>
 			</header>
 
-			<table className='table w-full whitespace-nowrap rounded text-sm text-left mt-3'>
-				<thead>
-					<tr className='table-row border-b border-b-gray-200'>
-						{tableHeaders?.map(header => (
-							<th
-								key={header}
-								scope='col'
-								className='px-2 py-4 font-medium'>
-								{header}
-							</th>
-						))}
-					</tr>
-				</thead>
-
-				<tbody>
-					{data.map(item => (
-						<tr
-							key={item.id}
-							className='even:bg-wustomers-primary/30'>
-							<td className='px-2 py-5 font-medium'>
-								{item.name}
-							</td>
-							<td className='px-2 py-5'>{item.email}</td>
-							<td className='px-2 py-5'>{item.name}</td>
-							<td className='px-2 py-5'>{item.date}</td>
-							<td className='px-2 py-5'>{item.page}</td>
-							<td className='px-2 py-5'>{item.campaigns}</td>
-							<td className='px-2 py-5'>
-								<Link
-									to='/user/ida'
-									className='border border-wustomers-blue text-wustomers-blue rounded-full text-xs py-1.5 hover:bg-wustomers-blue transition-colors hover:text-white px-3'>
-									View more
-								</Link>
-							</td>
+			<div className='overflow-auto'>
+				<table className='table w-full whitespace-nowrap rounded text-sm text-left mt-3'>
+					<thead>
+						<tr className='table-row border-b border-b-gray-200'>
+							{tableHeaders?.map(header => (
+								<th
+									key={header}
+									scope='col'
+									className='px-2 py-4 font-medium'>
+									{header}
+								</th>
+							))}
 						</tr>
-					))}
-				</tbody>
-			</table>
+					</thead>
+
+					<tbody>
+						{data.map(item => (
+							<tr
+								key={item.id}
+								className='even:bg-wustomers-primary/30'>
+								<td className='px-2 py-5 font-medium'>
+									{item.name}
+								</td>
+								<td className='px-2 py-5'>{item.email}</td>
+								<td className='px-2 py-5'>{item.name}</td>
+								<td className='px-2 py-5'>{item.date}</td>
+								<td className='px-2 py-5'>{item.page}</td>
+								<td className='px-2 py-5'>{item.campaigns}</td>
+								<td className='px-2 py-5'>
+									<Link
+										to='/user/ida'
+										className='border border-wustomers-blue text-wustomers-blue rounded-full text-xs py-1.5 hover:bg-wustomers-blue transition-colors hover:text-white px-3'>
+										View more
+									</Link>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	)
 }

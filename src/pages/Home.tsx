@@ -3,6 +3,7 @@ import WustomersLogo from 'assets/WustomersLogo'
 import BgDesignBottom from 'assets/icons/BgDesignBottom'
 import BgDesignTop from 'assets/icons/BgDesignTop'
 import { TextInput } from 'components/TextInput'
+import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -21,6 +22,8 @@ const schema = z.object({
 type LoginFormValues = z.infer<typeof schema>
 
 export const Home = () => {
+	usePageTitle('Home')
+
 	const { register, handleSubmit, control } = useForm<LoginFormValues>({
 		defaultValues: {
 			email: '',

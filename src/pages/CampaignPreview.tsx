@@ -9,8 +9,10 @@ export const CampaignPreview = () => {
 	const [view, setView] = React.useState<'desktop' | 'mobile'>('desktop')
 
 	return (
-		<div className='max-w-7xl mx-auto py-12'>
-			<BackBtn />
+		<div className='max-w-7xl mx-auto py-10'>
+			<div className='px-3 md:px-0'>
+				<BackBtn />
+			</div>
 
 			<section className='rounded-md mt-12 border border-gray-200'>
 				<header className='flex items-center justify-between gap-2 py-3 px-6 bg-wustomers-neutral-light'>

@@ -14,7 +14,7 @@ export const RolesPermissionsTable = () => {
 	}, [])
 
 	return (
-		<div className='mt-10 bg-white border border-gray-200 py-4 px-6 rounded-md'>
+		<div className='mt-10 bg-white border border-gray-200 p-4 lg:px-6 rounded-md'>
 			<Tabs.Root
 				className='flex flex-col'
 				value={tab}
@@ -24,7 +24,7 @@ export const RolesPermissionsTable = () => {
 				}}
 				defaultValue={searchParams.get('tab') as string}>
 				<Tabs.List
-					className='py-1 px-2 flex items-center w-max gap-4 rounded-xl bg-wustomers-primary'
+					className='py-1 px-2 flex items-center w-max gap-1 rounded-xl bg-wustomers-primary'
 					aria-label='Roles and permissions'>
 					<Tabs.Trigger
 						className='py-1 px-10 data-[state=active]:bg-wustomers-blue data-[state=active]:text-white rounded-lg'

@@ -31,7 +31,7 @@ export const PermissionsTable = () => {
 
 	return (
 		<>
-			<div className='bg-[#F4F4F4] p-6 rounded-md mt-10'>
+			<div className='bg-[#F4F4F4] p-4 lg:p-6 rounded-md mt-10'>
 				<p>Permissions option</p>
 				<Controller
 					name='duration'
@@ -55,7 +55,7 @@ export const PermissionsTable = () => {
 				/>
 			</div>
 
-			<ul className='bg-[#F4F4F4] p-6 rounded-md mt-10 space-y-8'>
+			<ul className='bg-[#F4F4F4] p-4 lg:p-6 rounded-md mt-10 space-y-8'>
 				<li className='flex items-center justify-between gap-2 font-medium'>
 					<p>Permissions</p>
 					<p>Access</p>
