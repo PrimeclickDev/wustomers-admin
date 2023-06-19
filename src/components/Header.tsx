@@ -1,13 +1,18 @@
+import { useLogout } from 'api/hooks/auth/useLogout'
 import WustomersLogo from 'assets/WustomersLogo'
 import ChartCirlce from 'assets/icons/ChartCircle'
 import CloseCircle from 'assets/icons/CloseCircle'
+import Logout from 'assets/icons/Logout'
 import Menu from 'assets/icons/Menu'
 import Screen from 'assets/icons/Screen'
 import Users from 'assets/icons/Users'
 import WalletTwo from 'assets/icons/WalletTwo'
+import Warning from 'assets/icons/Warning'
 import { useScrollLock } from 'hooks/useScrollLock'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { Modal } from './Modal'
+import { Spinner } from './Spinner'
 
 const navs = [
 	{
@@ -38,30 +43,84 @@ const navs = [
 
 export const Header = () => {
 	const [isOpen, setIsOpen] = React.useState(false)
+	const [open, setOpen] = React.useState(false)
 	useScrollLock({ isOpen })
 
+	const logoutAdmin = useLogout()
 	const closeMenu = () => setIsOpen(false)
 
 	return (
-		<header className='px-4 bg-wustomers-primary-light relative'>
-			<nav className='md:py-1 border-t border-t-wustomers-dark-gray'>
-				<div className='max-w-7xl mx-auto flex items-center justify-between'>
-					<Link to='/campaigns'>
-						<WustomersLogo
-							fill='#072AC8'
-							className='w-32 md:w-44'
-						/>
-					</Link>
-					<ul className='md:flex items-center gap-1 hidden'>
-						{navs.map(nav => (
+		<>
+			<header className='px-4 bg-wustomers-primary-light'>
+				<nav className='md:py-1 border-t border-t-wustomers-dark-gray'>
+					<div className='max-w-7xl mx-auto flex items-center justify-between'>
+						<Link to='/campaigns'>
+							<WustomersLogo
+								fill='#072AC8'
+								className='w-32 md:w-44'
+							/>
+						</Link>
+						<ul className='lg:flex items-center gap-1 hidden'>
+							{navs.map(nav => (
+								<li key={nav.id}>
+									<NavLink
+										to={nav.route}
+										className={({ isActive }) =>
+											`flex items-center gap-2 rounded-md px-5 py-1.5 text-sm transition-all ${
+												isActive
+													? 'bg-wustomers-blue text-white'
+													: 'hover:bg-wustomers-blue/10'
+											}`
+										}>
+										{nav.icon}
+										<span>{nav.name}</span>
+									</NavLink>
+								</li>
+							))}
+							<li>
+								<button
+									onClick={() => setOpen(true)}
+									className='flex items-center gap-2 rounded-md px-5 py-1.5 text-sm transition-all text-red-600 hover:bg-red-600/10'
+									type='button'>
+									<Logout width={16} />
+									<span>Log out</span>
+								</button>
+							</li>
+						</ul>
+
+						{/* hamburger menu */}
+						<button
+							className='lg:hidden'
+							type='button'
+							onClick={() => setIsOpen(true)}>
+							<Menu />
+						</button>
+					</div>
+				</nav>
+
+				{/* mobile menu  */}
+				<div
+					aria-hidden='true'
+					onClick={closeMenu}
+					className={`absolute inset-0 z-50 min-h-screen w-full bg-black/80 transition-all backdrop:blur-sm ${
+						isOpen ? 'block' : 'hidden'
+					}`}
+				/>
+				<div
+					className={`absolute left-0 top-0 z-50 flex h-screen w-56 flex-col bg-wustomers-blue px-2 pt-20 pb-10 text-white shadow-2xl transition lg:hidden ${
+						isOpen ? 'translate-x-0' : '-translate-x-full'
+					}`}>
+					<ul className='flex flex-col gap-4 font-bold'>
+						{navs?.map(nav => (
 							<li key={nav.id}>
 								<NavLink
 									to={nav.route}
+									onClick={closeMenu}
 									className={({ isActive }) =>
-										`flex items-center gap-2 rounded-md px-5 py-1.5 text-sm transition-all ${
+										`flex items-center gap-2 rounded-md px-5 py-2.5 text-sm transition-all ${
 											isActive
-												? 'bg-wustomers-blue text-white'
-												: 'hover:bg-wustomers-blue/10'
+												? 'bg-wustomers-blue-light text-white'
+												: ''
 										}`
 									}>
 									{nav.icon}
@@ -69,83 +128,52 @@ export const Header = () => {
 								</NavLink>
 							</li>
 						))}
+						<li>
+							<button
+								onClick={() => setOpen(true)}
+								className='flex items-center w-full gap-2 rounded-md px-5 py-1.5 text-sm transition-all'
+								type='button'>
+								<Logout width={16} />
+								<span>Log out</span>
+							</button>
+						</li>
 					</ul>
 
-					{/* hamburger menu */}
 					<button
-						className='md:hidden'
-						type='button'
-						onClick={() => setIsOpen(true)}>
-						<Menu />
+						onClick={closeMenu}
+						className='absolute top-5 right-3 z-50 rounded-md bg-wustomers-blue-light p-1 text-white'>
+						<CloseCircle />
+						<span className='sr-only'>close menu</span>
 					</button>
 				</div>
-			</nav>
+			</header>
 
-			{/* mobile menu  */}
-			<div
-				aria-hidden='true'
-				onClick={closeMenu}
-				className={`absolute inset-0 z-50 min-h-screen w-full bg-black/80 transition-all backdrop:blur-sm ${
-					isOpen ? 'block' : 'hidden'
-				}`}
-			/>
-			<div
-				className={`absolute left-0 top-0 z-50 flex h-screen w-56 flex-col bg-wustomers-blue px-2 pt-20 pb-10 text-white shadow-2xl transition lg:hidden ${
-					isOpen ? 'translate-x-0' : '-translate-x-full'
-				}`}>
-				<ul className='flex flex-col gap-4 font-bold'>
-					{navs?.map(nav => (
-						<li key={nav.id}>
-							<NavLink
-								to={nav.route}
-								onClick={closeMenu}
-								className={({ isActive }) =>
-									`flex items-center gap-2 rounded-md px-5 py-2.5 text-sm transition-all ${
-										isActive
-											? 'bg-wustomers-blue-light text-white'
-											: ''
-									}`
-								}>
-								{nav.icon}
-								<span>{nav.name}</span>
-							</NavLink>
-						</li>
-					))}
-				</ul>
+			<Modal
+				open={open}
+				setOpen={setOpen}
+				className='grid place-items-center space-y-3'>
+				<Warning />
+				<p className='text-2xl w-72 text-center'>
+					Are you sure you want to logout?
+				</p>
 
-				{/* <div className='mt-20 flex flex-col gap-4'>
-					{!token ? (
-						<>
-							<Button
-								text='Login'
-								variant='outline'
-								href='/login'
-								className='border-white py-3 text-center text-white'
-							/>
-							<Button
-								text='Sign up'
-								variant='fill'
-								href='/signup'
-								className='!bg-white py-3 text-center text-wustomers-blue hover:bg-white'
-							/>
-						</>
-					) : (
-						<Button
-							text='Dashboard'
-							variant='fill'
-							href='/overview'
-							className='!bg-white py-3 px-1 text-center text-wustomers-blue hover:bg-white'
-						/>
-					)}
-				</div> */}
-
-				<button
-					onClick={closeMenu}
-					className='absolute top-5 right-3 z-50 rounded-md bg-wustomers-blue-light p-1 text-white'>
-					<CloseCircle />
-					<span className='sr-only'>close menu</span>
-				</button>
-			</div>
-		</header>
+				<div className='flex items-center gap-2 pt-2 w-full'>
+					<button
+						type='button'
+						onClick={() => setOpen(false)}
+						disabled={logoutAdmin.isLoading}
+						className='text-wustomers-blue flex-1 hover:bg-wustomers-blue hover:text-inherit transition-colors border border-wustomers-blue py-1.5 px-4 rounded-full hover:text-white disabled:cursor-not-allowed'>
+						No, go back
+					</button>
+					<button
+						type='button'
+						disabled={logoutAdmin.isLoading}
+						onClick={() => logoutAdmin.mutate()}
+						className='text-[#EB5757] flex-1 border border-[#EB5757] hover:bg-[#EB5757] hover:text-white transition-colors py-1.5 px-4 rounded-full disabled:cursor-not-allowed'>
+						{logoutAdmin.isLoading ? <Spinner /> : 'Yes, logout'}
+					</button>
+				</div>
+			</Modal>
+		</>
 	)
 }

@@ -24,7 +24,7 @@ export const Select = ({
 			value={value === '' ? undefined : value}
 			onValueChange={onChange}>
 			<RadixSelect.Trigger
-				className={`flex h-9 w-72 items-center justify-between gap-[5px] rounded border border-wustomers-blue bg-wustomers-primary-light pl-2 pr-[15px] text-sm leading-none text-wustomers-blue data-[placeholder]:text-wustomers-blue-light/50 ${className}`}>
+				className={`flex h-9 w-72 items-center justify-between gap-[5px] rounded border border-wustomers-blue bg-wustomers-primary-light pl-2 pr-[15px] text-sm leading-none data-[placeholder]:text-wustomers-blue-light/50 ${className}`}>
 				<RadixSelect.Group className='flex items-center gap-3'>
 					{/* {icon ? <RadixSelect.Icon>{icon}</RadixSelect.Icon> : null} */}
 					<RadixSelect.Value placeholder={placeholder} />

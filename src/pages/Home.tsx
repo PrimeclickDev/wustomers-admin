@@ -1,10 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useLogin } from 'api/hooks/auth/useLogin'
 import WustomersLogo from 'assets/WustomersLogo'
 import BgDesignBottom from 'assets/icons/BgDesignBottom'
 import BgDesignTop from 'assets/icons/BgDesignTop'
+import { Spinner } from 'components/Spinner'
 import { TextInput } from 'components/TextInput'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { getAccessToken } from 'utils/storage'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -19,21 +23,37 @@ const schema = z.object({
 		.trim(),
 })
 
-type LoginFormValues = z.infer<typeof schema>
+export type LoginSchema = z.infer<typeof schema>
 
 export const Home = () => {
 	usePageTitle('Home')
-
-	const { register, handleSubmit, control } = useForm<LoginFormValues>({
+	const navigate = useNavigate()
+	const { register, handleSubmit, setError, control } = useForm<LoginSchema>({
 		defaultValues: {
 			email: '',
 			password: '',
 		},
 		resolver: zodResolver(schema),
 	})
+	const loginAdmin = useLogin()
+	const token = getAccessToken()
 
-	const onSubmit: SubmitHandler<LoginFormValues> = data => {
-		console.log('data', data)
+	const onSubmit: SubmitHandler<LoginSchema> = data => {
+		loginAdmin.mutate(data, {
+			onSuccess: () => navigate('/campaigns'),
+			onError: error => {
+				setError('email', {
+					message: error.response?.data.errors.email[0],
+				})
+				setError('password', {
+					message: error.response?.data.errors.email[0],
+				})
+			},
+		})
+	}
+
+	if (token) {
+		return <Navigate to='/campaigns' replace />
 	}
 
 	return (
@@ -75,8 +95,9 @@ export const Home = () => {
 
 						<button
 							type='submit'
+							disabled={loginAdmin.isLoading}
 							className='flex items-center justify-center px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/20 bg-wustomers-blue py-3 hover:bg-wustomers-blue/90 disabled:hover:scale-100 disabled:hover:shadow-none lg:hover:shadow-xl lg:hover:shadow-wustomers-blue/20 rounded'>
-							Log in
+							{loginAdmin.isLoading ? <Spinner /> : 'Login'}
 						</button>
 					</div>
 				</form>

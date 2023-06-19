@@ -1,4 +1,5 @@
 import { Layout } from 'components/Layout'
+import { NotFound } from 'components/NotFound'
 import { AdminAccess } from 'pages/AdminAccess'
 import { CampaignPreview } from 'pages/CampaignPreview'
 import { Campaigns } from 'pages/Campaigns'
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
 				],
 			},
 		],
+	},
+	{
+		path: '*',
+		element: <NotFound />,
 	},
 ])
 

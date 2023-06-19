@@ -32,7 +32,7 @@ instance.interceptors.response.use(
 		if (error instanceof AxiosError) {
 			if (error.response?.status === 401) {
 				removeAccessToken()
-				// window.location.pathname = '/login'
+				window.location.pathname = '/'
 			}
 
 			throw error
