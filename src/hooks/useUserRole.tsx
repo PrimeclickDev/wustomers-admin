@@ -1,9 +1,6 @@
-import { AuthData } from 'models/auth-models'
-
 export const useUserRole = () => {
-	const user: AuthData = JSON.parse(
-		localStorage.getItem('wustomers-admin') || '{}'
-	)
+	const user = JSON.parse(localStorage.getItem('wustomers-admin') || '{}')
+	const role = user?.role[0]?.name
 
-	return { user }
+	return { role }
 }

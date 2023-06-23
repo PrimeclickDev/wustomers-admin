@@ -10,10 +10,9 @@ import { Link, Navigate } from 'react-router-dom'
 export const AdminAccess = () => {
 	usePageTitle('Admin Access')
 	const [open, setOpen] = React.useState(false)
-	const { user } = useUserRole()
-	const userRole = user.user.role[0].name
+	const { role } = useUserRole()
 
-	if (userRole !== 'super-admin') return <Navigate to='/campaigns' replace />
+	if (role !== 'super-admin') return <Navigate to='/campaigns' replace />
 	return (
 		<>
 			<div className='max-w-7xl mx-auto py-5 px-3'>
