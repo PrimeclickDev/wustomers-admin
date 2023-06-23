@@ -9,7 +9,7 @@ import { setAccessToken } from 'utils/storage'
 export const login = async (
 	user: LoginSchema
 ): Promise<AxiosResponse<LoginResponse>> => {
-	return await axios.post(`${baseURL}/login`, user)
+	return await axios.post(`${baseURL}/admin/login`, user)
 }
 
 export const useLogin = () => {

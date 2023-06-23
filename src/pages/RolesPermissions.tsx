@@ -1,36 +1,14 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Modal } from 'components/Modal'
 import Plus from 'components/Plus'
 import { RolesPermissionsTable } from 'components/RolesPermissionsTable'
-import { TextInput } from 'components/TextInput'
+import { NewRoleModal } from 'components/modals/NewRoleModal'
 import { usePageTitle } from 'hooks/usePageTitle'
 import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { z } from 'zod'
-
-const schema = z.object({
-	title: z
-		.string({ required_error: 'Role title is required' })
-		.min(1, { message: 'Role title is required' })
-		.trim(),
-})
-
-type NewRoleValues = z.infer<typeof schema>
 
 export const RolesPermissions = () => {
 	usePageTitle('Roles & Permissions')
 	const [open, setOpen] = React.useState(false)
-	const { register, handleSubmit, control } = useForm<NewRoleValues>({
-		defaultValues: {
-			title: '',
-		},
-		resolver: zodResolver(schema),
-	})
-
-	const onSubmit: SubmitHandler<NewRoleValues> = data => {
-		console.log('data', data)
-	}
 
 	return (
 		<>
@@ -56,23 +34,7 @@ export const RolesPermissions = () => {
 			</div>
 
 			<Modal open={open} setOpen={setOpen}>
-				<form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-					<h4 className='font-medium text-xl'>Add new role</h4>
-
-					<TextInput
-						label='Role title'
-						control={control}
-						name='title'
-						register={register}
-						type='text'
-					/>
-
-					<button
-						type='submit'
-						className='flex w-full mt-4 items-center justify-center px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/20 bg-wustomers-blue py-3 hover:bg-wustomers-blue/90 disabled:hover:scale-100 rounded'>
-						Save
-					</button>
-				</form>
+				<NewRoleModal setOpen={setOpen} />
 			</Modal>
 		</>
 	)

@@ -1,7 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useCreateAdmin } from 'api/hooks/admin/useCreateAdmin'
+import { useFetchRoles } from 'api/hooks/roles/useFetchRoles'
 import InfoIcon from 'assets/icons/InfoIcon'
+import { AxiosError } from 'axios'
 import { Select, SelectItem } from 'components/Select'
+import { Spinner } from 'components/Spinner'
 import { TextInput } from 'components/TextInput'
+import { nanoid } from 'nanoid'
+import React from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -46,23 +52,38 @@ const schema = z
 
 type NewAdminSchema = z.infer<typeof schema>
 
-const roles = ['Super Admin', 'Admin', 'Account Manager', 'Customer Service']
+type NewAdminModalProps = {
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-export const NewAdminModal = () => {
-	const { register, handleSubmit, control } = useForm<NewAdminSchema>({
-		defaultValues: {
-			email: '',
-			password: '',
-			role: '',
-			first_name: '',
-			last_name: '',
-			phone: '',
-		},
-		resolver: zodResolver(schema),
-	})
+export const NewAdminModal = ({ setOpen }: NewAdminModalProps) => {
+	const { data: roles } = useFetchRoles()
+	const createAdmin = useCreateAdmin()
+	const { register, handleSubmit, control, setValue, setError } =
+		useForm<NewAdminSchema>({
+			defaultValues: {
+				email: '',
+				password: '',
+				role: '',
+				first_name: '',
+				last_name: '',
+				phone: '',
+			},
+			resolver: zodResolver(schema),
+		})
 
 	const onSubmit: SubmitHandler<NewAdminSchema> = data => {
-		console.log('data', data)
+		createAdmin.mutate(data, {
+			onSuccess: () => setOpen(false),
+			onError: error => {
+				if (error instanceof AxiosError) {
+					Object.entries(error.response?.data.errors).map(val =>
+						// @ts-expect-error FIXME: type object.entries
+						setError(val[0], { message: val[1][0] })
+					)
+				}
+			},
+		})
 	}
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className='self-center'>
@@ -114,18 +135,18 @@ export const NewAdminModal = () => {
 								<Select
 									placeholder='Select a role...'
 									onChange={onChange}
-									className={`w-full border-2 mt-1 rounded-md h-[49px] pl-4 ${
+									className={`w-full border-2 mt-1 rounded-md capitalize h-[49px] pl-4 ${
 										error
-											? 'border-red-600 !bg-red-50'
+											? '!border-red-600 !bg-red-50'
 											: 'border-wustomers-primary-light !bg-wustomers-primary'
 									}`}
 									value={value}>
-									{roles?.map((option, index) => (
+									{roles?.data?.map(option => (
 										<SelectItem
-											value={option.toLowerCase()}
-											key={index}
+											value={option.name}
+											key={option.id}
 											className='py-4 !capitalize'>
-											{option}
+											{option.name}
 										</SelectItem>
 									))}
 								</Select>
@@ -140,22 +161,13 @@ export const NewAdminModal = () => {
 						</div>
 					)}
 				/>
-				<div>
-					<TextInput
-						control={control}
-						name='password'
-						register={register}
-						type='password'
-						label='Password'
-					/>
-
-					<button
-						type='button'
-						className='text-wustomers-blue text-xs underline font-medium'>
-						Generate password
-					</button>
-				</div>
-
+				<TextInput
+					control={control}
+					name='password'
+					register={register}
+					type='password'
+					label='Password'
+				/>
 				<TextInput
 					control={control}
 					name='confirm_password'
@@ -166,9 +178,21 @@ export const NewAdminModal = () => {
 			</div>
 
 			<button
+				type='button'
+				onClick={() => {
+					const password = nanoid(10)
+					setValue('password', password)
+					setValue('confirm_password', password)
+				}}
+				className='text-wustomers-blue text-xs underline font-medium'>
+				Generate password
+			</button>
+
+			<button
 				type='submit'
+				disabled={createAdmin.isLoading}
 				className='flex w-full mt-4 items-center justify-center px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/20 bg-wustomers-blue py-3 hover:bg-wustomers-blue/90 disabled:hover:scale-100 rounded'>
-				Save
+				{createAdmin.isLoading ? <Spinner /> : 'Add admin'}
 			</button>
 		</form>
 	)

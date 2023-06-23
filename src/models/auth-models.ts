@@ -1,3 +1,5 @@
+import { Role } from './roles-models'
+
 export type ResponseType = {
 	success: boolean
 	message: string
@@ -18,10 +20,10 @@ export interface AuthResponse extends ResponseType {
 }
 
 export interface LoginResponse extends ResponseType {
-	data: Data
+	data: AuthData
 }
 
-export type Data = {
+export type AuthData = {
 	user: User
 	access_token: string
 }
@@ -32,6 +34,7 @@ export type User = {
 	status: Status
 	created_at: Date
 	updated_at: Date
+	role: Role[]
 }
 
 export type Status = {

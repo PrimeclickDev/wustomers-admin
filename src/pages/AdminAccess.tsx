@@ -3,13 +3,17 @@ import { Modal } from 'components/Modal'
 import Plus from 'components/Plus'
 import { NewAdminModal } from 'components/modals/NewAdminModal'
 import { usePageTitle } from 'hooks/usePageTitle'
+import { useUserRole } from 'hooks/useUserRole'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 export const AdminAccess = () => {
 	usePageTitle('Admin Access')
 	const [open, setOpen] = React.useState(false)
+	const { user } = useUserRole()
+	const userRole = user.user.role[0].name
 
+	if (userRole !== 'super-admin') return <Navigate to='/campaigns' replace />
 	return (
 		<>
 			<div className='max-w-7xl mx-auto py-5 px-3'>
@@ -34,7 +38,7 @@ export const AdminAccess = () => {
 			</div>
 
 			<Modal open={open} setOpen={setOpen}>
-				<NewAdminModal />
+				<NewAdminModal setOpen={setOpen} />
 			</Modal>
 		</>
 	)

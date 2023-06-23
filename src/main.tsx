@@ -2,6 +2,7 @@ import { QueryWrapper } from 'api/QueryWrapper.tsx'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 import App from './App.tsx'
 import './index.css'
 
