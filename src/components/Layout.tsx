@@ -13,8 +13,8 @@ export const Layout = () => {
 	return (
 		<>
 			<ScrollToTop />
-			<main className='max-w-screen-2xl mx-auto'>
-				<Header />
+			<Header />
+			<main className='max-w-screen-2xl mx-auto pb-10'>
 				<Outlet />
 			</main>
 		</>

@@ -8,16 +8,16 @@ interface PermissionsResponse extends ResponseType {
 	data: Permissions
 }
 
-export const getAllPermissions = async (): Promise<
-	AxiosResponse<PermissionsResponse>
-> => {
-	return await instance.get(`${baseURL}/admin/permissions`)
+export const getAllPermissions = async (
+	page = 1
+): Promise<AxiosResponse<PermissionsResponse>> => {
+	return await instance.get(`${baseURL}/admin/permissions?page=${page}`)
 }
 
-export const useFetchPermissions = () => {
+export const useFetchPermissions = (page: number) => {
 	return useQuery({
-		queryKey: ['permissions'],
-		queryFn: () => getAllPermissions(),
+		queryKey: ['permissions', page],
+		queryFn: () => getAllPermissions(page),
 		keepPreviousData: true,
 		onError: error => {
 			if (error instanceof AxiosError) {

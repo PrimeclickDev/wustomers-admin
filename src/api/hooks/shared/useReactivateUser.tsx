@@ -18,7 +18,7 @@ export const reactivateUser = async (
 	return await instance.patch(`${baseURL}/admin/users/${id}/reactivate`)
 }
 
-export const useDeactiveUser = () => {
+export const useReactivateUser = () => {
 	return useMutation({
 		mutationFn: (id: number) => reactivateUser(id),
 		onSuccess: ({ data }) => {

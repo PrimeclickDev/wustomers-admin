@@ -1,6 +1,9 @@
 import * as Popover from '@radix-ui/react-popover'
+import { useQueryClient } from '@tanstack/react-query'
 import { useDeleteAdmin } from 'api/hooks/admin/useDeleteAdmin'
 import { useFetchAdmins } from 'api/hooks/admin/useFetchAdmins'
+import { useDeactiveUser } from 'api/hooks/shared/useDeactiveUser'
+import { useReactivateUser } from 'api/hooks/shared/useReactivateUser'
 import ChevronRight from 'assets/icons/ChevronRight'
 import MoreElipsis from 'assets/icons/MoreElipsis'
 import { Admin } from 'models/admins-models'
@@ -10,14 +13,24 @@ import { Modal } from './Modal'
 import { Spinner } from './Spinner'
 import { EditAdminModal } from './modals/EditAdminModal'
 
-const tableHeaders = ['ID', 'Name', 'Email', 'Role', 'Actions']
+const tableHeaders = ['ID', 'Name', 'Email', 'Role', 'Status', 'Actions']
+const status = {
+	Active: 'bg-green-200 text-green-500',
+	Inactive: 'bg-red-200 text-red-500',
+}
 
 export const AdminAccessTable = () => {
 	const [open, setOpen] = React.useState(false)
+	const [openDeactivateModal, setOpenDeactivateModal] = React.useState(false)
+	const [openActivateModal, setOpenActivateModal] = React.useState(false)
 	const [isOpen, setIsOpen] = React.useState(false)
 	const [adminId, setAdminId] = React.useState<number | null>(null)
+
 	const { data: admins, isLoading } = useFetchAdmins()
 	const deleteAdmin = useDeleteAdmin()
+	const deactivateAdmin = useDeactiveUser()
+	const reactivateAdmin = useReactivateUser()
+	const queryClient = useQueryClient()
 
 	return (
 		<>
@@ -27,7 +40,8 @@ export const AdminAccessTable = () => {
 
 					<div className='text-sm text-wustomers-gray flex items-center gap-4'>
 						<p>
-							{admins?.from} - {admins?.to} of {admins?.total}
+							{admins?.from} - {admins?.to} of {admins?.last_page}{' '}
+							page(s)
 						</p>
 						<div className='flex items-center gap-2'>
 							<button
@@ -88,6 +102,17 @@ export const AdminAccessTable = () => {
 											) : null}
 										</td>
 										<td className='px-2 py-4'>
+											<span
+												className={`py-1 px-3 uppercase tracking-wide text-xs font-medium rounded-md ${
+													status[
+														admin.status
+															.name as keyof typeof status
+													]
+												}`}>
+												{admin.status.name}
+											</span>
+										</td>
+										<td className='px-2 py-4'>
 											<Popover.Root>
 												<Popover.Trigger asChild>
 													<button
@@ -104,6 +129,11 @@ export const AdminAccessTable = () => {
 														<div className='flex flex-col gap-1 text-xs'>
 															<button
 																type='button'
+																disabled={
+																	admin.status
+																		.name ===
+																	'Inactive'
+																}
 																onClick={() => {
 																	setIsOpen(
 																		true
@@ -112,41 +142,66 @@ export const AdminAccessTable = () => {
 																		admin.id
 																	)
 																}}
-																className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors'>
+																className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300'>
 																Edit admin
 															</button>
-															{/* <button
-																type='button'
-																disabled={
+
+															{admin.status
+																.name !==
+															'Inactive' ? (
+																<button
+																	type='button'
+																	disabled={
+																		admin
+																			.roles[0]
+																			?.name ===
+																		'super-admin'
+																	}
+																	onClick={() => {
+																		setOpenDeactivateModal(
+																			true
+																		)
+																		setAdminId(
+																			admin.id
+																		)
+																	}}
+																	className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
+																	Deactivate
 																	admin
-																		.roles[0]
-																		?.name ===
-																	'super-admin'
-																}
-																onClick={() => {
-																	setOpen(
-																		true
-																	)
-																	setAdminId(
-																		admin.id
-																	)
-																}}
-																className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
-																Deactivate admin
-															</button> */}
-															<button
-																type='button'
-																onClick={() => {
-																	setOpen(
-																		true
-																	)
-																	setAdminId(
-																		admin.id
-																	)
-																}}
-																className='py-1.5 px-3 rounded hover:bg-red-600 text-left hover:text-white transition-colors'>
-																Delete admin
-															</button>
+																</button>
+															) : (
+																<button
+																	type='button'
+																	onClick={() => {
+																		setOpenActivateModal(
+																			true
+																		)
+																		setAdminId(
+																			admin.id
+																		)
+																	}}
+																	className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
+																	Reactivate
+																	admin
+																</button>
+															)}
+															{admin.roles[0]
+																?.name !==
+															'super-admin' ? (
+																<button
+																	type='button'
+																	onClick={() => {
+																		setOpen(
+																			true
+																		)
+																		setAdminId(
+																			admin.id
+																		)
+																	}}
+																	className='py-1.5 px-3 rounded hover:bg-red-600 text-left hover:text-white transition-colors'>
+																	Delete admin
+																</button>
+															) : null}
 														</div>
 														<Popover.Arrow className='fill-white' />
 													</Popover.Content>
@@ -182,18 +237,37 @@ export const AdminAccessTable = () => {
 				}
 			/>
 
-			{/* <ConfirmationModal
+			<ConfirmationModal
 				confirmBtnTxt='Deactivate admin'
-				open={open}
-				setOpen={setOpen}
-				isLoading={deactivateAdimin.isLoading}
+				open={openDeactivateModal}
+				setOpen={setOpenDeactivateModal}
+				isLoading={deactivateAdmin.isLoading}
 				title='Are you sure you want to deactivate this admin?'
 				onConfirm={() =>
-					deactivateAdimin.mutate(adminId as number, {
-						onSuccess: () => setOpen(false),
+					deactivateAdmin.mutate(adminId as number, {
+						onSuccess: () => {
+							setOpenDeactivateModal(false)
+							queryClient.invalidateQueries(['admins'])
+						},
 					})
 				}
-			/> */}
+			/>
+
+			<ConfirmationModal
+				confirmBtnTxt='Reactivate admin'
+				open={openActivateModal}
+				setOpen={setOpenActivateModal}
+				isLoading={reactivateAdmin.isLoading}
+				title='Are you sure you want to reactivate this admin?'
+				onConfirm={() =>
+					reactivateAdmin.mutate(adminId as number, {
+						onSuccess: () => {
+							setOpenActivateModal(false)
+							queryClient.invalidateQueries(['admins'])
+						},
+					})
+				}
+			/>
 
 			<Modal open={isOpen} setOpen={setIsOpen}>
 				<EditAdminModal

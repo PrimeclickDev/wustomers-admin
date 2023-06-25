@@ -1,9 +1,11 @@
 import { useLogout } from 'api/hooks/auth/useLogout'
 import WustomersLogo from 'assets/WustomersLogo'
+import Bell from 'assets/icons/Bell'
 import ChartCirlce from 'assets/icons/ChartCircle'
 import CloseCircle from 'assets/icons/CloseCircle'
 import Logout from 'assets/icons/Logout'
 import Menu from 'assets/icons/Menu'
+import Profile from 'assets/icons/Profile'
 import Screen from 'assets/icons/Screen'
 import Users from 'assets/icons/Users'
 import WalletTwo from 'assets/icons/WalletTwo'
@@ -51,22 +53,39 @@ export const Header = () => {
 
 	return (
 		<>
-			<header className='px-4 bg-wustomers-primary-light'>
-				<nav className='md:py-1 border-t border-t-wustomers-dark-gray'>
-					<div className='max-w-7xl mx-auto flex items-center justify-between'>
-						<Link to='/campaigns'>
-							<WustomersLogo
-								fill='#072AC8'
-								className='w-32 md:w-44'
-							/>
-						</Link>
-						<ul className='lg:flex items-center gap-1 hidden'>
+			<header className='px-3 lg:px-0 bg-wustomers-primary-light'>
+				<nav>
+					<div className='flex lg:flex-col items-center justify-between'>
+						<div className='max-w-7xl mx-auto flex items-center justify-between gap-2 w-full px-3'>
+							<Link to='/campaigns'>
+								<WustomersLogo
+									fill='#072AC8'
+									className='w-32 md:w-40'
+								/>
+							</Link>
+
+							<div className='lg:flex items-center gap-4 hidden'>
+								<button
+									type='button'
+									aria-label='notification'
+									className='w-10 h-10 rounded-full grid place-items-center bg-white'>
+									<Bell />
+								</button>
+								<button
+									type='button'
+									aria-label='notification'
+									className='w-10 h-10 rounded-full grid place-items-center bg-white'>
+									<Profile />
+								</button>
+							</div>
+						</div>
+						<ul className='lg:flex items-center justify-center gap-10 hidden py-2 border-t border-t-[#B3B3B3] w-full'>
 							{navs.map(nav => (
 								<li key={nav.id}>
 									<NavLink
 										to={nav.route}
 										className={({ isActive }) =>
-											`flex items-center gap-2 rounded-md px-5 py-1.5 text-sm transition-all ${
+											`flex items-center gap-2 rounded-md px-10 py-1.5 text-sm transition-all ${
 												isActive
 													? 'bg-wustomers-blue text-white'
 													: 'hover:bg-wustomers-blue/10'
@@ -80,9 +99,9 @@ export const Header = () => {
 							<li>
 								<button
 									onClick={() => setOpen(true)}
-									className='flex items-center gap-2 rounded-md px-5 py-1.5 text-sm transition-all text-red-600 hover:bg-red-600/10'
+									className='flex items-center gap-2 rounded-md px-5 py-1.5 text-sm transition-all text-[#DC5F5F] hover:bg-red-600/10'
 									type='button'>
-									<Logout width={16} />
+									<Logout width={18} />
 									<span>Log out</span>
 								</button>
 							</li>

@@ -24,9 +24,13 @@ export interface Role {
 }
 
 export interface Permissions {
-	permissions: {
-		data: Permission[]
-	}
+	permissions: PermissionData
+}
+
+export interface PermissionData {
+	data: Permission[]
+	links: Links
+	meta: Meta
 }
 
 export interface Permission {

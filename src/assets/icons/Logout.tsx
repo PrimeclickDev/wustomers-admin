@@ -2,18 +2,14 @@ import { SVGProps } from 'react'
 const Logout = (props: SVGProps<SVGSVGElement>) => (
 	<svg
 		xmlns='http://www.w3.org/2000/svg'
-		width={24}
-		height={24}
-		viewBox='0 0 24 24'
+		width={25}
+		height={25}
+		viewBox='0 0 25 25'
 		fill='none'
 		{...props}>
-		<path
-			stroke='currentColor'
-			strokeLinecap='round'
-			strokeLinejoin='round'
-			strokeWidth={1.5}
-			d='M8.9 7.56c.31-3.6 2.16-5.07 6.21-5.07h.13c4.47 0 6.26 1.79 6.26 6.26v6.52c0 4.47-1.79 6.26-6.26 6.26h-.13c-4.02 0-5.87-1.45-6.2-4.99M15 12H3.62M5.85 8.65 2.5 12l3.35 3.35'
-		/>
+		<g fill='currentColor'>
+			<path d='M17.3 2.5h-2.6c-3.2 0-5.2 2-5.2 5.2v4.05h6.25c.41 0 .75.34.75.75s-.34.75-.75.75H9.5v4.05c0 3.2 2 5.2 5.2 5.2h2.59c3.2 0 5.2-2 5.2-5.2V7.7c.01-3.2-1.99-5.2-5.19-5.2ZM5.06 11.75l2.07-2.07c.15-.15.22-.34.22-.53s-.07-.39-.22-.53a.754.754 0 0 0-1.06 0l-3.35 3.35c-.29.29-.29.77 0 1.06l3.35 3.35c.29.29.77.29 1.06 0 .29-.29.29-.77 0-1.06l-2.07-2.07H9.5v-1.5H5.06Z' />
+		</g>
 	</svg>
 )
 export default Logout
