@@ -33,7 +33,7 @@ export const Pagination = ({
 					type='button'
 					disabled={hasPrevPage}
 					onClick={() => setPage(page - 1)}
-					className='bg-white rounded py-1 px-3 flex items-center gap-2 border border-gray-200 disabled:cursor-not-allowed disabled:opacity-50'>
+					className='bg-white rounded py-1 px-3 flex items-center gap-2 border border-gray-200 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-100 disabled:hover:bg-white transition-all'>
 					<ChevronRight className='rotate-180' />
 					<span>Prev</span>
 				</button>
@@ -41,7 +41,7 @@ export const Pagination = ({
 					type='button'
 					disabled={isPreviousData || hasNextPage}
 					onClick={() => setPage(page + 1)}
-					className='bg-white rounded py-1 px-3 flex items-center gap-2 border border-gray-200 disabled:cursor-not-allowed disabled:opacity-50'>
+					className='bg-white rounded py-1 px-3 flex items-center gap-2 border border-gray-200 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-gray-100 disabled:hover:bg-white transition-all'>
 					<span>Next</span>
 					<ChevronRight />
 				</button>

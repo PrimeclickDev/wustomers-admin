@@ -30,7 +30,7 @@ export const Select = ({
 					<RadixSelect.Value placeholder={placeholder} />
 				</RadixSelect.Group>
 				<RadixSelect.Icon>
-					<ChevronRight className='rotate-90' />
+					<ChevronRight className='rotate-90 ml-2' />
 				</RadixSelect.Icon>
 			</RadixSelect.Trigger>
 			<RadixSelect.Portal>

@@ -5,12 +5,12 @@ import ChartCirlce from 'assets/icons/ChartCircle'
 import CloseCircle from 'assets/icons/CloseCircle'
 import Logout from 'assets/icons/Logout'
 import Menu from 'assets/icons/Menu'
-import Profile from 'assets/icons/Profile'
 import Screen from 'assets/icons/Screen'
 import Users from 'assets/icons/Users'
 import WalletTwo from 'assets/icons/WalletTwo'
 import Warning from 'assets/icons/Warning'
 import { useScrollLock } from 'hooks/useScrollLock'
+import { useUserRole } from 'hooks/useUserRole'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Modal } from './Modal'
@@ -46,10 +46,25 @@ const navs = [
 export const Header = () => {
 	const [isOpen, setIsOpen] = React.useState(false)
 	const [open, setOpen] = React.useState(false)
+	const [menu, setMenu] = React.useState(navs)
+
 	useScrollLock({ isOpen })
+	const { role } = useUserRole()
 
 	const logoutAdmin = useLogout()
 	const closeMenu = () => setIsOpen(false)
+
+	React.useEffect(() => {
+		if (role !== 'super-admin') {
+			const adminNavs = navs.filter(
+				nav => nav.route !== '/admin-access' && nav.route !== '/finance'
+			)
+			setMenu(adminNavs)
+		} else if (role === 'admin') {
+			const adminNavs = navs.filter(nav => nav.route !== '/admin-access')
+			setMenu(adminNavs)
+		}
+	}, [role])
 
 	return (
 		<>
@@ -64,23 +79,15 @@ export const Header = () => {
 								/>
 							</Link>
 
-							<div className='lg:flex items-center gap-4 hidden'>
 								<button
 									type='button'
 									aria-label='notification'
-									className='w-10 h-10 rounded-full grid place-items-center bg-white'>
+									className='w-10 h-10 rounded-full lg:place-items-center bg-white lg:grid hidden'>
 									<Bell />
 								</button>
-								<button
-									type='button'
-									aria-label='notification'
-									className='w-10 h-10 rounded-full grid place-items-center bg-white'>
-									<Profile />
-								</button>
-							</div>
 						</div>
 						<ul className='lg:flex items-center justify-center gap-10 hidden py-2 border-t border-t-[#B3B3B3] w-full'>
-							{navs.map(nav => (
+							{menu.map(nav => (
 								<li key={nav.id}>
 									<NavLink
 										to={nav.route}

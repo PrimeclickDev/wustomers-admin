@@ -41,7 +41,10 @@ export const NewClientModal = () => {
 		console.log('data', data)
 	}
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			autoComplete='false'
+			autoSave='false'>
 			<div className='pt-3 pb-5 border-b border-[#D5D5D5]'>
 				<p className='font-medium'>Welcome Tounfunmi,</p>
 				<h3 className='font-black text-2xl'>
@@ -83,8 +86,8 @@ export const NewClientModal = () => {
 
 				<button
 					type='submit'
-					className='flex w-full mt-4 items-center justify-center px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/20 bg-wustomers-blue py-3 hover:bg-wustomers-blue/90 disabled:hover:scale-100 rounded'>
-					Create account
+					className='flex w-full mt-6 items-center justify-center px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/20 bg-wustomers-blue py-3 hover:bg-wustomers-blue/90 disabled:hover:scale-100 rounded'>
+					Create client account
 				</button>
 			</div>
 		</form>

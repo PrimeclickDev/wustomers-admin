@@ -76,7 +76,7 @@ export const AdminAccessTable = () => {
 						<tbody>
 							{isLoading ? (
 								<tr>
-									<td colSpan={5} className='py-2'>
+									<td colSpan={6} className='py-2'>
 										<Spinner />
 									</td>
 								</tr>

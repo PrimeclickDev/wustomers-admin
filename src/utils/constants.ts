@@ -61,3 +61,11 @@ export const posts = [
 		permalink: 'https://github.com/',
 	},
 ]
+
+export const filters = [
+	'Today',
+	'Last week',
+	'Next week',
+	'Last month',
+	'Next month',
+]

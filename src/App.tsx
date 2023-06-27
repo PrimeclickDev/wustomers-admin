@@ -1,5 +1,6 @@
 import { Layout } from 'components/Layout'
 import { NotFound } from 'components/NotFound'
+import { useUserRole } from 'hooks/useUserRole'
 import { AdminAccess } from 'pages/AdminAccess'
 import { CampaignPreview } from 'pages/CampaignPreview'
 import { Campaigns } from 'pages/Campaigns'
@@ -8,64 +9,40 @@ import { Home } from 'pages/Home'
 import { RolesPermissions } from 'pages/RolesPermissions'
 import { User } from 'pages/User'
 import { Users } from 'pages/Users'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-
-const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <Home />,
-	},
-	{
-		element: <Layout />,
-		children: [
-			{
-				path: 'campaigns',
-				children: [
-					{
-						index: true,
-						element: <Campaigns />,
-					},
-					{
-						path: ':id',
-						element: <CampaignPreview />,
-					},
-				],
-			},
-			{
-				path: 'users',
-				element: <Users />,
-			},
-			{
-				path: 'user/:id',
-				element: <User />,
-			},
-			{
-				path: 'finance',
-				element: <Finance />,
-			},
-			{
-				path: 'admin-access',
-				children: [
-					{
-						index: true,
-						element: <AdminAccess />,
-					},
-					{
-						path: 'roles-permissions',
-						element: <RolesPermissions />,
-					},
-				],
-			},
-		],
-	},
-	{
-		path: '*',
-		element: <NotFound />,
-	},
-])
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
-	return <RouterProvider router={router} />
+	const { role } = useUserRole()
+
+	return (
+		<Routes>
+			<Route path='/' element={<Home />} />
+
+			<Route element={<Layout />}>
+				<Route path='campaigns'>
+					<Route index element={<Campaigns />} />
+					<Route path=':id' element={<CampaignPreview />} />
+				</Route>
+				<Route path='users'>
+					<Route index element={<Users />} />
+					<Route path=':id' element={<User />} />
+				</Route>
+				{role === 'super-admin' ? (
+					<Route path='finance' element={<Finance />} />
+				) : null}
+				{role === 'super-admin' ? (
+					<Route path='admin-access'>
+						<Route index element={<AdminAccess />} />
+						<Route
+							path='roles-permissions'
+							element={<RolesPermissions />}
+						/>
+					</Route>
+				) : null}
+			</Route>
+			<Route path='*' element={<NotFound />} />
+		</Routes>
+	)
 }
 
 export default App

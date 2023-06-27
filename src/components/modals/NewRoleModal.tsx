@@ -26,7 +26,7 @@ const schema = z.object({
 type NewRoleValues = z.infer<typeof schema>
 
 export const NewRoleModal = ({ setOpen }: NewRoleModalProps) => {
-	const { data: permissions, isLoading } = useFetchPermissions()
+	const { data: permissions, isLoading } = useFetchPermissions(1)
 	const createRole = useCreateRole()
 
 	const {

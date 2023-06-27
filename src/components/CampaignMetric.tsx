@@ -4,23 +4,23 @@ import Screen from 'assets/icons/Screen'
 
 export const CampaignMetric = () => {
 	return (
-		<ul className='md:grid md:grid-cols-2 flex flex-col gap-4 col-span-2 text-white'>
-			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-blue rounded-lg py-8 px-6'>
+		<ul className='md:grid md:grid-cols-2 flex flex-col gap-6 col-span-2'>
+			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-primary rounded-lg py-8 px-6 shadow-[0px_3px_8px_3px_rgba(7,42,200,0.40)]'>
 				<Screen />
 				<h4 className='text-base font-medium'>Total Campaign</h4>
 				<p className='text-4xl font-bold'>3000</p>
 			</li>
-			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-blue rounded-lg py-8 px-6'>
+			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-primary rounded-lg py-8 px-6 shadow-[0px_3px_8px_3px_rgba(7,42,200,0.40)]'>
 				<Screen />
 				<h4 className='text-base font-medium'>New Campaign</h4>
 				<p className='text-4xl font-bold'>3000</p>
 			</li>
-			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-blue rounded-lg py-8 px-6'>
+			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-primary rounded-lg py-8 px-6 shadow-[0px_3px_8px_3px_rgba(7,42,200,0.40)]'>
 				<PlayCircle />
 				<h4 className='text-base font-medium'>Live Campaign</h4>
 				<p className='text-4xl font-bold'>3000</p>
 			</li>
-			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-blue rounded-lg py-8 px-6'>
+			<li className='flex flex-col gap-1 w-full items-center justify-center bg-wustomers-primary rounded-lg py-8 px-6 shadow-[0px_3px_8px_3px_rgba(7,42,200,0.40)]'>
 				<PauseCircle />
 				<h4 className='text-base font-medium'>Ended Campaign</h4>
 				<p className='text-4xl font-bold'>3000</p>
