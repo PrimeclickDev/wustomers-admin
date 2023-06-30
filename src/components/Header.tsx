@@ -79,14 +79,14 @@ export const Header = () => {
 								/>
 							</Link>
 
-								<button
-									type='button'
-									aria-label='notification'
-									className='w-10 h-10 rounded-full lg:place-items-center bg-white lg:grid hidden'>
-									<Bell />
-								</button>
+							<button
+								type='button'
+								aria-label='notification'
+								className='w-10 h-10 rounded-full lg:place-items-center bg-white lg:grid hidden'>
+								<Bell />
+							</button>
 						</div>
-						<ul className='lg:flex items-center justify-center gap-10 hidden py-2 border-t border-t-[#B3B3B3] w-full'>
+						<ul className='lg:flex items-center justify-center gap-10 hidden py-2 border-t border-t-gray-300 w-full'>
 							{menu.map(nav => (
 								<li key={nav.id}>
 									<NavLink

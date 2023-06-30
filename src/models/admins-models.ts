@@ -1,10 +1,8 @@
-import { Status } from './auth-models'
+import { ResponseType, Status } from './auth-models'
 import { Link, Permission, Pivot } from './roles-models'
 
-export interface Admins {
-	success: boolean
+export interface Admins extends ResponseType {
 	data: Data
-	message: string
 }
 
 export interface Data {

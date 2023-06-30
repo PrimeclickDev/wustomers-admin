@@ -13,14 +13,14 @@ interface Data {
 }
 
 export const reactivateUser = async (
-	id: number
+	id: string
 ): Promise<AxiosResponse<Response>> => {
 	return await instance.patch(`${baseURL}/admin/users/${id}/reactivate`)
 }
 
 export const useReactivateUser = () => {
 	return useMutation({
-		mutationFn: (id: number) => reactivateUser(id),
+		mutationFn: (id: string) => reactivateUser(id),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
 		},

@@ -10,6 +10,7 @@ type PaginationProps = {
 	isPreviousData: boolean
 	setPage: React.Dispatch<React.SetStateAction<number>>
 	page: number
+	className?: string
 }
 
 export const Pagination = ({
@@ -21,9 +22,11 @@ export const Pagination = ({
 	isPreviousData,
 	setPage,
 	page,
+	className,
 }: PaginationProps) => {
 	return (
-		<div className='flex items-center gap-4 text-xs justify-end pt-10 text-wustomers-gray'>
+		<div
+			className={`flex flex-wrap items-center gap-4 text-xs justify-end text-wustomers-gray ${className}`}>
 			<p>
 				{from} - {to} of {lastPage} page(s)
 			</p>

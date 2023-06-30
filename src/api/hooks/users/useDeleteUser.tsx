@@ -3,18 +3,18 @@ import { baseURL, instance } from 'api/requests'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 
-export const deleteAdmin = async (id: string) => {
-	return await instance.delete(`${baseURL}/admin/${id}/delete`)
+const deleteUser = async (id: number) => {
+	return await instance.delete(`${baseURL}/admin/users/${id}/delete`)
 }
 
-export const useDeleteAdmin = () => {
+export const useDeleteUser = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: (id: string) => deleteAdmin(id),
+		mutationFn: (id: number) => deleteUser(id),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['admins'])
+			queryClient.invalidateQueries({ queryKey: ['users', 1] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

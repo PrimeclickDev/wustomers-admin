@@ -10,12 +10,12 @@ export interface Data {
 }
 
 export interface UserMetrics {
-	data: Daum[]
+	data: User[]
 	links: Links
 	meta: Meta
 }
 
-export interface Daum {
+export interface User {
 	id: number
 	wustomer_id: string
 	last_name?: string
@@ -110,8 +110,8 @@ export interface Transaction {
 	status_id: number
 	reference: string
 	amount: number
-	created_at: string
-	updated_at: string
+	created_at: Date
+	updated_at: Date
 	deleted_at: string
 	service_charge?: number
 	vat?: number

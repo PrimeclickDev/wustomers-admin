@@ -4,12 +4,13 @@ import { useDeleteAdmin } from 'api/hooks/admin/useDeleteAdmin'
 import { useFetchAdmins } from 'api/hooks/admin/useFetchAdmins'
 import { useDeactiveUser } from 'api/hooks/shared/useDeactiveUser'
 import { useReactivateUser } from 'api/hooks/shared/useReactivateUser'
-import ChevronRight from 'assets/icons/ChevronRight'
 import MoreElipsis from 'assets/icons/MoreElipsis'
 import { Admin } from 'models/admins-models'
 import React from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { ConfirmationModal } from './ConfirmationModal'
 import { Modal } from './Modal'
+import { Pagination } from './Pagination'
 import { Spinner } from './Spinner'
 import { EditAdminModal } from './modals/EditAdminModal'
 
@@ -24,38 +25,32 @@ export const AdminAccessTable = () => {
 	const [openDeactivateModal, setOpenDeactivateModal] = React.useState(false)
 	const [openActivateModal, setOpenActivateModal] = React.useState(false)
 	const [isOpen, setIsOpen] = React.useState(false)
-	const [adminId, setAdminId] = React.useState<number | null>(null)
+	const [page, setPage] = React.useState(1)
 
-	const { data: admins, isLoading } = useFetchAdmins()
+	const [searchParams, setSearchParams] = useSearchParams()
+
+	const queryClient = useQueryClient()
+	const { data: admins, isLoading, isPreviousData } = useFetchAdmins()
 	const deleteAdmin = useDeleteAdmin()
 	const deactivateAdmin = useDeactiveUser()
 	const reactivateAdmin = useReactivateUser()
-	const queryClient = useQueryClient()
 
 	return (
 		<>
 			<div className='mt-10 bg-white border border-gray-200 py-4 px-6 rounded-md'>
-				<header className='flex items-center justify-between gap-2'>
+				<header className='flex flex-col md:flex-row items-center justify-between gap-2'>
 					<h3 className='font-semibold text-lg'>Admin list</h3>
 
-					<div className='text-sm text-wustomers-gray flex items-center gap-4'>
-						<p>
-							{admins?.from} - {admins?.to} of {admins?.last_page}{' '}
-							page(s)
-						</p>
-						<div className='flex items-center gap-2'>
-							<button
-								type='button'
-								className='bg-white rounded w-6 h-6 grid place-items-center border border-gray-200'>
-								<ChevronRight className='rotate-180' />
-							</button>
-							<button
-								type='button'
-								className='bg-white rounded w-6 h-6 grid place-items-center border border-gray-200'>
-								<ChevronRight />
-							</button>
-						</div>
-					</div>
+					<Pagination
+						from={admins?.from}
+						to={admins?.to}
+						lastPage={admins?.last_page}
+						hasPrevPage={!admins?.prev_page_url}
+						hasNextPage={!admins?.next_page_url}
+						isPreviousData={isPreviousData}
+						page={page}
+						setPage={setPage}
+					/>
 				</header>
 
 				<div className='overflow-auto'>
@@ -138,8 +133,11 @@ export const AdminAccessTable = () => {
 																	setIsOpen(
 																		true
 																	)
-																	setAdminId(
-																		admin.id
+																	setSearchParams(
+																		{
+																			adminId:
+																				admin.id.toString(),
+																		}
 																	)
 																}}
 																className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300'>
@@ -149,26 +147,27 @@ export const AdminAccessTable = () => {
 															{admin.status
 																.name !==
 															'Inactive' ? (
-																<button
-																	type='button'
-																	disabled={
+																admin.roles[0]
+																	.name !==
+																	'super-admin' && (
+																	<button
+																		type='button'
+																		onClick={() => {
+																			setOpenDeactivateModal(
+																				true
+																			)
+																			setSearchParams(
+																				{
+																					adminId:
+																						admin.id.toString(),
+																				}
+																			)
+																		}}
+																		className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors'>
+																		Deactivate
 																		admin
-																			.roles[0]
-																			?.name ===
-																		'super-admin'
-																	}
-																	onClick={() => {
-																		setOpenDeactivateModal(
-																			true
-																		)
-																		setAdminId(
-																			admin.id
-																		)
-																	}}
-																	className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
-																	Deactivate
-																	admin
-																</button>
+																	</button>
+																)
 															) : (
 																<button
 																	type='button'
@@ -176,8 +175,11 @@ export const AdminAccessTable = () => {
 																		setOpenActivateModal(
 																			true
 																		)
-																		setAdminId(
-																			admin.id
+																		setSearchParams(
+																			{
+																				adminId:
+																					admin.id.toString(),
+																			}
 																		)
 																	}}
 																	className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
@@ -194,8 +196,11 @@ export const AdminAccessTable = () => {
 																		setOpen(
 																			true
 																		)
-																		setAdminId(
-																			admin.id
+																		setSearchParams(
+																			{
+																				adminId:
+																					admin.id.toString(),
+																			}
 																		)
 																	}}
 																	className='py-1.5 px-3 rounded hover:bg-red-600 text-left hover:text-white transition-colors'>
@@ -231,7 +236,7 @@ export const AdminAccessTable = () => {
 				isLoading={deleteAdmin.isLoading}
 				title='Are you sure you want to delete this admin?'
 				onConfirm={() =>
-					deleteAdmin.mutate(adminId as number, {
+					deleteAdmin.mutate(searchParams.get('adminId') as string, {
 						onSuccess: () => setOpen(false),
 					})
 				}
@@ -244,12 +249,15 @@ export const AdminAccessTable = () => {
 				isLoading={deactivateAdmin.isLoading}
 				title='Are you sure you want to deactivate this admin?'
 				onConfirm={() =>
-					deactivateAdmin.mutate(adminId as number, {
-						onSuccess: () => {
-							setOpenDeactivateModal(false)
-							queryClient.invalidateQueries(['admins'])
-						},
-					})
+					deactivateAdmin.mutate(
+						searchParams.get('adminId') as string,
+						{
+							onSuccess: () => {
+								setOpenDeactivateModal(false)
+								queryClient.invalidateQueries(['admins'])
+							},
+						}
+					)
 				}
 			/>
 
@@ -260,12 +268,15 @@ export const AdminAccessTable = () => {
 				isLoading={reactivateAdmin.isLoading}
 				title='Are you sure you want to reactivate this admin?'
 				onConfirm={() =>
-					reactivateAdmin.mutate(adminId as number, {
-						onSuccess: () => {
-							setOpenActivateModal(false)
-							queryClient.invalidateQueries(['admins'])
-						},
-					})
+					reactivateAdmin.mutate(
+						searchParams.get('adminId') as string,
+						{
+							onSuccess: () => {
+								setOpenActivateModal(false)
+								queryClient.invalidateQueries(['admins'])
+							},
+						}
+					)
 				}
 			/>
 
@@ -273,7 +284,9 @@ export const AdminAccessTable = () => {
 				<EditAdminModal
 					admin={
 						admins?.data.find(
-							admin => admin.id === adminId
+							admin =>
+								admin.id.toString() ===
+								(searchParams.get('adminId') as string)
 						) as Admin
 					}
 					setIsOpen={setIsOpen}

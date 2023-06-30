@@ -180,11 +180,11 @@ export const NewAdminModal = ({ setOpen }: NewAdminModalProps) => {
 			<button
 				type='button'
 				onClick={() => {
-					const password = nanoid(10)
+					const password = nanoid()
 					setValue('password', password)
 					setValue('confirm_password', password)
 				}}
-				className='text-wustomers-blue text-xs underline font-medium'>
+				className='text-wustomers-blue text-xs underline font-medium hover:opacity-90 transition-opacity active:scale-[0.98]'>
 				Generate password
 			</button>
 

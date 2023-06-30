@@ -1,16 +1,26 @@
 import * as Popover from '@radix-ui/react-popover'
+import { useFetchCampaign } from 'api/hooks/campaigns/useFetchCampaign'
 import ArrowDown from 'assets/icons/ArrowDown'
 import Copy from 'assets/icons/Copy'
 import Desktop from 'assets/icons/Desktop'
 import Mobile from 'assets/icons/Mobile'
 import { BackBtn } from 'components/BackBtn'
 import { Preview } from 'components/Preview'
+import { Spinner } from 'components/Spinner'
 import React from 'react'
+import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { copyToClipboard } from 'utils/copyToClipboard'
 
 const status = ['Live', 'Ended', 'Pending']
 
 export const CampaignPreview = () => {
 	const [view, setView] = React.useState<'desktop' | 'mobile'>('desktop')
+	const params = useParams()
+	console.log('params', params)
+	const { data: campaign, isLoading } = useFetchCampaign(
+		params.campaignId as string
+	)
 
 	return (
 		<div className='max-w-7xl mx-auto py-10'>
@@ -55,18 +65,23 @@ export const CampaignPreview = () => {
 								</Popover.Root>
 							</div>
 
-							<button className='text-xs flex items-center gap-1 bg-[rgba(81,106,217,0.8)] py-1 px-4 rounded-full text-white'>
+							<button
+								disabled={!campaign}
+								onClick={() =>
+									copyToClipboard(
+										`https://wustomers.netlify.app/campaign/${campaign?.campaign_code.toLowerCase()}`
+									).then(() =>
+										toast.success('URL copied to clipboard')
+									)
+								}
+								type='button'
+								className='text-xs flex items-center gap-1 bg-[rgba(81,106,217,0.8)] py-1 px-4 rounded-full text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed'>
 								<Copy />
 								<span>Copy url</span>
 							</button>
 						</div>
 					</div>
 					<div className='hidden md:flex items-center'>
-						{/* <a
-						href='#'
-						className='text-wustomers-blue text-xs underline'>
-						Visit page
-					</a> */}
 						<button
 							className={`p-2 transition-all ${
 								view === 'desktop'
@@ -92,7 +107,7 @@ export const CampaignPreview = () => {
 					className={`p-3 mx-auto transition-all ${
 						view === 'desktop' ? 'w-full' : 'md:w-[360px] w-full'
 					}`}>
-					<Preview />
+					{isLoading ? <Spinner /> : <Preview campaign={campaign} />}
 				</div>
 			</section>
 		</div>

@@ -17,7 +17,7 @@ export const Campaigns = () => {
 	return (
 		<>
 			<div className='max-w-7xl mx-auto py-12 px-3 rounded p-1'>
-				<header className='flex items-center justify-between gap-2'>
+				<header className='flex flex-col md:flex-row items-center justify-between gap-2'>
 					<div>
 						<h2 className='text-lg font-medium'>
 							Welcome, Toluwatounfunmi
@@ -66,7 +66,7 @@ export const Campaigns = () => {
 			</div>
 
 			<Modal open={open} setOpen={setOpen}>
-				<NewClientModal />
+				<NewClientModal setOpen={setOpen} />
 			</Modal>
 		</>
 	)

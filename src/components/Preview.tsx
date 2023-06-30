@@ -1,22 +1,32 @@
-import { posts } from 'utils/constants'
+import { Campaign } from 'models/campaign-models'
 
-export const Preview = () => {
+type PreviewProps = {
+	campaign: Campaign | undefined
+}
+
+export const Preview = ({ campaign }: PreviewProps) => {
 	return (
 		<div className='font-figtree'>
 			<header className='w-full'>
 				<div
-					className='relative z-20 h-[630px] bg-black bg-cover bg-center py-4 after:absolute after:top-0 after:left-0 after:z-10 after:h-full after:w-full after:bg-black/60'
+					className='relative h-[630px] bg-black bg-cover bg-center py-4 after:absolute after:top-0 after:left-0 after:z-10 after:h-full after:w-full after:bg-black/60'
 					style={{
-						backgroundImage: `url("https://images.pexels.com/photos/16783095/pexels-photo-16783095/free-photo-of-light-city-street-dark.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")`,
+						backgroundImage: `url(${campaign?.background_image})`,
 					}}>
 					{/* header */}
 					<section className='px-4'>
 						<div
-							className={`campaign-website-container relative z-50 flex items-center justify-center rounded-md bg-white shadow-2xl`}>
+							className={`campaign-website-container relative z-50 flex py-2 items-center ${
+								campaign?.logo_position === 'left'
+									? 'justify-start'
+									: campaign?.logo_position === 'right'
+									? 'justify-end'
+									: 'justify-center'
+							} rounded-md bg-white shadow-2xl`}>
 							<img
-								src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/768px-Instagram_logo_2022.svg.png'
-								alt=''
-								width='60'
+								src={campaign?.product_logo}
+								alt={`${campaign?.title} logo`}
+								width='40'
 								className=''
 							/>
 						</div>
@@ -26,76 +36,84 @@ export const Preview = () => {
 					<section className='relative z-50 mx-auto flex h-[90%]  flex-col items-center justify-center px-3 text-center md:px-0'>
 						<div className='max-w-[80ch]'>
 							<h2 className='text-5xl font-black text-white'>
-								Lavidluxe Store
+								{campaign?.header_content}
 							</h2>
 						</div>
 						<p className='max-w-[60ch] pt-3 leading-relaxed text-gray-200'>
-							Lavidluxe Store We are a premium bespoke and
-							ready-to-wear brand that provides high-
+							{campaign?.subheading_content}
 						</p>
 						<a
-							href='#'
+							href={
+								campaign?.contact_option === 'email'
+									? `mailto:${campaign?.contact_option_medium}`
+									: campaign?.contact_option === 'phone'
+									? `tel:${campaign?.contact_option_medium}`
+									: campaign?.contact_option === 'whatsapp'
+									? `https://wa.me/${campaign?.contact_option_medium}`
+									: `https://www.instagram.com/${campaign?.contact_option_medium}/`
+							}
 							target='_blank'
 							rel='noopener noreferrer'
 							className='mx-auto mt-8 block w-max rounded bg-white px-12 py-[10px] transition-opacity hover:opacity-80'>
-							<span>Get started</span>{' '}
+							<span>{campaign?.button_text}</span>{' '}
 							<span aria-hidden='true'>&rarr;</span>
 						</a>
 					</section>
 				</div>
 			</header>
 
-			<section className='mx-auto max-w-[80ch] px-3 pt-24 pb-20 text-center'>
-				<h2 className='text-4xl font-black text-neutral-900'>
-					About us
-				</h2>
-				<p className='pt-6 text-neutral-600'>
-					We are a premium bespoke and ready-to-wear brand that
-					provides high-quality yet affordable female and male wears,
-					hoodies and joggers co-ord sets, luxury handmade unisex
-					footwear and bags.
-				</p>
-			</section>
+			{campaign?.body_heading && campaign?.body_description ? (
+				<section className='mx-auto max-w-[80ch] px-3 pt-24 pb-20 text-center'>
+					<h2 className='text-4xl font-black text-neutral-900'>
+						{campaign?.body_heading}
+					</h2>
+					<p className='pt-6 text-neutral-600'>
+						{campaign?.body_description}
+					</p>
+				</section>
+			) : null}
 
 			{/* posts */}
-			<section className='pb-20 pt-10'>
-				<div className='campaign-website-container'>
-					<h2 className='text-center text-4xl font-black text-neutral-900'>
-						Posts
-					</h2>
-					<ul className='grid grid-cols-fluid gap-6 pt-12'>
-						{posts.map((post, index) => (
-							<li
-								className='max-w-[400px] justify-self-center'
-								key={index}>
-								<img
-									src={post.media_url}
-									alt='post picture'
-									className='h-96 w-full rounded-lg object-cover'
-								/>
-								<div className='mt-2 rounded-lg bg-neutral-200 px-4 py-3'>
-									<p>{post.caption}</p>
-									{post.permalink ? (
-										<a
-											href={post.permalink}
-											target='_blank'
-											rel='noopener noreferrer'
-											className='inline-block pt-3 text-right text-xs font-medium text-wustomers-blue transition-all hover:underline'>
-											View on Instagram{' '}
-											<span aria-hidden='true'>
-												&rarr;
-											</span>
-										</a>
-									) : null}
-								</div>
-							</li>
-						))}
-					</ul>
-				</div>
-			</section>
+			{campaign?.social_posts.length ? (
+				<section className='pb-20 pt-10'>
+					<div className='campaign-website-container'>
+						<h2 className='text-center text-4xl font-black text-neutral-900'>
+							Posts
+						</h2>
+						<ul className='grid grid-cols-fluid gap-6 pt-12'>
+							{campaign?.social_posts.map((post, index) => (
+								<li
+									className='max-w-[400px] justify-self-center'
+									key={index}>
+									<img
+										src={post.image_url}
+										alt='post picture'
+										className='h-96 w-full rounded-lg object-cover'
+									/>
+									<div className='mt-2 rounded-lg bg-neutral-200 px-4 py-3'>
+										<p>{post.title}</p>
+										{post.post_url ? (
+											<a
+												href={post.post_url}
+												target='_blank'
+												rel='noopener noreferrer'
+												className='inline-block pt-3 text-right text-xs font-medium text-wustomers-blue transition-all hover:underline'>
+												View on Instagram{' '}
+												<span aria-hidden='true'>
+													&rarr;
+												</span>
+											</a>
+										) : null}
+									</div>
+								</li>
+							))}
+						</ul>
+					</div>
+				</section>
+			) : null}
 
 			{/* testimonials */}
-			{/* {(campaign?.testimonials.length as number) ? (
+			{(campaign?.testimonials.length as number) ? (
 				<section className='mt-20 bg-neutral-300 py-24'>
 					<div className='campaign-website-container'>
 						<h2 className='text-center text-4xl font-black text-neutral-900'>
@@ -120,7 +138,7 @@ export const Preview = () => {
 						</ul>
 					</div>
 				</section>
-			) : null} */}
+			) : null}
 
 			{/* footer */}
 			<footer className='bg-neutral-900'>
@@ -134,18 +152,16 @@ export const Preview = () => {
 							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>
 								Address
 							</h4>
-							<p className='pt-1'>
-								10, Ezede Street, Ilogbo Elegba
-							</p>
+							<p className='pt-1'>{campaign?.office_address}</p>
 						</li>
 						<li>
 							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>
 								Phone number
 							</h4>
 							<a
-								href={`tel:08138505782`}
+								href={`tel:${campaign?.phone}`}
 								className='inline-block pt-1 hover:underline'>
-								(+234) 08138505782
+								(+234) {campaign?.phone}
 							</a>
 						</li>
 						<li>
@@ -153,9 +169,9 @@ export const Preview = () => {
 								Email address
 							</h4>
 							<a
-								href={`mailto:ghostdeveloper@gmail.com`}
+								href={`mailto:${campaign?.email}`}
 								className='inline-block pt-1 hover:underline'>
-								ghostdeveloper@yopmail.com
+								{campaign?.email}
 							</a>
 						</li>
 					</ul>

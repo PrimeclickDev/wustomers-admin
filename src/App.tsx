@@ -7,7 +7,7 @@ import { Campaigns } from 'pages/Campaigns'
 import { Finance } from 'pages/Finance'
 import { Home } from 'pages/Home'
 import { RolesPermissions } from 'pages/RolesPermissions'
-import { User } from 'pages/User'
+import { UserDetails } from 'pages/UserDetails'
 import { Users } from 'pages/Users'
 import { Route, Routes } from 'react-router-dom'
 
@@ -25,7 +25,11 @@ function App() {
 				</Route>
 				<Route path='users'>
 					<Route index element={<Users />} />
-					<Route path=':id' element={<User />} />
+					<Route path=':id' element={<UserDetails />} />
+					<Route
+						path=':id/campaign/:campaignId'
+						element={<CampaignPreview />}
+					/>
 				</Route>
 				{role === 'super-admin' ? (
 					<Route path='finance' element={<Finance />} />

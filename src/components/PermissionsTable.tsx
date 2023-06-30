@@ -96,6 +96,7 @@ export const PermissionsTable = () => {
 					isPreviousData={isPreviousData}
 					page={page}
 					setPage={setPage}
+					className='pt-10'
 				/>
 			</div>
 		</>
