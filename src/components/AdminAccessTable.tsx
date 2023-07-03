@@ -14,7 +14,7 @@ import { Pagination } from './Pagination'
 import { Spinner } from './Spinner'
 import { EditAdminModal } from './modals/EditAdminModal'
 
-const tableHeaders = ['ID', 'Name', 'Email', 'Role', 'Status', 'Actions']
+const tableHeaders = ['Name', 'Email', 'Role', 'Status', 'Actions']
 const status = {
 	Active: 'bg-green-200 text-green-500',
 	Inactive: 'bg-red-200 text-red-500',
@@ -80,10 +80,7 @@ export const AdminAccessTable = () => {
 									<tr
 										key={admin.id}
 										className='even:bg-wustomers-primary/30'>
-										<td className='px-2 py-4 font-medium'>
-											{admin.wustomer_id}
-										</td>
-										<td className='px-2 py-4'>
+										<td className='px-2 py-4 capitalize'>
 											{admin.last_name} {admin.first_name}
 										</td>
 										<td className='px-2 py-4'>

@@ -24,7 +24,7 @@ export const useLogout = () => {
 		mutationFn: logout,
 		onSuccess: ({ data }) => {
 			removeAccessToken()
-			localStorage.removeItem('wustomers-user')
+			localStorage.removeItem('wustomers-admin')
 			navigate('/')
 			toast.success(data?.message)
 		},

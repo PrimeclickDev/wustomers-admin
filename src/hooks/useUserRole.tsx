@@ -1,6 +1,10 @@
 export const useUserRole = () => {
-	const user = JSON.parse(localStorage.getItem('wustomers-admin') || '{}')
-	const role = user?.role[0]?.name
+	const user = localStorage.getItem('wustomers-admin') as string
 
-	return { role }
+	if (user) {
+		const data = JSON.parse(user)
+		return data.role[0].name
+	} else {
+		return ''
+	}
 }

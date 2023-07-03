@@ -49,7 +49,7 @@ export const Header = () => {
 	const [menu, setMenu] = React.useState(navs)
 
 	useScrollLock({ isOpen })
-	const { role } = useUserRole()
+	const role = useUserRole()
 
 	const logoutAdmin = useLogout()
 	const closeMenu = () => setIsOpen(false)
@@ -196,7 +196,11 @@ export const Header = () => {
 						disabled={logoutAdmin.isLoading}
 						onClick={() => logoutAdmin.mutate()}
 						className='text-[#EB5757] flex-1 border border-[#EB5757] hover:bg-[#EB5757] hover:text-white transition-colors py-1.5 px-4 rounded-full disabled:cursor-not-allowed'>
-						{logoutAdmin.isLoading ? <Spinner /> : 'Yes, logout'}
+						{logoutAdmin.isLoading ? (
+							<Spinner className='text-white' />
+						) : (
+							'Yes, logout'
+						)}
 					</button>
 				</div>
 			</Modal>

@@ -31,7 +31,7 @@ export const UsersTable = () => {
 	const [searchParams, setSearchParams] = useSearchParams()
 
 	const { data: users, isLoading, isPreviousData } = useFetchUsers(page)
-	const { role } = useUserRole()
+	const role = useUserRole()
 
 	React.useEffect(() => {
 		if (!open) {

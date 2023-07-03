@@ -12,7 +12,8 @@ import { Users } from 'pages/Users'
 import { Route, Routes } from 'react-router-dom'
 
 function App() {
-	const { role } = useUserRole()
+	const role = useUserRole()
+	console.log('role', role)
 
 	return (
 		<Routes>
@@ -23,6 +24,7 @@ function App() {
 					<Route index element={<Campaigns />} />
 					<Route path=':id' element={<CampaignPreview />} />
 				</Route>
+
 				<Route path='users'>
 					<Route index element={<Users />} />
 					<Route path=':id' element={<UserDetails />} />
@@ -31,17 +33,19 @@ function App() {
 						element={<CampaignPreview />}
 					/>
 				</Route>
+
 				{role === 'super-admin' ? (
-					<Route path='finance' element={<Finance />} />
-				) : null}
-				{role === 'super-admin' ? (
-					<Route path='admin-access'>
-						<Route index element={<AdminAccess />} />
-						<Route
-							path='roles-permissions'
-							element={<RolesPermissions />}
-						/>
-					</Route>
+					<>
+						<Route path='finance' element={<Finance />} />
+
+						<Route path='admin-access'>
+							<Route index element={<AdminAccess />} />
+							<Route
+								path='roles-permissions'
+								element={<RolesPermissions />}
+							/>
+						</Route>
+					</>
 				) : null}
 			</Route>
 			<Route path='*' element={<NotFound />} />
