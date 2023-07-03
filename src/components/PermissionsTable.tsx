@@ -31,7 +31,7 @@ export const PermissionsTable = () => {
 						<Select
 							placeholder='Select a role...'
 							defaultValue='super-admin'
-							onChange={onChange}
+							onValueChange={onChange}
 							className='w-full !bg-[#F4F4F4] capitalize border-wustomers-blue-light border-2 mt-2 rounded-md h-[3.1rem] pl-4'
 							value={value}>
 							{roles?.data

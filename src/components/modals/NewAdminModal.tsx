@@ -134,7 +134,7 @@ export const NewAdminModal = ({ setOpen }: NewAdminModalProps) => {
 								</label>
 								<Select
 									placeholder='Select a role...'
-									onChange={onChange}
+									onValueChange={onChange}
 									className={`w-full border-2 mt-1 rounded-md capitalize h-[49px] pl-4 ${
 										error
 											? '!border-red-600 !bg-red-50'

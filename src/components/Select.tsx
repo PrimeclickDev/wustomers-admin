@@ -3,12 +3,10 @@ import ChevronRight from 'assets/icons/ChevronRight'
 import * as React from 'react'
 
 interface SelectProps extends RadixSelect.SelectProps {
-	// icon?: React.ReactNode
 	className?: string
 	placeholder: string
 	value?: string
 	children: React.ReactNode
-	// defaultValue?: string
 }
 
 export const Select = ({
@@ -25,17 +23,17 @@ export const Select = ({
 			<RadixSelect.Trigger
 				className={`flex h-9 w-72 items-center justify-between gap-[5px] rounded border border-wustomers-blue bg-wustomers-primary-light pl-2 pr-[15px] text-sm leading-none data-[placeholder]:text-wustomers-blue-light/50 ${className}`}>
 				<RadixSelect.Group className='flex items-center gap-3'>
-					{/* {icon ? <RadixSelect.Icon>{icon}</RadixSelect.Icon> : null} */}
 					<RadixSelect.Value placeholder={placeholder} />
 				</RadixSelect.Group>
 				<RadixSelect.Icon>
 					<ChevronRight className='rotate-90 ml-2' />
 				</RadixSelect.Icon>
 			</RadixSelect.Trigger>
+
 			<RadixSelect.Portal>
 				<RadixSelect.Content
 					position='popper'
-					className='z-50 overflow-hidden rounded bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'>
+					className='z-50 w-full overflow-hidden rounded bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'>
 					<RadixSelect.Viewport className='p-[5px]'>
 						<RadixSelect.Group>{children}</RadixSelect.Group>
 					</RadixSelect.Viewport>
