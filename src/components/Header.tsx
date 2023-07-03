@@ -49,13 +49,13 @@ export const Header = () => {
 	const [menu, setMenu] = React.useState(navs)
 
 	useScrollLock({ isOpen })
-	const role = useUserRole()
+	const { role } = useUserRole()
 
 	const logoutAdmin = useLogout()
 	const closeMenu = () => setIsOpen(false)
 
 	React.useEffect(() => {
-		if (role !== 'super-admin') {
+		if (role === 'account-manager') {
 			const adminNavs = navs.filter(
 				nav => nav.route !== '/admin-access' && nav.route !== '/finance'
 			)
@@ -137,7 +137,7 @@ export const Header = () => {
 						isOpen ? 'translate-x-0' : '-translate-x-full'
 					}`}>
 					<ul className='flex flex-col gap-4 font-bold'>
-						{navs?.map(nav => (
+						{menu?.map(nav => (
 							<li key={nav.id}>
 								<NavLink
 									to={nav.route}

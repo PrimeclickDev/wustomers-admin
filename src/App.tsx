@@ -12,7 +12,7 @@ import { Users } from 'pages/Users'
 import { Route, Routes } from 'react-router-dom'
 
 function App() {
-	const role = useUserRole()
+	const { role } = useUserRole()
 	console.log('role', role)
 
 	return (
