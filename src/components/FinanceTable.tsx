@@ -41,7 +41,7 @@ const statusStyle = {
 
 export const FinanceTable = () => {
 	return (
-		<div className='mt-10 bg-white border border-gray-200 py-4 px-6 rounded-md'>
+		<div className='mt-5 bg-white border border-gray-200 py-4 px-6 rounded-md'>
 			<header className='flex flex-wrap items-center justify-between gap-2'>
 				<h3 className='font-medium text-lg'>Campaign list</h3>
 
