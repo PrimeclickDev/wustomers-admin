@@ -13,8 +13,7 @@ export const Users = () => {
 	return (
 		<>
 			<div className='max-w-7xl mx-auto py-5 px-3'>
-				{/* <header className='flex flex-col md:flex-row items-center justify-between gap-2 pt-4'> */}
-				<div className='flex items-center gap-6'>
+				<div className='flex items-center gap-6 pt-4'>
 					<h3 className='font-black text-3xl'>Users</h3>
 					<button
 						onClick={() => setOpen(true)}
@@ -24,7 +23,6 @@ export const Users = () => {
 						Add new client
 					</button>
 				</div>
-				{/* </header> */}
 
 				<UsersMetrics />
 				<UsersTable />

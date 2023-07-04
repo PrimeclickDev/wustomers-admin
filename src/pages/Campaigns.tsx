@@ -3,7 +3,13 @@ import { CampaignMetric } from 'components/CampaignMetric'
 import { CampaignTable } from 'components/CampaignTable'
 import { Modal } from 'components/Modal'
 import Plus from 'components/Plus'
-import { Select, SelectItem } from 'components/Select'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from 'components/Select'
 import { NewClientModal } from 'components/modals/NewClientModal'
 import { usePageTitle } from 'hooks/usePageTitle'
 import React from 'react'
@@ -12,7 +18,7 @@ import { filters } from 'utils/constants'
 export const Campaigns = () => {
 	usePageTitle('Campaigns')
 	const [open, setOpen] = React.useState(false)
-	const [filter, setFilter] = React.useState(filters[0])
+	const [filter, setFilter] = React.useState(filters[0].name)
 
 	return (
 		<>
@@ -38,19 +44,21 @@ export const Campaigns = () => {
 
 					<div className='flex items-center gap-2'>
 						<p className='text-xs'>Show:</p>
-						<Select
-							placeholder=''
-							value={filter}
-							onValueChange={setFilter}
-							className='w-max !bg-white !border-[#E5E0EB] border-2 rounded-md pl-2 !text-xs'>
-							{filters.map(option => (
-								<SelectItem
-									value={option}
-									key={option}
-									className='py-4 capitalize'>
-									{option}
-								</SelectItem>
-							))}
+						<Select onValueChange={setFilter} value={filter}>
+							<SelectTrigger className='w-max !bg-white !border-[#E5E0EB] border-2 rounded-md pl-2 !text-xs'>
+								<SelectValue placeholder='Select a metric...' />
+							</SelectTrigger>
+
+							<SelectContent>
+								{filters.map(option => (
+									<SelectItem
+										value={option.name}
+										key={option.id}
+										className='py-4'>
+										{option.name}
+									</SelectItem>
+								))}
+							</SelectContent>
 						</Select>
 					</div>
 				</header>

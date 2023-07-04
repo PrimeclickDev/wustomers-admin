@@ -115,7 +115,7 @@ export const CampaignTable = () => {
 								<td className='px-6 py-5'>{item.endDate}</td>
 								<td className='px-6 py-5'>
 									<Link
-										to='user'
+										to='#'
 										className='border border-wustomers-blue text-wustomers-blue rounded-full text-xs py-1.5 hover:bg-wustomers-blue/10 transition-colors px-3'>
 										View more
 									</Link>

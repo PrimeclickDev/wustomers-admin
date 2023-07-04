@@ -3,7 +3,13 @@ import { useFetchRoles } from 'api/hooks/roles/useFetchRoles'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Pagination } from './Pagination'
-import { Select, SelectItem } from './Select'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from './Select'
 
 export const PermissionsTable = () => {
 	const [page, setPage] = React.useState(1)
@@ -12,7 +18,7 @@ export const PermissionsTable = () => {
 
 	const { control, watch } = useForm({
 		defaultValues: {
-			role: 'super-admin',
+			role: 'admin',
 		},
 	})
 	const selectedRole = watch('role')
@@ -29,21 +35,26 @@ export const PermissionsTable = () => {
 					control={control}
 					render={({ field: { onChange, value } }) => (
 						<Select
-							placeholder='Select a role...'
-							defaultValue='super-admin'
+							defaultValue='admin'
 							onValueChange={onChange}
-							className='w-full !bg-[#F4F4F4] capitalize border-wustomers-blue-light border-2 mt-2 rounded-md h-[3.1rem] pl-4'
 							value={value}>
-							{roles?.data
-								?.sort((a, b) => a.id - b.id)
-								.map(option => (
-									<SelectItem
-										value={option.name}
-										key={option.id}
-										className='py-4 capitalize'>
-										{option.name}
-									</SelectItem>
-								))}
+							<SelectTrigger className='w-full !bg-[#F4F4F4] capitalize border-wustomers-blue-light border-2 mt-2 rounded-md h-[3.1rem] pl-4'>
+								<SelectValue placeholder='Select a role...' />
+							</SelectTrigger>
+
+							<SelectContent className='!w-[var(--radix-select-trigger-width)]'>
+								{roles?.data
+									// .filter(a => a.name !== 'super-admin')
+									?.sort((a, b) => a.id - b.id)
+									.map(option => (
+										<SelectItem
+											value={option.name}
+											key={option.id}
+											className='py-4 capitalize'>
+											{option.name.replace('-', ' ')}
+										</SelectItem>
+									))}
+							</SelectContent>
 						</Select>
 					)}
 				/>
@@ -73,13 +84,16 @@ export const PermissionsTable = () => {
 									<label className='relative inline-flex items-center cursor-pointer'>
 										<input
 											type='checkbox'
+											// disabled={
+											// 	selectedRole === 'super-admin'
+											// }
 											// value={permission.id}
 											checked={selectedRolePermissions?.permissions.some(
 												p => p.name === permission.name
 											)}
 											className='sr-only peer'
 										/>
-										<div className="w-11 h-6 bg-gray-200 peer-focus-visible:outline-none peer-focus-visible:ring-4 peer-focus-visible:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.4px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600" />
+										<div className="w-11 h-6 bg-gray-200 peer-focus-visible:outline-none peer-focus-visible:ring-4 peer-focus-visible:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.4px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600 peer-disabled:cursor-not-allowed" />
 									</label>
 								</li>
 								// eslint-disable-next-line no-mixed-spaces-and-tabs

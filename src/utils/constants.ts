@@ -63,9 +63,34 @@ export const posts = [
 ]
 
 export const filters = [
-	'Today',
-	'Last week',
-	'Next week',
-	'Last month',
-	'Next month',
+	{
+		id: 1,
+		name: 'Today',
+		slug: 'today',
+	},
+	{
+		id: 2,
+		name: 'Yesterday',
+		slug: 'yesterday',
+	},
+	{
+		id: 3,
+		name: 'Past one week',
+		slug: 'past_one_week',
+	},
+	{
+		id: 4,
+		name: 'Past one month',
+		slug: 'past_one_month',
+	},
+	{
+		id: 5,
+		name: 'Past six months',
+		slug: 'past_six_months',
+	},
+	{
+		id: 6,
+		name: 'Past one year',
+		slug: 'past_one_year',
+	},
 ]

@@ -89,7 +89,10 @@ export const AdminAccessTable = () => {
 										<td className='px-2 py-4'>
 											{admin.roles.length ? (
 												<span className='py-1 px-3 uppercase tracking-wide text-xs font-medium rounded-md bg-neutral-300'>
-													{admin.roles[0]?.name}
+													{admin.roles[0]?.name.replace(
+														'-',
+														' '
+													)}
 												</span>
 											) : null}
 										</td>

@@ -2,7 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useUpdateAdmin } from 'api/hooks/admin/useUpdateAdmin'
 import { useFetchRoles } from 'api/hooks/roles/useFetchRoles'
 import InfoIcon from 'assets/icons/InfoIcon'
-import { Select, SelectItem } from 'components/Select'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from 'components/Select'
 import { Spinner } from 'components/Spinner'
 import { TextInput } from 'components/TextInput'
 import { Admin } from 'models/admins-models'
@@ -85,22 +91,29 @@ export const EditAdminModal = ({ admin, setIsOpen }: EditAdminModalProps) => {
 									Role
 								</label>
 								<Select
-									placeholder='Select a role...'
 									onValueChange={onChange}
-									className={`w-full border-2 mt-1 rounded-md capitalize h-[49px] pl-4 ${
-										error
-											? '!border-red-600 !bg-red-50'
-											: 'border-wustomers-primary-light !bg-wustomers-primary'
-									}`}
-									value={value}>
-									{roles?.data?.map(option => (
-										<SelectItem
-											value={option.name}
-											key={option.id}
-											className='py-4 !capitalize'>
-											{option.name}
-										</SelectItem>
-									))}
+									value={value}
+									disabled={value === 'super-admin'}>
+									<SelectTrigger
+										id='role'
+										className={`w-full border-2 mt-1 rounded-md capitalize h-[49px] pl-4 disabled:cursor-not-allowed disabled:opacity-50 ${
+											error
+												? '!border-red-600 !bg-red-50'
+												: 'border-wustomers-primary-light !bg-wustomers-primary'
+										}`}>
+										<SelectValue placeholder='Select a role...' />
+									</SelectTrigger>
+
+									<SelectContent className='!w-[var(--radix-select-trigger-width)]'>
+										{roles?.data?.map(option => (
+											<SelectItem
+												value={option.name}
+												key={option.id}
+												className='py-4 capitalize'>
+												{option.name.replace('-', ' ')}
+											</SelectItem>
+										))}
+									</SelectContent>
 								</Select>
 							</div>
 

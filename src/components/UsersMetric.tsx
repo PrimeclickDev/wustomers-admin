@@ -3,41 +3,15 @@ import People from 'assets/icons/People'
 import PeopleDelete from 'assets/icons/PeopleDelete'
 import PeopleTick from 'assets/icons/PeopleTick'
 import React from 'react'
-import { Select, SelectItem } from './Select'
+import { filters } from 'utils/constants'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from './Select'
 import { Spinner } from './Spinner'
-
-const filters = [
-	{
-		id: 1,
-		name: 'Today',
-		slug: 'today',
-	},
-	{
-		id: 2,
-		name: 'Yesterday',
-		slug: 'yesterday',
-	},
-	{
-		id: 3,
-		name: 'Past one week',
-		slug: 'past_one_week',
-	},
-	{
-		id: 4,
-		name: 'Past one month',
-		slug: 'past_one_month',
-	},
-	{
-		id: 5,
-		name: 'Past six months',
-		slug: 'past_six_months',
-	},
-	{
-		id: 6,
-		name: 'Past one year',
-		slug: 'past_one_year',
-	},
-]
 
 export const UsersMetrics = () => {
 	const [filter, setFilter] = React.useState(filters[5].name)
@@ -50,19 +24,21 @@ export const UsersMetrics = () => {
 		<div className='flex flex-col'>
 			<div className='flex items-center gap-2 ml-auto'>
 				<p className='text-xs'>Show:</p>
-				<Select
-					onValueChange={setFilter}
-					value={filter}
-					placeholder=''
-					className='w-max !bg-white !border-[#E5E0EB] border-2 rounded-md pl-2 !text-xs'>
-					{filters.map(option => (
-						<SelectItem
-							value={option.name}
-							key={option.id}
-							className='py-4'>
-							{option.name}
-						</SelectItem>
-					))}
+				<Select onValueChange={setFilter} value={filter}>
+					<SelectTrigger className='w-max !bg-white !border-[#E5E0EB] border-2 rounded-md pl-2 !text-xs'>
+						<SelectValue placeholder='Select a metric...' />
+					</SelectTrigger>
+
+					<SelectContent>
+						{filters.map(option => (
+							<SelectItem
+								value={option.name}
+								key={option.id}
+								className='py-4'>
+								{option.name}
+							</SelectItem>
+						))}
+					</SelectContent>
 				</Select>
 			</div>
 
