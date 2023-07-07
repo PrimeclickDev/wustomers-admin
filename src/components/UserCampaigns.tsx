@@ -22,7 +22,7 @@ export const UserCampaigns = ({ campaigns }: UserCampaignsProps) => {
 							<div className='flex items-center justify-between pt-2 gap-2'>
 								<p>{campaign.title}</p>
 								<Link
-									to={`campaign/${campaign.campaign_code.toLowerCase()}`}
+									to={`campaign/${campaign.id}`}
 									className='border border-wustomers-blue text-wustomers-blue rounded-full text-xs py-1 hover:bg-wustomers-blue/10 transition-colors px-4'>
 									View
 								</Link>

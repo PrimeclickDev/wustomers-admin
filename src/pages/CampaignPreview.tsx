@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import * as Popover from '@radix-ui/react-popover'
 import { useFetchCampaign } from 'api/hooks/campaigns/useFetchCampaign'
 import ArrowDown from 'assets/icons/ArrowDown'
@@ -12,7 +13,7 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { copyToClipboard } from 'utils/copyToClipboard'
 
-const status = ['Live', 'Ended', 'Pending']
+const status = ['Go live', 'End']
 
 export const CampaignPreview = () => {
 	const [view, setView] = React.useState<'desktop' | 'mobile'>('desktop')
@@ -33,8 +34,36 @@ export const CampaignPreview = () => {
 					<div className='flex flex-col md:flex-row items-center gap-6'>
 						<h3 className='text-lg font-medium'>Landing page</h3>
 						<div className='flex flex-wrap items-center gap-4'>
-							<div className='bg-[#6FCF97] py-1 px-4 rounded-full font-medium flex items-center gap-2 text-xs text-white'>
-								<p>Live campaign</p>
+							<div
+								className={`py-1 px-4 rounded-full font-medium flex items-center gap-2 text-xs text-white ${
+									campaign?.campaign_status === 'Active' &&
+									campaign?.payment_status === 'Paid'
+										? 'bg-[#6FCF97]'
+										: campaign?.campaign_status ===
+												'Inactive' &&
+										  campaign?.payment_status === 'Unpaid'
+										? 'bg-[#EB5757]'
+										: campaign?.campaign_status ===
+												'Inactive' &&
+										  campaign?.payment_status === 'Paid'
+										? 'bg-[#F2C94C]'
+										: ''
+								}`}>
+								<p>
+									{campaign?.campaign_status === 'Active' &&
+									campaign?.payment_status === 'Paid'
+										? 'Live'
+										: campaign?.campaign_status ===
+												'Inactive' &&
+										  campaign?.payment_status === 'Unpaid'
+										? 'Inactive'
+										: campaign?.campaign_status ===
+												'Inactive' &&
+										  campaign?.payment_status === 'Paid'
+										? 'Pending'
+										: ''}{' '}
+									campaign
+								</p>
 
 								<Popover.Root>
 									<Popover.Trigger asChild>

@@ -22,7 +22,7 @@ function App() {
 			<Route element={<Layout />}>
 				<Route path='campaigns'>
 					<Route index element={<Campaigns />} />
-					<Route path=':id' element={<CampaignPreview />} />
+					<Route path=':campaignId' element={<CampaignPreview />} />
 				</Route>
 
 				<Route path='users'>

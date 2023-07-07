@@ -1,65 +1,51 @@
-import ChevronRight from 'assets/icons/ChevronRight'
+/* eslint-disable no-mixed-spaces-and-tabs */
+import { useFetchTransactions } from 'api/hooks/finance/useFetchTransactions'
+import { useFetchBudgets } from 'api/hooks/shared/useFetchBudgets'
+import React from 'react'
 import { formatCurrency } from 'utils/formatCurrency'
+import { formatDate } from 'utils/formatDate'
+import { Pagination } from './Pagination'
+import { Spinner } from './Spinner'
 
 const tableHeaders = [
 	'Reference no',
-	'Account name',
+	'Business name',
 	'Price',
 	'Charges',
 	'Date',
-	'Time',
 	'Status',
 ]
 
-const data = [
-	{
-		id: 1,
-		ref: '1546166123161RG',
-		name: 'Abdul Adekunle',
-		price: 5000,
-		duration: '2 weeks',
-		date: '12/10/2022',
-		time: '10:30pm',
-		status: 'successful',
-	},
-	{
-		id: 2,
-		ref: '1546166123161RG',
-		name: 'Abdul Adekunle',
-		price: 5000,
-		duration: '2 weeks',
-		date: '12/10/2022',
-		time: '10:30pm',
-		status: 'failed',
-	},
-]
-
 const statusStyle = {
-	failed: 'bg-[#EB5757]/20 text-[#EB5757]',
-	successful: 'bg-[#219653]/20 text-[#219653]',
+	Unpaid: 'bg-[#EB5757]/20 text-[#EB5757]',
+	Paid: 'bg-[#219653]/20 text-[#219653]',
 }
 
 export const FinanceTable = () => {
+	const [page, setPage] = React.useState(1)
+	const {
+		data: transactions,
+		isLoading,
+		isPreviousData,
+	} = useFetchTransactions(page)
+	const { data: budgets } = useFetchBudgets()
+	console.log('budgets', budgets)
+
 	return (
 		<div className='mt-5 bg-white border border-gray-200 py-4 px-6 rounded-md'>
 			<header className='flex flex-wrap items-center justify-between gap-2'>
-				<h3 className='font-medium text-lg'>Campaign list</h3>
+				<h3 className='font-medium text-lg'>Payment list</h3>
 
-				<div className='text-sm text-wustomers-gray flex items-center gap-4'>
-					<p>1 - 12 of 32</p>
-					<div className='flex items-center gap-2'>
-						<button
-							type='button'
-							className='bg-white rounded w-6 h-6 grid place-items-center border border-gray-200'>
-							<ChevronRight className='rotate-180' />
-						</button>
-						<button
-							type='button'
-							className='bg-white rounded w-6 h-6 grid place-items-center border border-gray-200'>
-							<ChevronRight />
-						</button>
-					</div>
-				</div>
+				<Pagination
+					from={transactions?.meta.from}
+					to={transactions?.meta.to}
+					lastPage={transactions?.meta.last_page}
+					hasPrevPage={!transactions?.links.prev}
+					hasNextPage={!transactions?.links.next}
+					isPreviousData={isPreviousData}
+					page={page}
+					setPage={setPage}
+				/>
 			</header>
 
 			<div className='overflow-auto'>
@@ -77,33 +63,69 @@ export const FinanceTable = () => {
 						</tr>
 					</thead>
 
-					<tbody>
-						{data.map(item => (
-							<tr
-								key={item.id}
-								className='even:bg-wustomers-primary/30'>
-								<td className='px-2 py-5'>{item.ref}</td>
-								<td className='px-2 py-5 font-medium'>
-									{item.name}
-								</td>
-								<td className='px-2 py-5'>
-									{formatCurrency(item.price)}
-								</td>
-								<td className='px-2 py-5'>{item.duration}</td>
-								<td className='px-2 py-5'>{item.date}</td>
-								<td className='px-2 py-5'>{item.time}</td>
-								<td className='px-2 py-5'>
-									<span
-										className={`py-1 px-3 rounded-md capitalize w-max ${
-											statusStyle[
-												item.status as keyof typeof statusStyle
-											]
-										}`}>
-										{item.status}
-									</span>
+					<tbody
+						className={`relative ${
+							isPreviousData
+								? 'cursor-not-allowed opacity-50 after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:text-xl after:content-["Loading..."]'
+								: ''
+						}`}>
+						{isLoading ? (
+							<tr>
+								<td colSpan={6} className='py-2'>
+									<Spinner />
 								</td>
 							</tr>
-						))}
+						) : transactions?.data.length ? (
+							transactions.data.map(transaction => (
+								<tr
+									key={transaction.id}
+									className='even:bg-wustomers-primary/30'>
+									<td className='px-2 py-5 lowercase'>
+										{transaction.reference}
+									</td>
+									<td className='px-2 py-5 font-medium'>
+										{transaction.user.business_name}
+									</td>
+									<td className='px-2 py-5'>
+										{formatCurrency(transaction.amount)}
+									</td>
+									<td className='px-2 py-5'>
+										{transaction.campaign
+											? `${
+													budgets?.find(
+														budget =>
+															budget.id ===
+															transaction.campaign
+																?.budget_id
+													)?.duration
+											  }`
+											: '-'}
+									</td>
+									<td className='px-2 py-5'>
+										{formatDate(transaction.created_at)}
+									</td>
+									<td className='px-2 py-5'>
+										<span
+											className={`py-1 px-3 rounded-md capitalize w-max ${
+												statusStyle[
+													transaction.payment_status
+														.name as keyof typeof statusStyle
+												]
+											}`}>
+											{transaction.payment_status.name}
+										</span>
+									</td>
+								</tr>
+							))
+						) : (
+							<tr className='table-row'>
+								<td
+									colSpan={6}
+									className='px-2 py-4 text-center'>
+									No data found.
+								</td>
+							</tr>
+						)}
 					</tbody>
 				</table>
 			</div>

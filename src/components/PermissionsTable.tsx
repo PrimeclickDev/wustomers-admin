@@ -1,7 +1,10 @@
 import { useFetchPermissions } from 'api/hooks/permissions/useFetchPermissions'
+import { useAssignPermission } from 'api/hooks/roles/useAssignPermission'
 import { useFetchRoles } from 'api/hooks/roles/useFetchRoles'
+import { useRevokePermission } from 'api/hooks/roles/useRevokePermission'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { Pagination } from './Pagination'
 import {
 	Select,
@@ -15,6 +18,9 @@ export const PermissionsTable = () => {
 	const [page, setPage] = React.useState(1)
 	const { data: permissions, isPreviousData } = useFetchPermissions(page)
 	const { data: roles } = useFetchRoles()
+
+	const revokePermission = useRevokePermission()
+	const assignPermission = useAssignPermission()
 
 	const { control, watch } = useForm({
 		defaultValues: {
@@ -84,13 +90,60 @@ export const PermissionsTable = () => {
 									<label className='relative inline-flex items-center cursor-pointer'>
 										<input
 											type='checkbox'
-											// disabled={
-											// 	selectedRole === 'super-admin'
-											// }
-											// value={permission.id}
-											checked={selectedRolePermissions?.permissions.some(
+											disabled={
+												selectedRole === 'super-admin'
+											}
+											defaultChecked={selectedRolePermissions?.permissions.some(
 												p => p.name === permission.name
 											)}
+											value={permission.id}
+											checked={
+												!!selectedRolePermissions?.permissions.some(
+													p =>
+														p.name ===
+														permission.name
+												)
+											}
+											onChange={e => {
+												if (!e.target.checked) {
+													const confirm =
+														revokePermission.mutateAsync(
+															{
+																permissionId:
+																	permission.id,
+																roleId: selectedRolePermissions?.id as number,
+															}
+														)
+													toast.promise(confirm, {
+														pending:
+															'Revoking permission...',
+														success:
+															'Permission revoked',
+														error: 'Error revoking permission',
+													})
+													return
+												}
+												const assign =
+													assignPermission.mutateAsync(
+														{
+															id: selectedRolePermissions?.id as number,
+															data: {
+																permissions: [
+																	// @ts-expect-error params should be string
+																	e.target
+																		.value,
+																],
+															},
+														}
+													)
+												toast.promise(assign, {
+													pending:
+														'Assigning permission...',
+													error: 'Error assigning permission',
+													success:
+														'Permission assigned.',
+												})
+											}}
 											className='sr-only peer'
 										/>
 										<div className="w-11 h-6 bg-gray-200 peer-focus-visible:outline-none peer-focus-visible:ring-4 peer-focus-visible:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.4px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600 peer-disabled:cursor-not-allowed" />

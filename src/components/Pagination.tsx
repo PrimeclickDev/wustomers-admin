@@ -26,7 +26,7 @@ export const Pagination = ({
 }: PaginationProps) => {
 	return (
 		<div
-			className={`flex flex-wrap items-center gap-4 text-xs justify-end text-wustomers-gray ${className}`}>
+			className={`flex flex-wrap items-center gap-4 text-sm justify-end text-wustomers-gray ${className}`}>
 			<p>
 				{from} - {to} of {lastPage} page(s)
 			</p>

@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { baseURL, instance } from 'api/requests'
 import { AxiosError, AxiosResponse } from 'axios'
 import { ResponseType } from 'models/auth-models'
@@ -24,11 +24,13 @@ export const assignPermissions = async (
 }
 
 export const useAssignPermission = () => {
+	const queryClient = useQueryClient()
+
 	return useMutation({
 		mutationFn: ({ data, id }: { data: Permissions; id: number }) =>
 			assignPermissions(data, id),
-		onSuccess: ({ data }) => {
-			toast.success(data?.message)
+		onSettled: () => {
+			queryClient.invalidateQueries({ queryKey: ['roles'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

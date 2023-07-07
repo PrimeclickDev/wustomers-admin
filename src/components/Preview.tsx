@@ -1,7 +1,7 @@
-import { Campaign } from 'models/campaign-models'
+import { Data } from 'models/campaign-models'
 
 type PreviewProps = {
-	campaign: Campaign | undefined
+	campaign: Data | undefined
 }
 
 export const Preview = ({ campaign }: PreviewProps) => {

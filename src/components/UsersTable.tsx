@@ -89,12 +89,12 @@ export const UsersTable = () => {
 								users.data.map(user => (
 									<tr key={user.id}>
 										<td className='px-2 py-4 font-medium capitalize'>
-											{user.first_name} {user.last_name}
+											{user.last_name} {user.first_name}
 										</td>
 										<td className='px-2 py-4'>
 											{user.manager.first_name &&
 											user.manager.last_name
-												? `${user.manager.first_name} ${user.manager.last_name}`
+												? `${user.manager.last_name} ${user.manager.first_name}`
 												: '-'}
 										</td>
 										<td className='px-2 py-4'>

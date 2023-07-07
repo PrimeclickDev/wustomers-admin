@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { baseURL, instance } from 'api/requests'
-import { AxiosResponse } from 'axios'
+import { AxiosError, AxiosResponse } from 'axios'
 import { ResponseType } from 'models/auth-models'
 import { Role } from 'models/roles-models'
 import { toast } from 'react-toastify'
@@ -29,27 +29,15 @@ export const useRevokePermission = () => {
 			roleId: number
 			permissionId: number
 		}) => assignPermissions(roleId, permissionId),
-		onMutate: async () => {
-			// Cancel any outgoing refetches
-			await queryClient.cancelQueries({ queryKey: ['roles'] })
-
-			// Snapshot the previous value
-			const previousRolePermission = queryClient.getQueryData(['roles'])
-
-			// Optimistically update to the new value
-			queryClient.setQueryData(['roles'], (old: any) => [
-				...old,
-				previousRolePermission,
-			])
-
-			// Return a context object with the snapshotted value
-			return { previousRolePermission }
-		},
 		onSuccess: ({ data }) => {
-			toast.success(data?.message)
+			// toast.success(data?.message)
+			queryClient.invalidateQueries(['roles'])
 		},
-		onError: (_err, _payload, context) => {
-			queryClient.setQueryData(['roles'], context?.previousRolePermission)
+		onError: error => {
+			if (error instanceof AxiosError) {
+				toast.error(error.response?.data.message)
+				console.error(error)
+			}
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries({ queryKey: ['roles'] })

@@ -1,10 +1,20 @@
 import { ResponseType } from './auth-models'
 
-export interface Campaign extends ResponseType {
+export interface AllCampaigns extends ResponseType {
 	data: Data
 }
 
 export interface Data {
+	campaigns: Campaigns
+}
+
+export interface Campaigns {
+	data: Datum[]
+	links: Links
+	meta: Meta
+}
+
+export interface Datum {
 	id: number
 	impression: number
 	conversion: number
@@ -34,15 +44,15 @@ export interface Data {
 	contact_option: string
 	contact_option_medium: string
 	body_heading: string
-	body_description: string
+	body_description: null | string
 	is_button_sticky: boolean
-	location: string
-	budget: Budget
+	location: null | string
+	budget: Budget | null
 	testimonials: Testimonial[]
 	social_posts: SocialPost[]
 	days_paused: number
-	start_date: Date
-	end_date: Date
+	start_date?: string
+	end_date?: string
 	paused_at: null
 	resumed_at: null
 	created_at: Date
@@ -69,9 +79,9 @@ export interface SocialPost {
 	id: number
 	campaign_id: number
 	title: string
-	posted_date: null
+	posted_date: Date | null
 	image_url: string
-	post_url: string
+	post_url: null | string
 	created_at: Date
 	updated_at: Date
 }
@@ -84,4 +94,44 @@ export interface Testimonial {
 	designation: string
 	created_at: Date
 	updated_at: Date
+}
+
+export interface Links {
+	first: string
+	last: string
+	prev: null
+	next: null
+}
+
+export interface Meta {
+	current_page: number
+	from: number
+	last_page: number
+	links: Link[]
+	path: string
+	per_page: number
+	to: number
+	total: number
+}
+
+export interface Link {
+	url: null | string
+	label: string
+	active: boolean
+}
+
+export interface CampaignMetrics extends ResponseType {
+	data: Metric
+}
+
+export interface Metric {
+	metrics: Metrics
+}
+
+export interface Metrics {
+	total_campaigns: number
+	active_campaigns: number
+	inactive_campaigns: number
+	paused_campaigns: number
+	live_campaigns: number
 }

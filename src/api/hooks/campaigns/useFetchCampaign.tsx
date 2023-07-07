@@ -1,27 +1,25 @@
 import { useQuery } from '@tanstack/react-query'
-import { baseURL } from 'api/requests'
-import axios, { AxiosResponse } from 'axios'
-import { Campaigns } from 'models/campaign-models'
-import { useNavigate } from 'react-router-dom'
+import { baseURL, instance } from 'api/requests'
+import { AxiosError, AxiosResponse } from 'axios'
+import { Campaign } from 'models/campaign-models'
 
 export const getCamapign = async (
 	campaignId: string
-): Promise<AxiosResponse<Campaigns>> => {
-	return await axios.get(`${baseURL}/campaign/${campaignId}/index`)
+): Promise<AxiosResponse<Campaign>> => {
+	return await instance.get(
+		`${baseURL}/admin/campaigns/${campaignId}/campaign`
+	)
 }
 
 export const useFetchCampaign = (campaignId: string) => {
-	const navigate = useNavigate()
-
 	return useQuery({
 		queryKey: ['campaign', campaignId],
 		queryFn: () => getCamapign(campaignId),
-		staleTime: Infinity,
-		cacheTime: Infinity,
-		refetchOnWindowFocus: false,
-		refetchOnReconnect: false,
-		retry: 2,
-		onError: () => navigate('*'),
+		onError: error => {
+			if (error instanceof AxiosError) {
+				console.error(error.response?.data.message)
+			}
+		},
 		select: data => data.data.data,
 	})
 }
