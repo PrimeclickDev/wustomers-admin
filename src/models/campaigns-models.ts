@@ -132,6 +132,7 @@ export interface Metrics {
 	total_campaigns: number
 	active_campaigns: number
 	inactive_campaigns: number
+	completed_campaigns: number
 	paused_campaigns: number
 	live_campaigns: number
 }

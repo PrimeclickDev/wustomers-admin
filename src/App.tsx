@@ -28,24 +28,16 @@ function App() {
 				<Route path='users'>
 					<Route index element={<Users />} />
 					<Route path=':id' element={<UserDetails />} />
-					<Route
-						path=':id/campaign/:campaignId'
-						element={<CampaignPreview />}
-					/>
+					<Route path=':id/campaign/:campaignId' element={<CampaignPreview />} />
 				</Route>
 
-				{role === 'super-admin' ? (
-					<>
-						<Route path='finance' element={<Finance />} />
+				{role === 'super-admin' || role === 'admin' ? <Route path='finance' element={<Finance />} /> : null}
 
-						<Route path='admin-access'>
-							<Route index element={<AdminAccess />} />
-							<Route
-								path='roles-permissions'
-								element={<RolesPermissions />}
-							/>
-						</Route>
-					</>
+				{role === 'super-admin' ? (
+					<Route path='admin-access'>
+						<Route index element={<AdminAccess />} />
+						<Route path='roles-permissions' element={<RolesPermissions />} />
+					</Route>
 				) : null}
 			</Route>
 			<Route path='*' element={<NotFound />} />

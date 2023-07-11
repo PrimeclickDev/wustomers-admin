@@ -12,13 +12,11 @@ interface Data {
 	data: string[]
 }
 
-export const deactivateUser = async (
-	id: string
-): Promise<AxiosResponse<Response>> => {
+export const deactivateUser = async (id: string): Promise<AxiosResponse<Response>> => {
 	return await instance.patch(`${baseURL}/admin/users/${id}/deactivate`)
 }
 
-export const useDeactiveUser = () => {
+export const useDeactivateUser = () => {
 	return useMutation({
 		mutationFn: (id: string) => deactivateUser(id),
 		onSuccess: ({ data }) => {

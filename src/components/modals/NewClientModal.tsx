@@ -6,27 +6,14 @@ import { TextInput } from 'components/TextInput'
 import { nanoid } from 'nanoid'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
 const schema = z.object({
-	business_name: z
-		.string({ required_error: 'Business name is required' })
-		.min(1, { message: 'Business name is required' })
-		.trim(),
-	email: z
-		.string({ required_error: 'Email is required' })
-		.min(1, { message: 'Email address is required' })
-		.email({ message: 'Please enter a valid email address' })
-		.trim(),
-	phone: z
-		.string({ required_error: 'Phone number is required' })
-		.min(1, { message: 'Phone number is required' })
-		.trim(),
-	password: z
-		.string({ required_error: 'Password is required' })
-		.min(1, { message: 'Password is required' })
-		.min(8, { message: 'Password cannot be less than 8 characters' })
-		.trim(),
+	business_name: z.string({ required_error: 'Business name is required' }).min(1, { message: 'Business name is required' }).trim(),
+	email: z.string({ required_error: 'Email is required' }).min(1, { message: 'Email address is required' }).email({ message: 'Please enter a valid email address' }).trim(),
+	phone: z.string({ required_error: 'Phone number is required' }).min(1, { message: 'Phone number is required' }).trim(),
+	password: z.string({ required_error: 'Password is required' }).min(1, { message: 'Password is required' }).min(8, { message: 'Password cannot be less than 8 characters' }).trim(),
 })
 
 type NewClientSchema = z.infer<typeof schema>
@@ -37,20 +24,23 @@ type NewClientModalProps = {
 
 export const NewClientModal = ({ setOpen }: NewClientModalProps) => {
 	const createClient = useCreateClient()
-	const { register, handleSubmit, control, setValue, setError } =
-		useForm<NewClientSchema>({
-			defaultValues: {
-				business_name: '',
-				email: '',
-				password: '',
-				phone: '',
-			},
-			resolver: zodResolver(schema),
-		})
+	const navigate = useNavigate()
+	const { register, handleSubmit, control, setValue, setError } = useForm<NewClientSchema>({
+		defaultValues: {
+			business_name: '',
+			email: '',
+			password: '',
+			phone: '',
+		},
+		resolver: zodResolver(schema),
+	})
 
 	const onSubmit: SubmitHandler<NewClientSchema> = data => {
 		createClient.mutate(data, {
-			onSuccess: () => setOpen(false),
+			onSuccess: () => {
+				setOpen(false)
+				navigate('/users')
+			},
 			onError: error => {
 				if (error instanceof AxiosError) {
 					Object.entries(error.response?.data.errors).map(val =>
@@ -62,48 +52,17 @@ export const NewClientModal = ({ setOpen }: NewClientModalProps) => {
 		})
 	}
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			autoComplete='off'
-			autoSave='off'>
+		<form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoSave='off'>
 			<div className='pt-3 pb-5 border-b border-[#D5D5D5]'>
-				<h3 className='font-black text-2xl'>
-					Create account for new client
-				</h3>
+				<h3 className='font-black text-2xl'>Create account for new client</h3>
 			</div>
 
 			<div className='space-y-4 mt-4'>
-				<TextInput
-					label='Business name'
-					control={control}
-					name='business_name'
-					register={register}
-					type='text'
-				/>
-				<TextInput
-					label='Email address'
-					control={control}
-					name='email'
-					register={register}
-					type='email'
-					inputMode='email'
-				/>
-				<TextInput
-					label='Phone no.'
-					control={control}
-					name='phone'
-					register={register}
-					type='text'
-					inputMode='tel'
-				/>
+				<TextInput label='Business name' control={control} name='business_name' register={register} type='text' />
+				<TextInput label='Email address' control={control} name='email' register={register} type='email' inputMode='email' />
+				<TextInput label='Phone no.' control={control} name='phone' register={register} type='text' inputMode='tel' />
 				<div>
-					<TextInput
-						label='Password'
-						control={control}
-						name='password'
-						register={register}
-						type='password'
-					/>
+					<TextInput label='Password' control={control} name='password' register={register} type='password' />
 					<button
 						type='button'
 						onClick={() => {

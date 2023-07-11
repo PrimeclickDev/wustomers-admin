@@ -1,4 +1,4 @@
-import { useDeactiveUser } from 'api/hooks/shared/useDeactiveUser'
+import { useDeactivateUser } from 'api/hooks/shared/useDeactivateUser'
 import { useDeleteUser } from 'api/hooks/users/useDeleteUser'
 import emptyUserImg from 'assets/images/empty-user.png'
 import { BackBtn } from 'components/BackBtn'
@@ -19,7 +19,7 @@ export const UserDetails = () => {
 	const user = location.state.user as User
 
 	const deleteUser = useDeleteUser()
-	const deactivateUser = useDeactiveUser()
+	const deactivateUser = useDeactivateUser()
 
 	if (!user) {
 		return <Navigate to='/users' replace />
@@ -33,28 +33,16 @@ export const UserDetails = () => {
 				<section className='mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8'>
 					<div className='space-y-8'>
 						<div className='bg-wustomers-primary px-4 py-6 md:px-6 border border-[#17A1FA] rounded-2xl shadow-[0px_0px_8px_2px_rgba(130,130,130,0.15)] flex flex-col lg:flex-row items-center gap-4 md:gap-6'>
-							<img
-								src={user.avatar ?? emptyUserImg}
-								alt='user profile'
-								className='w-40 h-48 object-center object-cover rounded-xl'
-							/>
+							<img src={user.avatar ?? emptyUserImg} alt='user profile' className='w-40 h-48 object-center object-cover rounded-xl' />
 							<div className='space-y-1'>
-								<h4 className='text-2xl lg:text-4xl font-medium capitalize'>
-									{user.first_name && user.last_name
-										? `${user.last_name} ${user.first_name}`
-										: 'No name'}
-								</h4>
+								<h4 className='text-2xl lg:text-4xl font-medium capitalize'>{user.first_name && user.last_name ? `${user.last_name} ${user.first_name}` : 'No name'}</h4>
 								<p>{user.email}</p>
-								<p className='capitalize'>
-									{user.profile.business_name}
-								</p>
+								<p className='capitalize'>{user.profile.business_name}</p>
 								<p>{user.profile.phone}</p>
 								<div className='flex flex-col lg:flex-row items-center gap-2 pt-2'>
 									<button
 										type='button'
-										onClick={() =>
-											setOpenSuspendModal(true)
-										}
+										onClick={() => setOpenSuspendModal(true)}
 										className='text-[#F2C94C] hover:bg-[#F2C94C] hover:text-inherit transition-colors border border-[#F2C94C] py-1 px-4 rounded-full'>
 										Suspend user
 									</button>

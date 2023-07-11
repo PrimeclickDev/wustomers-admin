@@ -29,7 +29,7 @@ export const useRevokePermission = () => {
 			roleId: number
 			permissionId: number
 		}) => assignPermissions(roleId, permissionId),
-		onSuccess: ({ data }) => {
+		onSuccess: () => {
 			// toast.success(data?.message)
 			queryClient.invalidateQueries(['roles'])
 		},

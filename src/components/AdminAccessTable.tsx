@@ -2,7 +2,7 @@ import * as Popover from '@radix-ui/react-popover'
 import { useQueryClient } from '@tanstack/react-query'
 import { useDeleteAdmin } from 'api/hooks/admin/useDeleteAdmin'
 import { useFetchAdmins } from 'api/hooks/admin/useFetchAdmins'
-import { useDeactiveUser } from 'api/hooks/shared/useDeactiveUser'
+import { useDeactivateUser } from 'api/hooks/shared/useDeactivateUser'
 import { useReactivateUser } from 'api/hooks/shared/useReactivateUser'
 import MoreElipsis from 'assets/icons/MoreElipsis'
 import { Admin } from 'models/admins-models'
@@ -32,7 +32,7 @@ export const AdminAccessTable = () => {
 	const queryClient = useQueryClient()
 	const { data: admins, isLoading, isPreviousData } = useFetchAdmins()
 	const deleteAdmin = useDeleteAdmin()
-	const deactivateAdmin = useDeactiveUser()
+	const deactivateAdmin = useDeactivateUser()
 	const reactivateAdmin = useReactivateUser()
 
 	return (
@@ -58,10 +58,7 @@ export const AdminAccessTable = () => {
 						<thead>
 							<tr className='table-row border-b border-b-gray-200'>
 								{tableHeaders?.map(header => (
-									<th
-										key={header}
-										scope='col'
-										className='px-2 py-4 font-medium'>
+									<th key={header} scope='col' className='px-2 py-4 font-medium'>
 										{header}
 									</th>
 								))}
@@ -77,33 +74,18 @@ export const AdminAccessTable = () => {
 								</tr>
 							) : admins?.data.length ? (
 								admins.data.map(admin => (
-									<tr
-										key={admin.id}
-										className='even:bg-wustomers-primary/30'>
+									<tr key={admin.id} className='even:bg-wustomers-primary/30'>
 										<td className='px-2 py-4 capitalize'>
 											{admin.last_name} {admin.first_name}
 										</td>
-										<td className='px-2 py-4'>
-											{admin.email}
-										</td>
+										<td className='px-2 py-4'>{admin.email}</td>
 										<td className='px-2 py-4'>
 											{admin.roles.length ? (
-												<span className='py-1 px-3 uppercase tracking-wide text-xs font-medium rounded-md bg-neutral-300'>
-													{admin.roles[0]?.name.replace(
-														'-',
-														' '
-													)}
-												</span>
+												<span className='py-1 px-3 uppercase tracking-wide text-xs font-medium rounded-md bg-neutral-300'>{admin.roles[0]?.name.replace('-', ' ')}</span>
 											) : null}
 										</td>
 										<td className='px-2 py-4'>
-											<span
-												className={`py-1 px-3 uppercase tracking-wide text-xs font-medium rounded-md ${
-													status[
-														admin.status
-															.name as keyof typeof status
-													]
-												}`}>
+											<span className={`py-1 px-3 uppercase tracking-wide text-xs font-medium rounded-md ${status[admin.status.name as keyof typeof status]}`}>
 												{admin.status.name}
 											</span>
 										</td>
@@ -112,7 +94,8 @@ export const AdminAccessTable = () => {
 												<Popover.Trigger asChild>
 													<button
 														type='button'
-														className='bg-wustomers-primary rounded-md p-2'>
+														disabled={admin.roles[0].name === 'super-admin'}
+														className='bg-wustomers-primary rounded-md p-2 disabled:cursor-not-allowed disabled:opacity-50'>
 														<MoreElipsis />
 													</button>
 												</Popover.Trigger>
@@ -124,84 +107,52 @@ export const AdminAccessTable = () => {
 														<div className='flex flex-col gap-1 text-xs'>
 															<button
 																type='button'
-																disabled={
-																	admin.status
-																		.name ===
-																	'Inactive'
-																}
+																disabled={admin.status.name === 'Inactive'}
 																onClick={() => {
-																	setIsOpen(
-																		true
-																	)
-																	setSearchParams(
-																		{
-																			adminId:
-																				admin.id.toString(),
-																		}
-																	)
+																	setIsOpen(true)
+																	setSearchParams({
+																		adminId: admin.id.toString(),
+																	})
 																}}
 																className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300'>
 																Edit admin
 															</button>
 
-															{admin.status
-																.name !==
-															'Inactive' ? (
-																admin.roles[0]
-																	.name !==
-																	'super-admin' && (
+															{admin.status.name !== 'Inactive' ? (
+																admin.roles[0].name !== 'super-admin' && (
 																	<button
 																		type='button'
 																		onClick={() => {
-																			setOpenDeactivateModal(
-																				true
-																			)
-																			setSearchParams(
-																				{
-																					adminId:
-																						admin.id.toString(),
-																				}
-																			)
+																			setOpenDeactivateModal(true)
+																			setSearchParams({
+																				adminId: admin.id.toString(),
+																			})
 																		}}
 																		className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors'>
-																		Deactivate
-																		admin
+																		Deactivate admin
 																	</button>
 																)
 															) : (
 																<button
 																	type='button'
 																	onClick={() => {
-																		setOpenActivateModal(
-																			true
-																		)
-																		setSearchParams(
-																			{
-																				adminId:
-																					admin.id.toString(),
-																			}
-																		)
+																		setOpenActivateModal(true)
+																		setSearchParams({
+																			adminId: admin.id.toString(),
+																		})
 																	}}
 																	className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
-																	Reactivate
-																	admin
+																	Reactivate admin
 																</button>
 															)}
-															{admin.roles[0]
-																?.name !==
-															'super-admin' ? (
+															{admin.roles[0]?.name !== 'super-admin' ? (
 																<button
 																	type='button'
 																	onClick={() => {
-																		setOpen(
-																			true
-																		)
-																		setSearchParams(
-																			{
-																				adminId:
-																					admin.id.toString(),
-																			}
-																		)
+																		setOpen(true)
+																		setSearchParams({
+																			adminId: admin.id.toString(),
+																		})
 																	}}
 																	className='py-1.5 px-3 rounded hover:bg-red-600 text-left hover:text-white transition-colors'>
 																	Delete admin
@@ -217,9 +168,7 @@ export const AdminAccessTable = () => {
 								))
 							) : (
 								<tr className='table-row'>
-									<td
-										colSpan={5}
-										className='px-2 py-4 text-center'>
+									<td colSpan={5} className='px-2 py-4 text-center'>
 										No data found.
 									</td>
 								</tr>
@@ -249,15 +198,12 @@ export const AdminAccessTable = () => {
 				isLoading={deactivateAdmin.isLoading}
 				title='Are you sure you want to deactivate this admin?'
 				onConfirm={() =>
-					deactivateAdmin.mutate(
-						searchParams.get('adminId') as string,
-						{
-							onSuccess: () => {
-								setOpenDeactivateModal(false)
-								queryClient.invalidateQueries(['admins'])
-							},
-						}
-					)
+					deactivateAdmin.mutate(searchParams.get('adminId') as string, {
+						onSuccess: () => {
+							setOpenDeactivateModal(false)
+							queryClient.invalidateQueries(['admins'])
+						},
+					})
 				}
 			/>
 
@@ -268,29 +214,17 @@ export const AdminAccessTable = () => {
 				isLoading={reactivateAdmin.isLoading}
 				title='Are you sure you want to reactivate this admin?'
 				onConfirm={() =>
-					reactivateAdmin.mutate(
-						searchParams.get('adminId') as string,
-						{
-							onSuccess: () => {
-								setOpenActivateModal(false)
-								queryClient.invalidateQueries(['admins'])
-							},
-						}
-					)
+					reactivateAdmin.mutate(searchParams.get('adminId') as string, {
+						onSuccess: () => {
+							setOpenActivateModal(false)
+							queryClient.invalidateQueries(['admins'])
+						},
+					})
 				}
 			/>
 
 			<Modal open={isOpen} setOpen={setIsOpen}>
-				<EditAdminModal
-					admin={
-						admins?.data.find(
-							admin =>
-								admin.id.toString() ===
-								(searchParams.get('adminId') as string)
-						) as Admin
-					}
-					setIsOpen={setIsOpen}
-				/>
+				<EditAdminModal admin={admins?.data.find(admin => admin.id.toString() === (searchParams.get('adminId') as string)) as Admin} setIsOpen={setIsOpen} />
 			</Modal>
 		</>
 	)

@@ -2,13 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useUpdateAdmin } from 'api/hooks/admin/useUpdateAdmin'
 import { useFetchRoles } from 'api/hooks/roles/useFetchRoles'
 import InfoIcon from 'assets/icons/InfoIcon'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from 'components/Select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/Select'
 import { Spinner } from 'components/Spinner'
 import { TextInput } from 'components/TextInput'
 import { Admin } from 'models/admins-models'
@@ -22,18 +16,10 @@ type EditAdminModalProps = {
 }
 
 const schema = z.object({
-	first_name: z
-		.string({ required_error: 'First name is required' })
-		.min(1, { message: 'First name is required' })
-		.trim(),
-	last_name: z
-		.string({ required_error: 'Last name is required' })
-		.min(1, { message: 'Last name name is required' })
-		.trim(),
-	role: z
-		.string({ required_error: 'Role is required' })
-		.min(1, { message: 'Role is required' })
-		.trim(),
+	first_name: z.string({ required_error: 'First name is required' }).min(1, { message: 'First name is required' }).trim(),
+	last_name: z.string({ required_error: 'Last name is required' }).min(1, { message: 'Last name name is required' }).trim(),
+	phone: z.string({ required_error: 'Phone number is required' }).min(1, { message: 'Phone number is required' }).max(11, { message: 'Phone number cannot be more than 11 characters' }).trim(),
+	role: z.string({ required_error: 'Role is required' }).min(1, { message: 'Role is required' }).trim(),
 })
 
 type EditAdminSchema = z.infer<typeof schema>
@@ -46,6 +32,7 @@ export const EditAdminModal = ({ admin, setIsOpen }: EditAdminModalProps) => {
 			role: admin?.roles[0]?.name ?? '',
 			first_name: admin.first_name ?? '',
 			last_name: admin.last_name ?? '',
+			phone: admin.phone ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
@@ -64,52 +51,30 @@ export const EditAdminModal = ({ admin, setIsOpen }: EditAdminModalProps) => {
 			<h4 className='font-medium text-xl'>Edit admin</h4>
 
 			<div className='space-y-4 mt-4'>
-				<TextInput
-					label='First name'
-					control={control}
-					name='first_name'
-					register={register}
-					type='text'
-				/>
-				<TextInput
-					label='Last name'
-					control={control}
-					name='last_name'
-					register={register}
-					type='text'
-				/>
+				<TextInput label='First name' control={control} name='first_name' register={register} type='text' />
+				<TextInput label='Last name' control={control} name='last_name' register={register} type='text' />
+				<TextInput label='Phone number' control={control} name='phone' register={register} type='tel' inputMode='tel' />
 				<Controller
 					name='role'
 					control={control}
-					render={({
-						field: { onChange, value },
-						fieldState: { error },
-					}) => (
+					render={({ field: { onChange, value }, fieldState: { error } }) => (
 						<div>
 							<div>
 								<label htmlFor='role' className=''>
 									Role
 								</label>
-								<Select
-									onValueChange={onChange}
-									value={value}
-									disabled={value === 'super-admin'}>
+								<Select onValueChange={onChange} value={value} disabled={value === 'super-admin'}>
 									<SelectTrigger
 										id='role'
 										className={`w-full border-2 mt-1 rounded-md capitalize h-[49px] pl-4 disabled:cursor-not-allowed disabled:opacity-50 ${
-											error
-												? '!border-red-600 !bg-red-50'
-												: 'border-wustomers-primary-light !bg-wustomers-primary'
+											error ? '!border-red-600 !bg-red-50' : 'border-wustomers-primary-light !bg-wustomers-primary'
 										}`}>
 										<SelectValue placeholder='Select a role...' />
 									</SelectTrigger>
 
 									<SelectContent className='!w-[var(--radix-select-trigger-width)]'>
 										{roles?.data?.map(option => (
-											<SelectItem
-												value={option.name}
-												key={option.id}
-												className='py-4 capitalize'>
+											<SelectItem value={option.name} key={option.id} className='py-4 capitalize'>
 												{option.name.replace('-', ' ')}
 											</SelectItem>
 										))}
