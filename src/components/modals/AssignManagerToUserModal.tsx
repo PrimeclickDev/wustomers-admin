@@ -7,10 +7,7 @@ import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
 const schema = z.object({
-	manager: z
-		.string({ required_error: 'Account manager is required' })
-		.min(1, { message: 'Account manager is required' })
-		.trim(),
+	manager: z.string({ required_error: 'Account manager is required' }).min(1, { message: 'Account manager is required' }).trim(),
 })
 
 type AssignManagerSchema = z.infer<typeof schema>
@@ -44,41 +41,21 @@ export const AssignManagerToUserModal = ({ setOpen }: AssignManagerProps) => {
 
 	return (
 		<div className='p-2'>
-			<h4 className='font-medium text-xl'>Assign manager to user</h4>
+			<h4 className='font-bold text-xl'>Assign manager to user</h4>
 			<span className='text-xs'>Please select one account manager</span>
 
 			{isLoading ? (
 				<Spinner />
 			) : admins?.data.length ? (
-				<form
-					className='mt-6 flex flex-col gap-5'
-					onSubmit={handleSubmit(onSubmit)}>
+				<form className='mt-6 flex flex-col gap-5' onSubmit={handleSubmit(onSubmit)}>
 					{admins.data
-						.filter(
-							admin => admin.roles[0].name === 'account-manager'
-						)
+						.filter(admin => admin.roles[0].name === 'account-manager')
 						.map(admin => (
-							<fieldset
-								className='flex gap-2 relative'
-								key={admin.id}>
-								<input
-									type='radio'
-									id='manager'
-									{...register('manager')}
-									value={admin.id}
-									className='w-5 h-5 accent-wustomers-blue'
-								/>
-								<label
-									htmlFor='manager'
-									className='leading-none'>
-									<p className='font-bold'>
-										{admin.first_name && admin.last_name
-											? `${admin.first_name} ${admin.last_name}`
-											: '-'}
-									</p>
-									<p className='text-xs pt-1'>
-										{admin.email}
-									</p>
+							<fieldset className='flex gap-2 relative' key={admin.id}>
+								<input type='radio' id={admin.id.toString()} {...register('manager')} value={admin.id} className='w-5 h-5 accent-wustomers-blue' />
+								<label htmlFor={admin.id.toString()} className='leading-none'>
+									<p className='font-bold'>{admin.first_name && admin.last_name ? `${admin.first_name} ${admin.last_name}` : '-'}</p>
+									<p className='text-xs pt-1'>{admin.email}</p>
 								</label>
 							</fieldset>
 						))}
@@ -91,9 +68,7 @@ export const AssignManagerToUserModal = ({ setOpen }: AssignManagerProps) => {
 					</button>
 				</form>
 			) : (
-				<p className='text-sm text-center'>
-					You have not created any account managar.
-				</p>
+				<p className='text-sm text-center'>You have not created any account managar.</p>
 			)}
 		</div>
 	)

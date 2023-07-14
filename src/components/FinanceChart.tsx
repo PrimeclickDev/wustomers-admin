@@ -7,7 +7,6 @@ import { statusStyle } from './FinanceTable'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
 import { Spinner } from './Spinner'
 
-const doctype = ['csv', 'pdf']
 const statues = ['All', 'Paid', 'Unpaid']
 
 export const FinanceChart = () => {

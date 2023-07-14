@@ -1,4 +1,3 @@
-import * as Popover from '@radix-ui/react-popover'
 import { useQueryClient } from '@tanstack/react-query'
 import { useDeleteAdmin } from 'api/hooks/admin/useDeleteAdmin'
 import { useFetchAdmins } from 'api/hooks/admin/useFetchAdmins'
@@ -11,6 +10,7 @@ import { useSearchParams } from 'react-router-dom'
 import { ConfirmationModal } from './ConfirmationModal'
 import { Modal } from './Modal'
 import { Pagination } from './Pagination'
+import { Popover, PopoverContent, PopoverTrigger } from './Popover'
 import { Spinner } from './Spinner'
 import { EditAdminModal } from './modals/EditAdminModal'
 
@@ -90,79 +90,74 @@ export const AdminAccessTable = () => {
 											</span>
 										</td>
 										<td className='px-2 py-4'>
-											<Popover.Root>
-												<Popover.Trigger asChild>
+											<Popover>
+												<PopoverTrigger>
 													<button
 														type='button'
 														disabled={admin.roles[0].name === 'super-admin'}
 														className='bg-wustomers-primary rounded-md p-2 disabled:cursor-not-allowed disabled:opacity-50'>
 														<MoreElipsis />
 													</button>
-												</Popover.Trigger>
+												</PopoverTrigger>
 
-												<Popover.Portal>
-													<Popover.Content
-														className='rounded p-1 bg-white shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade'
-														sideOffset={5}>
-														<div className='flex flex-col gap-1 text-xs'>
+												<PopoverContent>
+													<div className='flex flex-col gap-1 text-xs'>
+														<button
+															type='button'
+															disabled={admin.status.name === 'Inactive'}
+															onClick={() => {
+																setIsOpen(true)
+																setSearchParams({
+																	adminId: admin.id.toString(),
+																})
+															}}
+															className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300'>
+															Edit admin
+														</button>
+
+														{admin.status.name !== 'Inactive' ? (
+															admin.roles[0].name !== 'super-admin' && (
+																<button
+																	type='button'
+																	onClick={() => {
+																		setOpenDeactivateModal(true)
+																		setSearchParams({
+																			adminId: admin.id.toString(),
+																		})
+																	}}
+																	className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors'>
+																	Deactivate admin
+																</button>
+															)
+														) : (
 															<button
 																type='button'
-																disabled={admin.status.name === 'Inactive'}
 																onClick={() => {
-																	setIsOpen(true)
+																	setOpenActivateModal(true)
 																	setSearchParams({
 																		adminId: admin.id.toString(),
 																	})
 																}}
-																className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300'>
-																Edit admin
+																className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
+																Reactivate admin
 															</button>
-
-															{admin.status.name !== 'Inactive' ? (
-																admin.roles[0].name !== 'super-admin' && (
-																	<button
-																		type='button'
-																		onClick={() => {
-																			setOpenDeactivateModal(true)
-																			setSearchParams({
-																				adminId: admin.id.toString(),
-																			})
-																		}}
-																		className='py-1.5 px-3 rounded hover:bg-wustomers-blue text-left hover:text-white transition-colors'>
-																		Deactivate admin
-																	</button>
-																)
-															) : (
-																<button
-																	type='button'
-																	onClick={() => {
-																		setOpenActivateModal(true)
-																		setSearchParams({
-																			adminId: admin.id.toString(),
-																		})
-																	}}
-																	className='py-1.5 px-3 rounded hover:bg-wustomers-blue disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-300 text-left hover:text-white transition-colors'>
-																	Reactivate admin
-																</button>
-															)}
-															{admin.roles[0]?.name !== 'super-admin' ? (
-																<button
-																	type='button'
-																	onClick={() => {
-																		setOpen(true)
-																		setSearchParams({
-																			adminId: admin.id.toString(),
-																		})
-																	}}
-																	className='py-1.5 px-3 rounded hover:bg-red-600 text-left hover:text-white transition-colors'>
-																	Delete admin
-																</button>
-															) : null}
-														</div>
-														<Popover.Arrow className='fill-white' />
-													</Popover.Content>
-												</Popover.Portal>
-											</Popover.Root>
+														)}
+														{admin.roles[0]?.name !== 'super-admin' ? (
+															<button
+																type='button'
+																onClick={() => {
+																	setOpen(true)
+																	setSearchParams({
+																		adminId: admin.id.toString(),
+																	})
+																}}
+																className='py-1.5 px-3 rounded hover:bg-red-600 text-left hover:text-white transition-colors'>
+																Delete admin
+															</button>
+														) : null}
+													</div>
+												</PopoverContent>
+											</Popover>
 										</td>
 									</tr>
 								))

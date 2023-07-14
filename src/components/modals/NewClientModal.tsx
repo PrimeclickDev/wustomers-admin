@@ -53,9 +53,7 @@ export const NewClientModal = ({ setOpen }: NewClientModalProps) => {
 	}
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} autoComplete='off' autoSave='off'>
-			<div className='pt-3 pb-5 border-b border-[#D5D5D5]'>
-				<h3 className='font-black text-2xl'>Create account for new client</h3>
-			</div>
+			<h3 className='font-black text-2xl border-b border-[#D5D5D5] pb-2'>Create account for new client</h3>
 
 			<div className='space-y-4 mt-4'>
 				<TextInput label='Business name' control={control} name='business_name' register={register} type='text' />

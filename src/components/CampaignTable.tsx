@@ -1,42 +1,57 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import { useFetchAllCampaigns } from 'api/hooks/campaigns/useFetchAllCampaigns'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { formatCurrency } from 'utils/formatCurrency'
 import { Pagination } from './Pagination'
 import { Spinner } from './Spinner'
 
-const tableHeaders = [
-	'Campaign title',
-	'Campaign Owner',
-	'Acct. manager ID',
-	'Price',
-	'Status',
-	'Duration',
-	'Start Date',
-	'End date',
-	'Action',
-]
+const tableHeaders = ['Campaign title', 'Campaign Owner', 'Acct. manager ID', 'Price', 'Status', 'Payment Status', 'Duration', 'Start Date', 'End date', 'Action']
 
 export const CampaignTable = () => {
 	const [page, setPage] = React.useState(1)
+	const [searchParams, setSearchParams] = useSearchParams()
 	const {
 		data: campaigns,
 		isLoading,
 		isPreviousData,
-	} = useFetchAllCampaigns(page)
+	} = useFetchAllCampaigns({
+		page,
+		status: searchParams.get('status') ?? 'all',
+	})
 
 	return (
 		<div className='mt-10 bg-wustomers-primary rounded-md py-2'>
 			<header className='flex flex-wrap items-center justify-between gap-2 px-4 py-2 lg:px-6'>
 				<h3 className='font-medium text-lg'>Campaign list</h3>
 
-				<div className='flex flex-wrap items-center gap-4 text-sm text-wustomers-gray'>
-					{/* <div className='flex items-center gap-2'>
-						<p>All (50)</p>
-						<p>Live (20)</p>
-						<p>Pending (30)</p>
-					</div> */}
+				<div className='flex flex-wrap items-center gap-10 text-sm text-wustomers-gray'>
+					<div className='flex items-center gap-2'>
+						<button
+							type='button'
+							className={`px-4 py-[2px] transition-colors rounded ${
+								searchParams.get('status') === 'all' ? 'bg-wustomers-blue-light text-white' : 'bg-wustomers-main/20 hover:bg-wustomers-neutral-lighter/50'
+							}`}
+							onClick={() => setSearchParams({ status: 'all' })}>
+							All
+						</button>
+						<button
+							type='button'
+							className={`px-4 py-[2px] transition-colors rounded ${
+								searchParams.get('status') === 'active' ? 'bg-wustomers-blue-light text-white' : 'bg-wustomers-main/20  hover:bg-wustomers-neutral-lighter/50'
+							}`}
+							onClick={() => setSearchParams({ status: 'active' })}>
+							Active
+						</button>
+						<button
+							type='button'
+							className={`px-4 py-[2px] transition-colors rounded ${
+								searchParams.get('status') === 'inactive' ? 'bg-wustomers-blue-light text-white' : 'bg-wustomers-main/20  hover:bg-wustomers-neutral-lighter/50'
+							}`}
+							onClick={() => setSearchParams({ status: 'inactive' })}>
+							Inactive
+						</button>
+					</div>
 
 					<Pagination
 						from={campaigns?.meta.from}
@@ -56,10 +71,7 @@ export const CampaignTable = () => {
 					<thead>
 						<tr className='table-row border-b border-b-gray-200'>
 							{tableHeaders?.map(header => (
-								<th
-									key={header}
-									scope='col'
-									className='px-6 py-4 font-medium'>
+								<th key={header} scope='col' className='px-6 py-4 font-medium'>
 									{header}
 								</th>
 							))}
@@ -81,79 +93,36 @@ export const CampaignTable = () => {
 						) : campaigns?.data.length ? (
 							campaigns.data.map(campaign => (
 								<tr key={campaign.id}>
-									<td className='px-6 py-5 font-medium first-letter:capitalize'>
-										{campaign.title}
-									</td>
+									<td className='px-6 py-5 font-medium first-letter:capitalize'>{campaign.title}</td>
 									<td className='px-6 py-5'>
-										{campaign.last_name}{' '}
-										{campaign.first_name}
+										{campaign.last_name} {campaign.first_name}
 									</td>
-									<td className='px-6 py-5'>
-										{campaign.manager.first_name &&
-										campaign.manager.last_name
-											? `${campaign.manager.last_name} ${campaign.manager.first_name}`
-											: '-'}
-									</td>
-									<td className='px-6 py-5'>
-										{formatCurrency(campaign.amount)}
-									</td>
+									<td className='px-6 py-5'>{campaign.manager.first_name && campaign.manager.last_name ? `${campaign.manager.last_name} ${campaign.manager.first_name}` : '-'}</td>
+									<td className='px-6 py-5'>{formatCurrency(campaign.amount)}</td>
 									<td className='px-6 py-5 capitalize'>
 										<span
 											className={`py-1 px-3 rounded-md capitalize w-max text-sm ${
-												campaign?.campaign_status ===
-													'Active' &&
-												campaign?.payment_status ===
-													'Paid'
+												campaign?.campaign_status === 'Active' && campaign?.payment_status === 'Paid'
 													? 'bg-[#219653]/20 text-[#219653]'
-													: campaign?.campaign_status ===
-															'Inactive' &&
-													  campaign?.payment_status ===
-															'Unpaid'
+													: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Unpaid'
 													? 'bg-[#EB5757]/20 text-[#EB5757]'
-													: campaign?.campaign_status ===
-															'Inactive' &&
-													  campaign?.payment_status ===
-															'Paid'
+													: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Paid'
 													? 'bg-[#F2C94C]/20 text-[#F2C94C]'
 													: 'bg-[#EB5757]/20 text-[#EB5757]'
 											}`}>
-											{campaign?.campaign_status ===
-												'Active' &&
-											campaign?.payment_status === 'Paid'
+											{campaign?.campaign_status === 'Active' && campaign?.payment_status === 'Paid'
 												? 'Live'
-												: campaign?.campaign_status ===
-														'Inactive' &&
-												  campaign?.payment_status ===
-														'Unpaid'
+												: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Unpaid'
 												? 'Inactive'
-												: campaign?.campaign_status ===
-														'Inactive' &&
-												  campaign?.payment_status ===
-														'Paid'
+												: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Paid'
 												? 'Pending'
 												: 'Ended'}
 										</span>
 									</td>
-
-									<td className='px-6 py-5'>
-										{campaign.budget
-											? `${campaign.budget.duration} weeks`
-											: '-'}
-									</td>
-									<td className='px-6 py-5'>
-										{campaign.start_date
-											? new Date(
-													campaign.start_date as string
-											  ).toDateString()
-											: '-'}
-									</td>
-									<td className='px-6 py-5'>
-										{campaign.end_date
-											? new Date(
-													campaign.end_date as string
-											  ).toDateString()
-											: '-'}
-									</td>
+									<td className='px-6 py-5 font-medium'>{campaign.payment_status}</td>
+									<td className='px-6 py-5'>{campaign.budget ? `${campaign.budget.duration} weeks` : '-'}</td>
+									<td className='px-6 py-5'>{campaign.start_date ? new Date(campaign.start_date as string).toDateString() : '-'}</td>
+									<td className='px-6 py-5'>{campaign.end_date ? new Date(campaign.end_date as string).toDateString() : '-'}</td>
 									<td className='px-6 py-5'>
 										<Link
 											to={campaign.id.toString()}
@@ -165,9 +134,7 @@ export const CampaignTable = () => {
 							))
 						) : (
 							<tr className='table-row'>
-								<td
-									colSpan={9}
-									className='px-2 py-4 text-center'>
+								<td colSpan={9} className='px-2 py-4 text-center'>
 									No data found.
 								</td>
 							</tr>

@@ -51,7 +51,7 @@ export const Campaigns = () => {
 				</header>
 
 				<section className='pt-7'>
-					<div className='lg:grid lg:grid-cols-7 flex flex-col gap-5'>
+					<div className='lg:grid lg:grid-cols-6 flex flex-col gap-8'>
 						<CampaignMetric />
 						<CampaignChart />
 					</div>
