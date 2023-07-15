@@ -14,7 +14,7 @@ export const useDeleteRole = () => {
 		mutationFn: (id: number) => deleteRole(id),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['roles'])
+			queryClient.invalidateQueries({ queryKey: ['roles'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

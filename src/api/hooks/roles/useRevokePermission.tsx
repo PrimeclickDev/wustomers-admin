@@ -9,29 +9,18 @@ interface RevokePermissionResponse extends ResponseType {
 	data: Role
 }
 
-export const assignPermissions = async (
-	roleId: number,
-	permissionId: number
-): Promise<AxiosResponse<RevokePermissionResponse>> => {
-	return await instance.get(
-		`${baseURL}/admin/roles/${roleId}/permission/${permissionId}/revoke`
-	)
+export const assignPermissions = async (roleId: number, permissionId: number): Promise<AxiosResponse<RevokePermissionResponse>> => {
+	return await instance.get(`${baseURL}/admin/roles/${roleId}/permission/${permissionId}/revoke`)
 }
 
 export const useRevokePermission = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: ({
-			roleId,
-			permissionId,
-		}: {
-			roleId: number
-			permissionId: number
-		}) => assignPermissions(roleId, permissionId),
+		mutationFn: ({ roleId, permissionId }: { roleId: number; permissionId: number }) => assignPermissions(roleId, permissionId),
 		onSuccess: () => {
 			// toast.success(data?.message)
-			queryClient.invalidateQueries(['roles'])
+			queryClient.invalidateQueries({ queryKey: ['roles'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

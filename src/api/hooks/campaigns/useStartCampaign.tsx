@@ -16,7 +16,7 @@ export const useStartcampaign = (campaignId: string) => {
 		mutationFn: () => startCampaign(campaignId),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['campaigns'])
+			queryClient.invalidateQueries({ queryKey: ['campaigns'] })
 			navigate('/campaigns')
 		},
 		onError: error => {

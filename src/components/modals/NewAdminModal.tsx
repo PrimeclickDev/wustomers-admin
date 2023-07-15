@@ -52,17 +52,23 @@ export const NewAdminModal = ({ setOpen }: NewAdminModalProps) => {
 	})
 
 	const onSubmit: SubmitHandler<NewAdminSchema> = data => {
-		createAdmin.mutate(data, {
-			onSuccess: () => setOpen(false),
-			onError: error => {
-				if (error instanceof AxiosError) {
-					Object.entries(error.response?.data.errors).map(val =>
-						// @ts-expect-error FIXME: type object.entries
-						setError(val[0], { message: val[1][0] })
-					)
-				}
+		createAdmin.mutate(
+			{
+				...data,
+				role: parseInt(data.role),
 			},
-		})
+			{
+				onSuccess: () => setOpen(false),
+				onError: error => {
+					if (error instanceof AxiosError) {
+						Object.entries(error.response?.data.errors).map(val =>
+							// @ts-expect-error FIXME: type object.entries
+							setError(val[0], { message: val[1][0] })
+						)
+					}
+				},
+			}
+		)
 	}
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className='self-center'>
@@ -93,7 +99,7 @@ export const NewAdminModal = ({ setOpen }: NewAdminModalProps) => {
 
 									<SelectContent className='!w-[var(--radix-select-trigger-width)]'>
 										{roles?.data?.map(option => (
-											<SelectItem value={option.name} key={option.id} className='py-4 capitalize'>
+											<SelectItem value={option.id.toString()} key={option.id} className='py-4 capitalize'>
 												{option.name.replace('-', ' ')}
 											</SelectItem>
 										))}

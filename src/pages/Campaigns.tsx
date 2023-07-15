@@ -24,7 +24,7 @@ export const Campaigns = () => {
 							<h3 className='font-black text-2xl lg:text-3xl'>Account Management</h3>
 							<button onClick={() => setOpen(true)} type='button' className='py-1.5 px-5 hover:bg-opacity-90 text-sm flex items-center gap-2 bg-wustomers-blue text-white rounded-md'>
 								<Plus />
-								Add new client
+								Add new business
 							</button>
 						</div>
 					</div>

@@ -28,9 +28,7 @@ export interface Client {
 	role: Role[]
 }
 
-export const createClient = async (
-	data: Payload
-): Promise<AxiosResponse<ClientResponse>> => {
+export const createClient = async (data: Payload): Promise<AxiosResponse<ClientResponse>> => {
 	return await instance.post(`${baseURL}/admin/users/register`, data)
 }
 
@@ -41,7 +39,7 @@ export const useCreateClient = () => {
 		mutationFn: (data: Payload) => createClient(data),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['users'])
+			queryClient.invalidateQueries({ queryKey: ['users', 1] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

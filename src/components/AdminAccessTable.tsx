@@ -196,7 +196,7 @@ export const AdminAccessTable = () => {
 					deactivateAdmin.mutate(searchParams.get('adminId') as string, {
 						onSuccess: () => {
 							setOpenDeactivateModal(false)
-							queryClient.invalidateQueries(['admins'])
+							queryClient.invalidateQueries({ queryKey: ['admins'] })
 						},
 					})
 				}
@@ -212,7 +212,7 @@ export const AdminAccessTable = () => {
 					reactivateAdmin.mutate(searchParams.get('adminId') as string, {
 						onSuccess: () => {
 							setOpenActivateModal(false)
-							queryClient.invalidateQueries(['admins'])
+							queryClient.invalidateQueries({ queryKey: ['admins'] })
 						},
 					})
 				}

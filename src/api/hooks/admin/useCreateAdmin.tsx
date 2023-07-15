@@ -10,16 +10,14 @@ type Payload = {
 	email: string
 	password: string
 	confirm_password: string
-	role: string
+	role: number
 }
 
 interface CreateAdminResponse extends ResponseType {
 	data: User
 }
 
-export const createAdmin = async (
-	data: Payload
-): Promise<AxiosResponse<CreateAdminResponse>> => {
+export const createAdmin = async (data: Payload): Promise<AxiosResponse<CreateAdminResponse>> => {
 	return await instance.post(`${baseURL}/admin/create`, data)
 }
 
@@ -30,7 +28,7 @@ export const useCreateAdmin = () => {
 		mutationFn: (data: Payload) => createAdmin(data),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['admins'])
+			queryClient.invalidateQueries({ queryKey: ['admins'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

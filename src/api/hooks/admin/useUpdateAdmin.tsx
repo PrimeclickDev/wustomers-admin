@@ -14,10 +14,7 @@ interface CreateAdminResponse extends ResponseType {
 	data: User
 }
 
-export const updateAdmin = async (
-	id: number,
-	data: Payload
-): Promise<AxiosResponse<CreateAdminResponse>> => {
+export const updateAdmin = async (id: number, data: Payload): Promise<AxiosResponse<CreateAdminResponse>> => {
 	return await instance.patch(`${baseURL}/admin/${id}/update`, data)
 }
 
@@ -25,11 +22,10 @@ export const useUpdateAdmin = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: ({ data, id }: { data: Payload; id: number }) =>
-			updateAdmin(id, data),
+		mutationFn: ({ data, id }: { data: Payload; id: number }) => updateAdmin(id, data),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['admins'])
+			queryClient.invalidateQueries({ queryKey: ['admins'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

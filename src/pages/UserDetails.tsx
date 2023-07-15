@@ -22,7 +22,7 @@ export const UserDetails = () => {
 	const deactivateUser = useDeactivateUser()
 
 	if (!user) {
-		return <Navigate to='/users' replace />
+		return <Navigate to='/business-accounts' replace />
 	}
 
 	return (
@@ -71,7 +71,7 @@ export const UserDetails = () => {
 				isLoading={deleteUser.isLoading}
 				onConfirm={() =>
 					deleteUser.mutate(user.id, {
-						onSuccess: () => navigate('/users'),
+						onSuccess: () => navigate('/business-accounts'),
 					})
 				}
 			/>
@@ -83,7 +83,7 @@ export const UserDetails = () => {
 				isLoading={deactivateUser.isLoading}
 				onConfirm={() =>
 					deactivateUser.mutate(user.id.toString(), {
-						onSuccess: () => navigate('/users'),
+						onSuccess: () => navigate('/business-accounts'),
 					})
 				}
 			/>

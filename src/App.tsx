@@ -25,7 +25,7 @@ function App() {
 					<Route path=':campaignId' element={<CampaignPreview />} />
 				</Route>
 
-				<Route path='users'>
+				<Route path='business-accounts'>
 					<Route index element={<Users />} />
 					<Route path=':id' element={<UserDetails />} />
 					<Route path=':id/campaign/:campaignId' element={<CampaignPreview />} />

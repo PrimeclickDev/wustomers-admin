@@ -21,29 +21,18 @@ export interface Client {
 	role: Role[]
 }
 
-export const assignManager = async (
-	userId: string,
-	managerId: string
-): Promise<AxiosResponse<ClientResponse>> => {
-	return await instance.get(
-		`${baseURL}/admin/users/${userId}/manager/${managerId}/assigned`
-	)
+export const assignManager = async (userId: string, managerId: string): Promise<AxiosResponse<ClientResponse>> => {
+	return await instance.get(`${baseURL}/admin/users/${userId}/manager/${managerId}/assigned`)
 }
 
 export const useAssignManager = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: ({
-			userId,
-			managerId,
-		}: {
-			userId: string
-			managerId: string
-		}) => assignManager(userId, managerId),
+		mutationFn: ({ userId, managerId }: { userId: string; managerId: string }) => assignManager(userId, managerId),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['users'])
+			queryClient.invalidateQueries({ queryKey: ['users'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

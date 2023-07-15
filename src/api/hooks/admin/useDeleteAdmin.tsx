@@ -14,7 +14,7 @@ export const useDeleteAdmin = () => {
 		mutationFn: (id: string) => deleteAdmin(id),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['admins'])
+			queryClient.invalidateQueries({ queryKey: ['admins'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

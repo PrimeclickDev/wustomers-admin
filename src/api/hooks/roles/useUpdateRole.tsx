@@ -15,11 +15,10 @@ export const useUpdateRole = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: ({ data, id }: { data: Payload; id: number }) =>
-			updateRole(id, data),
+		mutationFn: ({ data, id }: { data: Payload; id: number }) => updateRole(id, data),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
-			queryClient.invalidateQueries(['roles'])
+			queryClient.invalidateQueries({ queryKey: ['roles'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

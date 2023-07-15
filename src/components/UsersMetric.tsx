@@ -4,13 +4,7 @@ import PeopleDelete from 'assets/icons/PeopleDelete'
 import PeopleTick from 'assets/icons/PeopleTick'
 import React from 'react'
 import { filters } from 'utils/constants'
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from './Select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
 import { Spinner } from './Spinner'
 
 export const UsersMetrics = () => {
@@ -31,10 +25,7 @@ export const UsersMetrics = () => {
 
 					<SelectContent>
 						{filters.map(option => (
-							<SelectItem
-								value={option.name}
-								key={option.id}
-								className='py-4'>
+							<SelectItem value={option.name} key={option.id} className='py-4'>
 								{option.name}
 							</SelectItem>
 						))}
@@ -51,39 +42,27 @@ export const UsersMetrics = () => {
 					<>
 						<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-1'>
 							<div className='flex items-center justify-between'>
-								<h3 className='text-gray-600 capitalize'>
-									Total users
-								</h3>
+								<h3 className='text-gray-600 capitalize'>Total business accounts</h3>
 								<People />
 							</div>
 
-							<p className='font-bold text-4xl'>
-								{metrics?.total_user.toLocaleString()}
-							</p>
+							<p className='font-bold text-4xl'>{metrics?.total_user.toLocaleString()}</p>
 						</li>
 						<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-1'>
 							<div className='flex items-center justify-between'>
-								<h3 className='text-gray-600 capitalize'>
-									Total active users
-								</h3>
+								<h3 className='text-gray-600 capitalize'>Total active</h3>
 								<PeopleTick />
 							</div>
 
-							<p className='font-bold text-4xl'>
-								{metrics?.total_active.toLocaleString()}
-							</p>
+							<p className='font-bold text-4xl'>{metrics?.total_active.toLocaleString()}</p>
 						</li>
 						<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-1'>
 							<div className='flex items-center justify-between'>
-								<h3 className='text-gray-600 capitalize'>
-									Total passive users
-								</h3>
+								<h3 className='text-gray-600 capitalize'>Total passive</h3>
 								<PeopleDelete />
 							</div>
 
-							<p className='font-bold text-4xl'>
-								{metrics?.total_inactive.toLocaleString()}
-							</p>
+							<p className='font-bold text-4xl'>{metrics?.total_inactive.toLocaleString()}</p>
 						</li>
 					</>
 				)}

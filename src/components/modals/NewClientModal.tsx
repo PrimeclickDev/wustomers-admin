@@ -39,7 +39,7 @@ export const NewClientModal = ({ setOpen }: NewClientModalProps) => {
 		createClient.mutate(data, {
 			onSuccess: () => {
 				setOpen(false)
-				navigate('/users')
+				navigate('/business-accounts')
 			},
 			onError: error => {
 				if (error instanceof AxiosError) {

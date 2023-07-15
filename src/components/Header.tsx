@@ -25,9 +25,9 @@ const navs = [
 	},
 	{
 		id: 2,
-		name: 'Users',
+		name: 'Business accounts',
 		icon: <Users width={20} />,
-		route: '/users',
+		route: '/business-accounts',
 	},
 	{
 		id: 3,
@@ -56,9 +56,7 @@ export const Header = () => {
 
 	React.useEffect(() => {
 		if (role === 'account-manager') {
-			const adminNavs = navs.filter(
-				nav => nav.route !== '/admin-access' && nav.route !== '/finance'
-			)
+			const adminNavs = navs.filter(nav => nav.route !== '/admin-access' && nav.route !== '/finance')
 			setMenu(adminNavs)
 		} else if (role === 'admin') {
 			const adminNavs = navs.filter(nav => nav.route !== '/admin-access')
@@ -73,16 +71,10 @@ export const Header = () => {
 					<div className='flex lg:flex-col items-center justify-between'>
 						<div className='max-w-7xl mx-auto flex items-center justify-between gap-2 w-full px-3'>
 							<Link to='/campaigns'>
-								<WustomersLogo
-									fill='#072AC8'
-									className='w-32 md:w-40'
-								/>
+								<WustomersLogo fill='#072AC8' className='w-32 md:w-40' />
 							</Link>
 
-							<button
-								type='button'
-								aria-label='notification'
-								className='w-10 h-10 rounded-full lg:place-items-center bg-white lg:grid hidden'>
+							<button type='button' aria-label='notification' className='w-10 h-10 rounded-full lg:place-items-center bg-white lg:grid hidden'>
 								<Bell />
 							</button>
 						</div>
@@ -92,11 +84,7 @@ export const Header = () => {
 									<NavLink
 										to={nav.route}
 										className={({ isActive }) =>
-											`flex items-center gap-2 rounded-md px-10 py-1.5 text-sm transition-all ${
-												isActive
-													? 'bg-wustomers-blue text-white'
-													: 'hover:bg-wustomers-blue/10'
-											}`
+											`flex items-center gap-2 rounded-md px-10 py-1.5 text-sm transition-all ${isActive ? 'bg-wustomers-blue text-white' : 'hover:bg-wustomers-blue/10'}`
 										}>
 										{nav.icon}
 										<span>{nav.name}</span>
@@ -115,23 +103,14 @@ export const Header = () => {
 						</ul>
 
 						{/* hamburger menu */}
-						<button
-							className='lg:hidden'
-							type='button'
-							onClick={() => setIsOpen(true)}>
+						<button className='lg:hidden' type='button' onClick={() => setIsOpen(true)}>
 							<Menu />
 						</button>
 					</div>
 				</nav>
 
 				{/* mobile menu  */}
-				<div
-					aria-hidden='true'
-					onClick={closeMenu}
-					className={`absolute inset-0 z-50 min-h-screen w-full bg-black/80 transition-all backdrop:blur-sm ${
-						isOpen ? 'block' : 'hidden'
-					}`}
-				/>
+				<div aria-hidden='true' onClick={closeMenu} className={`absolute inset-0 z-50 min-h-screen w-full bg-black/80 transition-all backdrop:blur-sm ${isOpen ? 'block' : 'hidden'}`} />
 				<div
 					className={`absolute left-0 top-0 z-50 flex h-screen w-56 flex-col bg-wustomers-blue px-2 pt-20 pb-10 text-white shadow-2xl transition lg:hidden ${
 						isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -142,46 +121,30 @@ export const Header = () => {
 								<NavLink
 									to={nav.route}
 									onClick={closeMenu}
-									className={({ isActive }) =>
-										`flex items-center gap-2 rounded-md px-5 py-2.5 text-sm transition-all ${
-											isActive
-												? 'bg-wustomers-blue-light text-white'
-												: ''
-										}`
-									}>
+									className={({ isActive }) => `flex items-center gap-2 rounded-md px-5 py-2.5 text-sm transition-all ${isActive ? 'bg-wustomers-blue-light text-white' : ''}`}>
 									{nav.icon}
 									<span>{nav.name}</span>
 								</NavLink>
 							</li>
 						))}
 						<li>
-							<button
-								onClick={() => setOpen(true)}
-								className='flex items-center w-full gap-2 rounded-md px-5 py-1.5 text-sm transition-all'
-								type='button'>
+							<button onClick={() => setOpen(true)} className='flex items-center w-full gap-2 rounded-md px-5 py-1.5 text-sm transition-all' type='button'>
 								<Logout width={16} />
 								<span>Log out</span>
 							</button>
 						</li>
 					</ul>
 
-					<button
-						onClick={closeMenu}
-						className='absolute top-5 right-3 z-50 rounded-md bg-wustomers-blue-light p-1 text-white'>
+					<button onClick={closeMenu} className='absolute top-5 right-3 z-50 rounded-md bg-wustomers-blue-light p-1 text-white'>
 						<CloseCircle />
 						<span className='sr-only'>close menu</span>
 					</button>
 				</div>
 			</header>
 
-			<Modal
-				open={open}
-				setOpen={setOpen}
-				className='grid place-items-center space-y-3'>
+			<Modal open={open} setOpen={setOpen} className='grid place-items-center space-y-3'>
 				<Warning />
-				<p className='text-2xl w-72 text-center'>
-					Are you sure you want to logout?
-				</p>
+				<p className='text-2xl w-72 text-center'>Are you sure you want to logout?</p>
 
 				<div className='flex items-center gap-2 pt-2 w-full'>
 					<button
@@ -196,11 +159,7 @@ export const Header = () => {
 						disabled={logoutAdmin.isLoading}
 						onClick={() => logoutAdmin.mutate()}
 						className='text-[#EB5757] flex-1 border border-[#EB5757] hover:bg-[#EB5757] hover:text-white transition-colors py-1.5 px-4 rounded-full disabled:cursor-not-allowed'>
-						{logoutAdmin.isLoading ? (
-							<Spinner className='text-white' />
-						) : (
-							'Yes, logout'
-						)}
+						{logoutAdmin.isLoading ? <Spinner className='text-white' /> : 'Yes, logout'}
 					</button>
 				</div>
 			</Modal>
