@@ -29,7 +29,7 @@ export const EditAdminModal = ({ admin, setIsOpen }: EditAdminModalProps) => {
 	const updateAdmin = useUpdateAdmin()
 	const { register, handleSubmit, control } = useForm<EditAdminSchema>({
 		defaultValues: {
-			role: admin?.roles[0]?.name ?? '',
+			role: admin?.roles[0]?.id.toString() ?? '',
 			first_name: admin.first_name ?? '',
 			last_name: admin.last_name ?? '',
 			phone: admin.phone ?? '',
@@ -37,7 +37,12 @@ export const EditAdminModal = ({ admin, setIsOpen }: EditAdminModalProps) => {
 		resolver: zodResolver(schema),
 	})
 
-	const onSubmit: SubmitHandler<EditAdminSchema> = data => {
+	const onSubmit: SubmitHandler<EditAdminSchema> = payload => {
+		const data = {
+			...payload,
+			role: parseInt(payload.role),
+		}
+
 		updateAdmin.mutate(
 			{ data, id: admin.id },
 			{
@@ -74,7 +79,7 @@ export const EditAdminModal = ({ admin, setIsOpen }: EditAdminModalProps) => {
 
 									<SelectContent className='!w-[var(--radix-select-trigger-width)]'>
 										{roles?.data?.map(option => (
-											<SelectItem value={option.name} key={option.id} className='py-4 capitalize'>
+											<SelectItem value={option.id.toString()} key={option.id} className='py-4 capitalize'>
 												{option.name.replace('-', ' ')}
 											</SelectItem>
 										))}

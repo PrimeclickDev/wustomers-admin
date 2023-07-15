@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 type Payload = {
 	first_name: string
 	last_name: string
-	role: string
+	role: number
 }
 
 interface CreateAdminResponse extends ResponseType {
