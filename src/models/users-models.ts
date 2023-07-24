@@ -9,6 +9,14 @@ export interface Data {
 	user_metrics: UserMetrics
 }
 
+export interface SearchData extends ResponseType {
+	data: Search
+}
+
+export interface Search {
+	user: UserMetrics
+}
+
 export interface UserMetrics {
 	data: User[]
 	links: Links

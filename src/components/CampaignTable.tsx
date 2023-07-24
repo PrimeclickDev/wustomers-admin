@@ -1,5 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { useQueryClient } from '@tanstack/react-query'
 import { useFetchAllCampaigns } from 'api/hooks/campaigns/useFetchAllCampaigns'
+import { useSearchCampaigns } from 'api/hooks/campaigns/useSearchCampaigns'
+import Search from 'assets/icons/Search'
+import { useDebounce } from 'hooks/useDebouncedHook'
 import React from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { formatCurrency } from 'utils/formatCurrency'
@@ -7,10 +11,14 @@ import { Pagination } from './Pagination'
 import { Spinner } from './Spinner'
 
 const tableHeaders = ['Campaign title', 'Campaign Owner', 'Acct. manager ID', 'Price', 'Status', 'Payment Status', 'Duration', 'Start Date', 'End date', 'Action']
+const statues = ['all', 'active', 'inactive', 'search']
 
 export const CampaignTable = () => {
-	const [page, setPage] = React.useState(1)
+	const queryClient = useQueryClient()
 	const [searchParams, setSearchParams] = useSearchParams()
+	const [page, setPage] = React.useState(1)
+	const [search, setSearch] = React.useState('')
+	const debouncedValue = useDebounce(search, 500)
 	const {
 		data: campaigns,
 		isLoading,
@@ -20,37 +28,53 @@ export const CampaignTable = () => {
 		status: searchParams.get('status') ?? 'all',
 	})
 
+	const { data, isInitialLoading } = useSearchCampaigns(debouncedValue as string)
+	console.log('search data', data)
+
+	React.useEffect(() => {
+		if (debouncedValue) {
+			queryClient.setQueryData(['campaigns', 'all', 1], data)
+			return
+		}
+
+		queryClient.invalidateQueries({ queryKey: ['campaigns', 'all', 1] })
+	}, [data, debouncedValue, queryClient, setSearchParams])
+
 	return (
 		<div className='mt-10 bg-wustomers-primary rounded-md py-2'>
 			<header className='flex flex-wrap items-center justify-between gap-2 px-4 py-2 lg:px-6'>
 				<h3 className='font-medium text-lg'>Campaign list</h3>
 
+				<div className='flex items-center'>
+					<input
+						type='search'
+						name='search'
+						id='search'
+						disabled={isInitialLoading}
+						value={search}
+						onChange={e => {
+							setSearch(e.target.value)
+							// setSearchParams({ status: 'search' })
+						}}
+						placeholder='Search campaigns'
+						className='rounded-lg bg-wustomers-primary border border-[#B5BFEF] py-2 px-3 text-sm focus-visible:outline disabled:cursor-not-allowed'
+					/>
+					<div className='p-2 bg-[#B5BFEF] rounded-lg -ml-2 text-white'>{isInitialLoading ? <Spinner /> : <Search />}</div>
+				</div>
+
 				<div className='flex flex-wrap items-center gap-10 text-sm text-wustomers-gray'>
 					<div className='flex items-center gap-2'>
-						<button
-							type='button'
-							className={`px-4 py-[2px] transition-colors rounded ${
-								searchParams.get('status') === 'all' ? 'bg-wustomers-blue-light text-white' : 'bg-wustomers-main/20 hover:bg-wustomers-neutral-lighter/50'
-							}`}
-							onClick={() => setSearchParams({ status: 'all' })}>
-							All
-						</button>
-						<button
-							type='button'
-							className={`px-4 py-[2px] transition-colors rounded ${
-								searchParams.get('status') === 'active' ? 'bg-wustomers-blue-light text-white' : 'bg-wustomers-main/20  hover:bg-wustomers-neutral-lighter/50'
-							}`}
-							onClick={() => setSearchParams({ status: 'active' })}>
-							Active
-						</button>
-						<button
-							type='button'
-							className={`px-4 py-[2px] transition-colors rounded ${
-								searchParams.get('status') === 'inactive' ? 'bg-wustomers-blue-light text-white' : 'bg-wustomers-main/20  hover:bg-wustomers-neutral-lighter/50'
-							}`}
-							onClick={() => setSearchParams({ status: 'inactive' })}>
-							Inactive
-						</button>
+						{statues.map(status => (
+							<button
+								type='button'
+								key={status}
+								className={`px-4 py-[2px] transition-colors rounded capitalize ${
+									searchParams.get('status') === status ? 'bg-wustomers-blue-light text-white' : 'bg-wustomers-main/20 hover:bg-wustomers-neutral-lighter/50'
+								} `}
+								onClick={() => setSearchParams({ status })}>
+								{status}
+							</button>
+						))}
 					</div>
 
 					<Pagination

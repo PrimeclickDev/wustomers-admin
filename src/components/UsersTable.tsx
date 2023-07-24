@@ -1,5 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { useFetchUsers } from 'api/hooks/users/useFetchUsers'
+import { useSearchUsers } from 'api/hooks/users/useSearchUsers'
 import MoreElipsis from 'assets/icons/MoreElipsis'
+import Search from 'assets/icons/Search'
+import { useDebounce } from 'hooks/useDebouncedHook'
 import { useUserRole } from 'hooks/useUserRole'
 import React from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -16,12 +20,16 @@ const status = {
 }
 
 export const UsersTable = () => {
+	const [searchParams, setSearchParams] = useSearchParams()
 	const [page, setPage] = React.useState(1)
 	const [open, setOpen] = React.useState(false)
-
-	const [searchParams, setSearchParams] = useSearchParams()
+	const [search, setSearch] = React.useState('')
+	const debouncedValue = useDebounce(search, 500)
+	const queryClient = useQueryClient()
 
 	const { data: users, isLoading, isPreviousData } = useFetchUsers(page)
+	const { data, isInitialLoading } = useSearchUsers(debouncedValue as string)
+
 	const { role } = useUserRole()
 
 	React.useEffect(() => {
@@ -31,11 +39,36 @@ export const UsersTable = () => {
 		}
 	}, [open, searchParams, setSearchParams])
 
+	React.useEffect(() => {
+		if (debouncedValue) {
+			queryClient.setQueryData(['users', 1], data)
+			return
+		}
+
+		queryClient.invalidateQueries({ queryKey: ['users', 1] })
+	}, [data, debouncedValue, queryClient])
+
 	return (
 		<>
 			<div className='mt-10 bg-white border border-gray-200 py-4 px-6 rounded-md'>
 				<header className='flex flex-wrap items-center justify-between gap-2'>
 					<h3 className='font-semibold text-lg'>Users list</h3>
+
+					<div className='flex items-center'>
+						<input
+							type='search'
+							name='search'
+							id='search'
+							disabled={isInitialLoading}
+							value={search}
+							onChange={e => {
+								setSearch(e.target.value)
+							}}
+							placeholder='Search users'
+							className='rounded-lg bg-wustomers-primary border border-[#B5BFEF] py-2 px-3 text-sm focus-visible:outline disabled:cursor-not-allowed'
+						/>
+						<div className='p-2 bg-[#B5BFEF] rounded-lg -ml-2 text-white'>{isInitialLoading ? <Spinner /> : <Search />}</div>
+					</div>
 
 					<Pagination
 						from={users?.meta.from}

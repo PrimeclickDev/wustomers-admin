@@ -80,7 +80,7 @@ export const CampaignPreview = () => {
 								</div>
 
 								<button
-									disabled={!campaign}
+									disabled={!campaign || (campaign?.campaign_status !== 'Active' && campaign?.payment_status !== 'Paid')}
 									onClick={() =>
 										copyToClipboard(`https://wustomers.netlify.app/campaign/${campaign?.campaign_code.toLowerCase()}`).then(() => toast.success('URL copied to clipboard'))
 									}
