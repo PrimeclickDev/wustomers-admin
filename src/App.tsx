@@ -25,13 +25,15 @@ function App() {
 					<Route path=':campaignId' element={<CampaignPreview />} />
 				</Route>
 
-				<Route path='business-accounts'>
-					<Route index element={<Users />} />
-					<Route path=':id' element={<UserDetails />} />
-					<Route path=':id/campaign/:campaignId' element={<CampaignPreview />} />
-				</Route>
+				{role !== 'finance-manager' ? (
+					<Route path='business-accounts'>
+						<Route index element={<Users />} />
+						<Route path=':id' element={<UserDetails />} />
+						<Route path=':id/campaign/:campaignId' element={<CampaignPreview />} />
+					</Route>
+				) : null}
 
-				{role === 'super-admin' || role === 'admin' ? <Route path='finance' element={<Finance />} /> : null}
+				{role === 'super-admin' || role === 'admin' || role === 'finance-manager' ? <Route path='finance' element={<Finance />} /> : null}
 
 				{role === 'super-admin' ? (
 					<Route path='admin-access'>

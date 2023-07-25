@@ -11,7 +11,7 @@ import { Pagination } from './Pagination'
 import { Spinner } from './Spinner'
 
 const tableHeaders = ['Campaign title', 'Campaign Owner', 'Acct. manager ID', 'Price', 'Status', 'Payment Status', 'Duration', 'Start Date', 'End date', 'Action']
-const statues = ['all', 'active', 'inactive', 'search']
+const statues = ['all', 'active', 'inactive']
 
 export const CampaignTable = () => {
 	const queryClient = useQueryClient()
@@ -28,17 +28,16 @@ export const CampaignTable = () => {
 		status: searchParams.get('status') ?? 'all',
 	})
 
-	const { data, isInitialLoading } = useSearchCampaigns(debouncedValue as string)
-	console.log('search data', data)
-
+	const { data, isInitialLoading, isSuccess } = useSearchCampaigns(debouncedValue as string)
 	React.useEffect(() => {
 		if (debouncedValue) {
 			queryClient.setQueryData(['campaigns', 'all', 1], data)
+			setSearchParams({ status: 'all' })
 			return
 		}
 
 		queryClient.invalidateQueries({ queryKey: ['campaigns', 'all', 1] })
-	}, [data, debouncedValue, queryClient, setSearchParams])
+	}, [data, debouncedValue, isSuccess, queryClient, setSearchParams])
 
 	return (
 		<div className='mt-10 bg-wustomers-primary rounded-md py-2'>
@@ -54,7 +53,7 @@ export const CampaignTable = () => {
 						value={search}
 						onChange={e => {
 							setSearch(e.target.value)
-							// setSearchParams({ status: 'search' })
+							//
 						}}
 						placeholder='Search campaigns'
 						className='rounded-lg bg-wustomers-primary border border-[#B5BFEF] py-2 px-3 text-sm focus-visible:outline disabled:cursor-not-allowed'
