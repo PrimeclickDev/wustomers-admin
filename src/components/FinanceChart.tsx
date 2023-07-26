@@ -2,8 +2,8 @@ import { useFetchFinanceChartData } from 'api/hooks/campaigns/useFetchFinanceCha
 import React from 'react'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, TooltipProps, XAxis, YAxis } from 'recharts'
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
+import { statusStyle } from 'utils/constants'
 import { formatCurrency } from 'utils/formatCurrency'
-import { statusStyle } from './FinanceTable'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select'
 import { Spinner } from './Spinner'
 

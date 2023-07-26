@@ -61,6 +61,9 @@ export const Header = () => {
 		} else if (role === 'admin') {
 			const adminNavs = navs.filter(nav => nav.route !== '/admin-access')
 			setMenu(adminNavs)
+		} else if (role === 'finance-admin') {
+			const adminNavs = navs.filter(nav => nav.route !== '/admin-access' && nav.route !== '/business-accounts')
+			setMenu(adminNavs)
 		}
 	}, [role])
 

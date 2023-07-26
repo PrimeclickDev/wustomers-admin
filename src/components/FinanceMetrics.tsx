@@ -47,7 +47,7 @@ export const FinanceMetrics = () => {
 								<WalletCheck />
 							</div>
 
-							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.total_amount_successful as number)}</p>
+							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.all_time_amount as number)}</p>
 						</li>
 						<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-2'>
 							<div className='flex items-center justify-between'>
@@ -61,7 +61,7 @@ export const FinanceMetrics = () => {
 								<h3 className='text-gray-600'>Total money commission</h3>
 								<Wallet />
 							</div>
-							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.all_time_amount as number)}</p>
+							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.total_amount_successful as number)}</p>
 						</li>
 					</>
 				)}

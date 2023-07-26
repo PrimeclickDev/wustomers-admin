@@ -44,7 +44,7 @@ export const CampaignTable = () => {
 			<header className='flex flex-wrap items-center justify-between gap-2 px-4 py-2 lg:px-6'>
 				<h3 className='font-medium text-lg'>Campaign list</h3>
 
-				<div className='flex items-center'>
+				<div className='flex items-center relative'>
 					<input
 						type='search'
 						name='search'
@@ -56,9 +56,9 @@ export const CampaignTable = () => {
 							//
 						}}
 						placeholder='Search campaigns'
-						className='rounded-lg bg-wustomers-primary border border-[#B5BFEF] py-2 px-3 text-sm focus-visible:outline disabled:cursor-not-allowed'
+						className='rounded-lg bg-wustomers-primary border border-[#B5BFEF] py-2 px-3 text-sm focus-visible:outline disabled:cursor-not-allowed md:w-64 md:pr-8'
 					/>
-					<div className='p-2 bg-[#B5BFEF] rounded-lg -ml-2 text-white'>{isInitialLoading ? <Spinner /> : <Search />}</div>
+					<div className='absolute top-1/2 -translate-y-1/2 text-wustomers-blue-light right-2'>{isInitialLoading ? <Spinner /> : <Search />}</div>
 				</div>
 
 				<div className='flex flex-wrap items-center gap-10 text-sm text-wustomers-gray'>

@@ -25,7 +25,7 @@ function App() {
 					<Route path=':campaignId' element={<CampaignPreview />} />
 				</Route>
 
-				{role !== 'finance-manager' ? (
+				{role !== 'finance-admin' ? (
 					<Route path='business-accounts'>
 						<Route index element={<Users />} />
 						<Route path=':id' element={<UserDetails />} />
@@ -33,7 +33,7 @@ function App() {
 					</Route>
 				) : null}
 
-				{role === 'super-admin' || role === 'admin' || role === 'finance-manager' ? <Route path='finance' element={<Finance />} /> : null}
+				{role === 'super-admin' || role === 'admin' || role === 'finance-admin' ? <Route path='finance' element={<Finance />} /> : null}
 
 				{role === 'super-admin' ? (
 					<Route path='admin-access'>

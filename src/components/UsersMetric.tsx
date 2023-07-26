@@ -15,7 +15,7 @@ export const UsersMetrics = () => {
 	const { data: metrics, isLoading } = useUserMetrics(selected)
 
 	return (
-		<div className='flex flex-col'>
+		<div className='flex flex-col mt-6'>
 			<div className='flex items-center gap-2 ml-auto'>
 				<p className='text-xs'>Show:</p>
 				<Select onValueChange={setFilter} value={filter}>
