@@ -32,7 +32,7 @@ export const ExportBtn = ({ className, pdfHead, pdfBody, orientation, data }: Ex
 		})
 
 		toast.promise(
-			report.save(`levare_report_${Date.now()}.pdf`, {
+			report.save(`wustomers_report_${Date.now()}.pdf`, {
 				returnPromise: true,
 			}),
 			{
@@ -51,7 +51,7 @@ export const ExportBtn = ({ className, pdfHead, pdfBody, orientation, data }: Ex
 		const url = window.URL.createObjectURL(blob)
 		const a = document.createElement('a')
 		a.href = url
-		a.download = 'data.csv'
+		a.download = `wustomers_report_${Date.now()}.csv`
 		a.click()
 		window.URL.revokeObjectURL(url)
 	}
