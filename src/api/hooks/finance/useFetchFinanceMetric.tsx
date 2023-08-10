@@ -19,6 +19,8 @@ export interface TransactionMetric {
 	all_time_amount: number
 	total_successful: number
 	total_pending: number
+	total_agency_commission: number
+	total_account_manager_commission: number
 }
 
 export const getFinanceMetric = async (filterBy: string): Promise<AxiosResponse<FinanceMetric>> => {

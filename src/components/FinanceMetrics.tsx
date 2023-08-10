@@ -2,6 +2,7 @@ import { useFetchFinanceMetric } from 'api/hooks/finance/useFetchFinanceMetric'
 import Wallet from 'assets/icons/Wallet'
 import WalletCheck from 'assets/icons/WalletCheck'
 import WalletMinus from 'assets/icons/WalletMinus'
+import { useUserRole } from 'hooks/useUserRole'
 import React from 'react'
 import { filters } from 'utils/constants'
 import { formatCurrency } from 'utils/formatCurrency'
@@ -9,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Spinner } from './Spinner'
 
 export const FinanceMetrics = () => {
+	const { role } = useUserRole()
 	const [filter, setFilter] = React.useState(filters[5].name)
 
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -43,25 +45,27 @@ export const FinanceMetrics = () => {
 					<>
 						<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-2'>
 							<div className='flex items-center justify-between'>
-								<h3 className='text-gray-600'>Total money received</h3>
+								<h3 className='text-gray-600'>{role === 'account_manager' ? 'Payment Received' : 'Total Received'}</h3>
 								<WalletCheck />
 							</div>
 
 							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.all_time_amount as number)}</p>
 						</li>
+						{role !== 'account_manager' ? (
+							<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-2'>
+								<div className='flex items-center justify-between'>
+									<h3 className='text-gray-600'>Total Agency Commission</h3>
+									<WalletMinus />
+								</div>
+								<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.total_agency_commission as number)}</p>
+							</li>
+						) : null}
 						<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-2'>
 							<div className='flex items-center justify-between'>
-								<h3 className='text-gray-600'>Total money spend</h3>
-								<WalletMinus />
-							</div>
-							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.total_amount_pending as number)}</p>
-						</li>
-						<li className='bg-wustomers-primary p-6 rounded-md flex-1 space-y-2'>
-							<div className='flex items-center justify-between'>
-								<h3 className='text-gray-600'>Total money commission</h3>
+								<h3 className='text-gray-600'>{role === 'account_manager' ? 'Account Manager Commission' : 'Total Account Manager Commission'}</h3>
 								<Wallet />
 							</div>
-							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.total_amount_successful as number)}</p>
+							<p className='font-bold text-4xl'>{formatCurrency(financeMetric?.total_account_manager_commission as number)}</p>
 						</li>
 					</>
 				)}
