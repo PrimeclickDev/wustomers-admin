@@ -38,26 +38,17 @@ export const CampaignPreview = () => {
 							<div className='flex flex-wrap items-center gap-4'>
 								<div
 									className={`py-1 px-4 rounded-full font-medium flex items-center gap-2 text-xs text-white ${
-										campaign?.campaign_status === 'Active' && campaign?.payment_status === 'Paid'
+										campaign?.campaign_status === 'Active'
 											? 'bg-[#6FCF97]'
-											: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Unpaid'
+											: campaign?.campaign_status === 'Inactive'
 											? 'bg-[#EB5757]'
-											: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Paid'
+											: campaign?.campaign_status === 'Pending'
 											? 'bg-[#F2C94C]'
-											: ''
+											: 'bg-gray-300'
 									}`}>
-									<p>
-										{campaign?.campaign_status === 'Active' && campaign?.payment_status === 'Paid'
-											? 'Live'
-											: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Unpaid'
-											? 'Inactive'
-											: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Paid'
-											? 'Pending'
-											: ''}{' '}
-										campaign
-									</p>
+									<p>{campaign?.campaign_status}</p>
 
-									{campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Paid' ? (
+									{campaign?.campaign_status === 'Pending' ? (
 										<Popover>
 											<PopoverTrigger>
 												<button type='button' className='border-l border-l-white pl-2'>

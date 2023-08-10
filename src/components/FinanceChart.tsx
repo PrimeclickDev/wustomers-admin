@@ -48,8 +48,8 @@ export const FinanceChart = () => {
 					</SelectTrigger>
 
 					<SelectContent>
-						{statues.map(option => (
-							<SelectItem value={option.toLowerCase()} className='py-4'>
+						{statues.map((option, index) => (
+							<SelectItem value={option.toLowerCase()} className='py-4' key={index}>
 								{option}
 							</SelectItem>
 						))}

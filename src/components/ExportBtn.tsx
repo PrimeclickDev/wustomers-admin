@@ -14,10 +14,10 @@ type ExportBtnProps = {
 	orientation?: 'p' | 'portrait' | 'l' | 'landscape'
 	pdfHead: RowInput[] | undefined
 	pdfBody: RowInput[] | undefined
-	data?: any
+	csvdata?: any
 }
 
-export const ExportBtn = ({ className, pdfHead, pdfBody, orientation, data }: ExportBtnProps) => {
+export const ExportBtn = ({ className, pdfHead, pdfBody, orientation, csvdata }: ExportBtnProps) => {
 	const [doc, setDoc] = React.useState('pdf')
 
 	const exportPdf = () => {
@@ -44,7 +44,7 @@ export const ExportBtn = ({ className, pdfHead, pdfBody, orientation, data }: Ex
 	}
 
 	const exportCSV = () => {
-		const csvData = Papa.unparse(data, {
+		const csvData = Papa.unparse(csvdata, {
 			header: true,
 		})
 		const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' })

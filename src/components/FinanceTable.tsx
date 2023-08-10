@@ -1,4 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
+import { useFetchAllTransactions } from 'api/hooks/finance/useFetchAllTransactions'
 import { useFetchTransactions } from 'api/hooks/finance/useFetchTransactions'
 import { useFetchBudgets } from 'api/hooks/shared/useFetchBudgets'
 import React from 'react'
@@ -16,26 +17,28 @@ export const FinanceTable = () => {
 	const { data: transactions, isLoading, isPreviousData } = useFetchTransactions(page)
 	const { data: budgets } = useFetchBudgets()
 
+	const { data: allTransactions } = useFetchAllTransactions()
+
 	return (
 		<div className='mt-10'>
 			<ExportBtn
 				pdfHead={[['Business name', 'Amount', 'Charges', 'VAT', 'Refrence no', 'Date', 'Status']]}
-				pdfBody={transactions?.data.map(transaction => [
+				pdfBody={allTransactions?.map(transaction => [
 					transaction.user.business_name,
-					transaction.amount.toLocaleString(),
-					transaction.service_charge.toLocaleString(),
-					transaction.vat.toLocaleString(),
-					transaction.reference.toLowerCase(),
-					new Date(transaction.created_at).toDateString(),
+					transaction.amount?.toLocaleString(),
+					transaction.service_charge?.toLocaleString(),
+					transaction.vat?.toLocaleString(),
+					transaction.reference?.toLowerCase(),
+					new Date(transaction.created_at)?.toDateString(),
 					transaction.payment_status.name,
 				])}
-				data={transactions?.data.map(transaction => ({
+				csvdata={allTransactions?.map(transaction => ({
 					business_name: transaction.user.business_name,
-					amount: transaction.amount.toLocaleString(),
-					service_charge: transaction.service_charge.toLocaleString(),
-					vat: transaction.vat.toLocaleString(),
-					reference_no: transaction.reference.toLowerCase(),
-					date: new Date(transaction.created_at).toDateString(),
+					amount: transaction.amount?.toLocaleString(),
+					service_charge: transaction.service_charge?.toLocaleString(),
+					vat: transaction.vat?.toLocaleString(),
+					reference_no: transaction.reference?.toLowerCase(),
+					date: new Date(transaction.created_at)?.toDateString(),
 					status: transaction.payment_status.name,
 				}))}
 			/>

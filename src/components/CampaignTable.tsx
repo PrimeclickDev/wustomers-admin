@@ -11,7 +11,7 @@ import { Pagination } from './Pagination'
 import { Spinner } from './Spinner'
 
 const tableHeaders = ['Campaign title', 'Campaign Owner', 'Acct. manager ID', 'Price', 'Status', 'Payment Status', 'Duration', 'Start Date', 'End date', 'Action']
-const statues = ['all', 'active', 'inactive']
+const statues = ['all', 'active', 'pending', 'inactive']
 
 export const CampaignTable = () => {
 	const queryClient = useQueryClient()
@@ -125,21 +125,15 @@ export const CampaignTable = () => {
 									<td className='px-6 py-5 capitalize'>
 										<span
 											className={`py-1 px-3 rounded-md capitalize w-max text-sm ${
-												campaign?.campaign_status === 'Active' && campaign?.payment_status === 'Paid'
+												campaign?.campaign_status === 'Active'
 													? 'bg-[#219653]/20 text-[#219653]'
-													: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Unpaid'
+													: campaign?.campaign_status === 'Inactive'
 													? 'bg-[#EB5757]/20 text-[#EB5757]'
-													: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Paid'
+													: campaign?.campaign_status === 'Pending'
 													? 'bg-[#F2C94C]/20 text-[#F2C94C]'
 													: 'bg-[#EB5757]/20 text-[#EB5757]'
 											}`}>
-											{campaign?.campaign_status === 'Active' && campaign?.payment_status === 'Paid'
-												? 'Live'
-												: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Unpaid'
-												? 'Inactive'
-												: campaign?.campaign_status === 'Inactive' && campaign?.payment_status === 'Paid'
-												? 'Pending'
-												: 'Ended'}
+											{campaign?.campaign_status}
 										</span>
 									</td>
 									<td className='px-6 py-5 font-medium'>{campaign.payment_status}</td>
