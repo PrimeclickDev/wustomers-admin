@@ -6,6 +6,7 @@ import { CampaignPreview } from 'pages/CampaignPreview'
 import { Campaigns } from 'pages/Campaigns'
 import { Finance } from 'pages/Finance'
 import { Home } from 'pages/Home'
+import Notifications from 'pages/Notifications'
 import { RolesPermissions } from 'pages/RolesPermissions'
 import { UserDetails } from 'pages/UserDetails'
 import { Users } from 'pages/Users'
@@ -41,6 +42,8 @@ function App() {
 						<Route path='roles-permissions' element={<RolesPermissions />} />
 					</Route>
 				) : null}
+
+				<Route path='notifications' element={<Notifications />} />
 			</Route>
 			<Route path='*' element={<NotFound />} />
 		</Routes>

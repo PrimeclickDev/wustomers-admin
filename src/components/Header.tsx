@@ -1,4 +1,5 @@
 import { useLogout } from 'api/hooks/auth/useLogout'
+import { useFetchAllNotifications } from 'api/hooks/notifications/useFetchAllNotifications'
 import WustomersLogo from 'assets/WustomersLogo'
 import Bell from 'assets/icons/Bell'
 import ChartCirlce from 'assets/icons/ChartCircle'
@@ -47,6 +48,7 @@ export const Header = () => {
 	const [isOpen, setIsOpen] = React.useState(false)
 	const [open, setOpen] = React.useState(false)
 	const [menu, setMenu] = React.useState(navs)
+	const { data: notifications } = useFetchAllNotifications()
 
 	useScrollLock({ isOpen })
 	const { role } = useUserRole()
@@ -77,9 +79,23 @@ export const Header = () => {
 								<WustomersLogo fill='#072AC8' className='w-32 md:w-40' />
 							</Link>
 
-							<button type='button' aria-label='notification' className='w-10 h-10 rounded-full lg:place-items-center bg-white lg:grid hidden'>
+							<NavLink
+								to='/notifications'
+								type='button'
+								aria-label='notification'
+								className={({ isActive }) =>
+									`w-10 h-10 rounded-full lg:place-items-center bg-white lg:grid hidden relative ${
+										isActive ? 'bg-wustomers-blue text-white' : 'hover:bg-wustomers-blue/10 text-wustomers-blue'
+									}`
+								}>
 								<Bell />
-							</button>
+								{notifications && notifications.filter(notification => !notification.read_at).length ? (
+									<span className='absolute -top-1 right-0 grid h-4 w-4 place-items-center rounded-full bg-red-600 text-xs text-white'>
+										{notifications.filter(notification => !notification.read_at).length}
+									</span>
+								) : null}
+								<span className='sr-only'>notifications</span>
+							</NavLink>
 						</div>
 						<ul className='lg:flex items-center justify-center gap-10 hidden py-2 border-t border-t-gray-300 w-full'>
 							{menu.map(nav => (
