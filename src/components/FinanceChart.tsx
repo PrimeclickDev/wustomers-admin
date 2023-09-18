@@ -8,10 +8,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Spinner } from './Spinner'
 
 const statues = ['All', 'Paid', 'Unpaid']
+const date = ['Daily', 'Yesterday', 'Monthly', 'Past two months', 'Past three month', 'Past six months', 'Yearly']
 
 export const FinanceChart = () => {
 	const [filter, setFilter] = React.useState(statues[0])
-	const { data: chartData, isLoading } = useFetchFinanceChartData(filter.toLowerCase())
+	const [dateFilter, setDateFilter] = React.useState(date[6])
+	const {
+		data: chartData,
+		isLoading,
+		isPreviousData,
+	} = useFetchFinanceChartData({
+		status: filter.toLowerCase(),
+		date: dateFilter.replace(' ', '_').toLowerCase(),
+	})
 	const paid = chartData?.map(data => ({
 		name: new Date(data.created_at).toDateString(),
 		amount: data.amount,
@@ -39,28 +48,54 @@ export const FinanceChart = () => {
 
 	return (
 		<div className='mt-10 bg-white border border-gray-200 py-4 px-6 rounded-md'>
-			<header className='flex flex-wrap items-center gap-4'>
+			<header className='flex flex-wrap items-center justify-between gap-4'>
 				<h3 className='font-semibold text-lg'>Total Amount:</h3>
 
-				<Select onValueChange={setFilter} value={filter.toLowerCase()} disabled={isLoading}>
-					<SelectTrigger className='w-max !bg-white !border-[#E5E0EB] border-2 rounded-md pl-2 !text-xs'>
-						<SelectValue placeholder='Select a metric...' />
-					</SelectTrigger>
+				<div className='flex items-center gap-4'>
+					<p className='text-sm'>Show:</p>
+					<div className='flex items-center gap-4'>
+						<Select onValueChange={setFilter} value={filter.toLowerCase()} disabled={isLoading}>
+							<SelectTrigger className='w-max !bg-white !border-[#E5E0EB] border-2 rounded-md pl-2 !text-xs'>
+								<SelectValue placeholder='Select a metric...' />
+							</SelectTrigger>
 
-					<SelectContent>
-						{statues.map((option, index) => (
-							<SelectItem value={option.toLowerCase()} className='py-4' key={index}>
-								{option}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
+							<SelectContent>
+								{statues.map((option, index) => (
+									<SelectItem value={option.toLowerCase()} className='py-4' key={index}>
+										{option}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+
+						<Select onValueChange={setDateFilter} value={dateFilter.replace(' ', '_').toLowerCase()} disabled={isLoading}>
+							<SelectTrigger className='w-max !bg-white !border-[#E5E0EB] border-2 rounded-md pl-2 !text-xs'>
+								<SelectValue placeholder='Select a metric...' />
+							</SelectTrigger>
+
+							<SelectContent>
+								{date.map((option, index) => (
+									<SelectItem value={option.toLowerCase()} className='py-4' key={index}>
+										{option}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
+				</div>
 			</header>
 
 			{isLoading ? (
 				<Spinner />
 			) : (
-				<ResponsiveContainer width='100%' height={450} className='mt-10 text-xs'>
+				<ResponsiveContainer
+					width='100%'
+					height={450}
+					className={`mt-10 text-xs relative ${
+						isPreviousData
+							? 'cursor-not-allowed opacity-50 after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:text-xl after:content-["Loading..."]'
+							: ''
+					}`}>
 					<AreaChart data={paid}>
 						<CartesianGrid strokeDasharray='3 3' />
 						<XAxis dataKey='name' />

@@ -33,14 +33,14 @@ export interface Datum {
 	updated_at: Date
 }
 
-export const getFinanceChart = async (status: string): Promise<AxiosResponse<Main>> => {
+export const getFinanceChart = async (status: string, date: string): Promise<AxiosResponse<Main>> => {
 	return await instance.get(`${baseURL}/admin/transactions/chart/report/${status}/yearly`)
 }
 
-export const useFetchFinanceChartData = (status: string) => {
+export const useFetchFinanceChartData = ({ status, date }: { status: string; date: string }) => {
 	return useQuery({
-		queryKey: ['finance-chart', status],
-		queryFn: () => getFinanceChart(status),
+		queryKey: ['finance-chart', status, date],
+		queryFn: () => getFinanceChart(status, date),
 		keepPreviousData: true,
 		onError: error => {
 			if (error instanceof AxiosError) {
