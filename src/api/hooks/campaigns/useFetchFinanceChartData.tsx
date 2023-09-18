@@ -34,7 +34,7 @@ export interface Datum {
 }
 
 export const getFinanceChart = async (status: string, date: string): Promise<AxiosResponse<Main>> => {
-	return await instance.get(`${baseURL}/admin/transactions/chart/report/${status}/yearly`)
+	return await instance.get(`${baseURL}/admin/transactions/chart/report/${status}/${date}`)
 }
 
 export const useFetchFinanceChartData = ({ status, date }: { status: string; date: string }) => {
