@@ -65,12 +65,19 @@ export interface Manager {
 	email: null
 }
 
+export type Social = {
+	title: string
+	image_url: string
+	posted_date: string | null
+	post_url?: string
+}
+
 export interface SocialPost {
 	id: number
 	campaign_id: number
 	title: string
 	posted_date: null
-	image_url: string
+	image_url: Social[]
 	post_url: string
 	created_at: Date
 	updated_at: Date

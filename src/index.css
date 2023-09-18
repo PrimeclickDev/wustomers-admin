@@ -40,3 +40,29 @@ body {
 button {
 	@apply focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wustomers-blue;
 }
+
+/* swipper js styles */
+.swiper-button-next {
+  background-image: url(/chevron-left.svg);
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+}
+
+.swiper-button-next::after {
+  display: none;
+}
+.swiper-button-prev {
+  background-image: url(/chevron-right.svg);
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+}
+
+.swiper-button-prev::after {
+  display: none;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #fff !important;
+}

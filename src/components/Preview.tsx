@@ -1,4 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Data } from 'models/campaign-models'
+import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 type PreviewProps = {
 	campaign: Data | undefined
@@ -17,31 +24,18 @@ export const Preview = ({ campaign }: PreviewProps) => {
 					<section className='px-4'>
 						<div
 							className={`campaign-website-container relative z-50 flex py-2 items-center ${
-								campaign?.logo_position === 'left'
-									? 'justify-start'
-									: campaign?.logo_position === 'right'
-									? 'justify-end'
-									: 'justify-center'
+								campaign?.logo_position === 'left' ? 'justify-start' : campaign?.logo_position === 'right' ? 'justify-end' : 'justify-center'
 							} rounded-md bg-white shadow-2xl`}>
-							<img
-								src={campaign?.product_logo}
-								alt={`${campaign?.title} logo`}
-								width='40'
-								className=''
-							/>
+							<img src={campaign?.product_logo} alt={`${campaign?.title} logo`} width='40' className='' />
 						</div>
 					</section>
 
 					{/* hero */}
-					<section className='relative z-50 mx-auto flex h-[90%]  flex-col items-center justify-center px-3 text-center md:px-0'>
+					<section className='relative z-50 mx-auto flex h-[90%] flex-col items-center justify-center px-3 text-center md:px-0'>
 						<div className='max-w-[80ch]'>
-							<h2 className='text-5xl font-black text-white'>
-								{campaign?.header_content}
-							</h2>
+							<h2 className='text-5xl font-black text-white'>{campaign?.header_content}</h2>
 						</div>
-						<p className='max-w-[60ch] pt-3 leading-relaxed text-gray-200'>
-							{campaign?.subheading_content}
-						</p>
+						<p className='max-w-[60ch] pt-3 leading-relaxed text-gray-200'>{campaign?.subheading_content}</p>
 						<a
 							href={
 								campaign?.contact_option === 'email'
@@ -55,8 +49,7 @@ export const Preview = ({ campaign }: PreviewProps) => {
 							target='_blank'
 							rel='noopener noreferrer'
 							className='mx-auto mt-8 block w-max rounded bg-white px-12 py-[10px] transition-opacity hover:opacity-80'>
-							<span>{campaign?.button_text}</span>{' '}
-							<span aria-hidden='true'>&rarr;</span>
+							<span>{campaign?.button_text}</span> <span aria-hidden='true'>&rarr;</span>
 						</a>
 					</section>
 				</div>
@@ -64,12 +57,8 @@ export const Preview = ({ campaign }: PreviewProps) => {
 
 			{campaign?.body_heading && campaign?.body_description ? (
 				<section className='mx-auto max-w-[80ch] px-3 pt-24 pb-20 text-center'>
-					<h2 className='text-4xl font-black text-neutral-900'>
-						{campaign?.body_heading}
-					</h2>
-					<p className='pt-6 text-neutral-600'>
-						{campaign?.body_description}
-					</p>
+					<h2 className='text-4xl font-black text-neutral-900'>{campaign?.body_heading}</h2>
+					<p className='pt-6 text-neutral-600'>{campaign?.body_description}</p>
 				</section>
 			) : null}
 
@@ -77,19 +66,22 @@ export const Preview = ({ campaign }: PreviewProps) => {
 			{campaign?.social_posts.length ? (
 				<section className='pb-20 pt-10'>
 					<div className='campaign-website-container'>
-						<h2 className='text-center text-4xl font-black text-neutral-900'>
-							Posts
-						</h2>
+						<h2 className='text-center text-4xl font-black text-neutral-900'>Products</h2>
 						<ul className='grid grid-cols-fluid gap-6 pt-12'>
 							{campaign?.social_posts.map((post, index) => (
-								<li
-									className='max-w-[400px] justify-self-center'
-									key={index}>
-									<img
-										src={post.image_url}
-										alt='post picture'
-										className='h-96 w-full rounded-lg object-cover'
-									/>
+								<li className='max-w-[400px] justify-self-center' key={index}>
+									<Swiper
+										// @ts-ignore
+										modules={[Navigation, Pagination]}
+										navigation
+										pagination={{ clickable: true }}>
+										{post.image_url.map((img: any) => (
+											<SwiperSlide key={img.image_url}>
+												<img src={img.image_url} alt='post picture' className='h-96 w-full rounded-lg object-cover' />
+											</SwiperSlide>
+										))}
+									</Swiper>
+
 									<div className='mt-2 rounded-lg bg-neutral-200 px-4 py-3'>
 										<p>{post.title}</p>
 										{post.post_url ? (
@@ -98,10 +90,7 @@ export const Preview = ({ campaign }: PreviewProps) => {
 												target='_blank'
 												rel='noopener noreferrer'
 												className='inline-block pt-3 text-right text-xs font-medium text-wustomers-blue transition-all hover:underline'>
-												View on Instagram{' '}
-												<span aria-hidden='true'>
-													&rarr;
-												</span>
+												View on Instagram <span aria-hidden='true'>&rarr;</span>
 											</a>
 										) : null}
 									</div>
@@ -116,25 +105,16 @@ export const Preview = ({ campaign }: PreviewProps) => {
 			{(campaign?.testimonials.length as number) ? (
 				<section className='mt-20 bg-neutral-300 py-24'>
 					<div className='campaign-website-container'>
-						<h2 className='text-center text-4xl font-black text-neutral-900'>
-							Testimonials
-						</h2>
+						<h2 className='text-center text-4xl font-black text-neutral-900'>Testimonials</h2>
 						<ul className='grid grid-cols-fluid gap-6 pt-12'>
-							{campaign?.testimonials.map(
-								(testimonial, index) => (
-									<li
-										className='max-w-[400px] justify-self-center rounded-lg bg-neutral-900 p-6 hover:bg-opacity-90 hover:transition-colors'
-										key={index}>
-										<p className='text-neutral-300'>
-											{testimonial.comment}
-										</p>
-										<h3 className='pt-4 text-sm font-bold text-white'>
-											{testimonial.name} -{' '}
-											{testimonial.designation}
-										</h3>
-									</li>
-								)
-							)}
+							{campaign?.testimonials.map((testimonial, index) => (
+								<li className='max-w-[400px] justify-self-center rounded-lg bg-neutral-900 p-6 hover:bg-opacity-90 hover:transition-colors' key={index}>
+									<p className='text-neutral-300'>{testimonial.comment}</p>
+									<h3 className='pt-4 text-sm font-bold text-white'>
+										{testimonial.name} - {testimonial.designation}
+									</h3>
+								</li>
+							))}
 						</ul>
 					</div>
 				</section>
@@ -143,34 +123,22 @@ export const Preview = ({ campaign }: PreviewProps) => {
 			{/* footer */}
 			<footer className='bg-neutral-900'>
 				<div className='campaign-website-container !py-24'>
-					<h2 className='text-center font-bold uppercase tracking-[3px] text-white'>
-						Contact Information
-					</h2>
+					<h2 className='text-center font-bold uppercase tracking-[3px] text-white'>Contact Information</h2>
 
 					<ul className='flex flex-col items-center gap-10 pt-12 text-center text-gray-200'>
 						<li>
-							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>
-								Address
-							</h4>
+							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>Address</h4>
 							<p className='pt-1'>{campaign?.office_address}</p>
 						</li>
 						<li>
-							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>
-								Phone number
-							</h4>
-							<a
-								href={`tel:${campaign?.phone}`}
-								className='inline-block pt-1 hover:underline'>
+							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>Phone number</h4>
+							<a href={`tel:${campaign?.phone}`} className='inline-block pt-1 hover:underline'>
 								(+234) {campaign?.phone}
 							</a>
 						</li>
 						<li>
-							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>
-								Email address
-							</h4>
-							<a
-								href={`mailto:${campaign?.email}`}
-								className='inline-block pt-1 hover:underline'>
+							<h4 className='text-xs font-bold uppercase tracking-widest text-neutral-300'>Email address</h4>
+							<a href={`mailto:${campaign?.email}`} className='inline-block pt-1 hover:underline'>
 								{campaign?.email}
 							</a>
 						</li>
@@ -181,9 +149,7 @@ export const Preview = ({ campaign }: PreviewProps) => {
 					<p className='mb-1 rounded bg-neutral-800 py-3 text-center text-xs text-gray-200'>
 						&copy; {new Date().getFullYear()}{' '}
 						<strong>
-							<a
-								href='https://wustomers.netlify.app/'
-								className='hover:underline'>
+							<a href='https://wustomers.netlify.app/' className='hover:underline'>
 								Created with Wustomers
 							</a>
 						</strong>
